@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="orientation" content="portrait">
+  <meta charset="UTF-8">
+
+  <title>Mockshala – Physics Test</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* PORTRAIT – normal website */
+    @media screen and (orientation: portrait) {
+      .rotate-warning {
+        display: none;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(
+        rgba(10, 25, 50, 0.9),
+        rgba(20, 40, 80, 0.9)
+      ),
+      url("https://images.unsplash.com/photo-1535223289827-42f1e9919769");
+      background-size: cover;
+      background-position: center;
+      font-family: 'Funnel Sans', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .test-container {
+      width: 90%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #0d47a1;
+      margin-bottom: 25px;
+    }
+
+    #question {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: #111;
+    }
+
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+
+    .option {
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: #f2f6fc;
+      border: 1px solid #c5d3ea;
+      cursor: pointer;
+      font-family: sans-serif;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .option:hover {
+      background: #e3f2fd;
+    }
+
+    .option.selected {
+      background: #bbdefb;
+      border-color: #1565c0;
+      font-weight: 600;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      padding: 12px 26px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #1565c0;
+      color: white;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #0d47a1;
+    }
+
+    #submitBtn {
+      display: none;
+      background: #ffb300;
+      color: #000;
+    }
+
+    #submitBtn:hover {
+      background: #ff8f00;
+    }
+
+    /* =========================
+       MOBILE RESPONSIVE STYLES
+       ========================= */
+    @media (max-width: 600px) {
+
+      .test-container {
+        width: 95%;
+        padding: 18px;
+      }
+
+      .title {
+        font-size: 24px;
+        padding: 16px;
+      }
+
+      #question {
+        font-size: 18px;
+        line-height: 1.4;
+      }
+
+      .option {
+        font-size: 15px;
+        padding: 14px;
+      }
+
+      .btn-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      button {
+        width: 100%;
+        min-height: 48px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="test-container">
+    <div class="title"> atoms </div>
+
+    <!-- Question Text -->
+    <div id="question">Loading question...</div>
+
+    <!-- Options -->
+    <div id="options"></div>
+
+    <!-- Buttons -->
+    <div class="btn-row">
+      <button id="nextBtn">Next</button>
+      <button id="submitBtn">Submit</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="1123question.js"></script>
+  <script src="1123test.js"></script>
+
+</body>
+</html>

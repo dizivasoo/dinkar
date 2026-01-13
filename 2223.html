@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8">
+
+  <title>Dinkar – Chemistry Test</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+
+      /* CHEMISTRY BACKGROUND */
+      background: linear-gradient(
+        rgba(30, 10, 45, 0.9),
+        rgba(60, 20, 80, 0.9)
+      ),
+      url("https://images.unsplash.com/photo-1581093458791-9d15482778c4");
+      background-size: cover;
+      background-position: center;
+
+      font-family: 'Funnel Sans', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .test-container {
+      width: 90%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 25px 55px rgba(0,0,0,0.45);
+      text-align: center;
+
+      /* NEW THEME BORDER */
+      border-top: 6px solid #4a1f7a;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #5e2b97;
+      margin-bottom: 25px;
+      letter-spacing: 0.5px;
+    }
+
+    #question {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: #2a083f;
+    }
+
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+
+    .option {
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #f5f0ff;
+      border: 1px solid #d1c4e9;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .option:hover {
+      background: #ede7f6;
+    }
+
+    .option.selected {
+      background: #d1b3ff;
+      border-color: #5e2b97;
+      font-weight: 600;
+      color: #2a083f;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    button {
+      padding: 12px 26px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+
+      /* BUTTON THEME */
+      background: #5e2b97;
+      color: white;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: #4a1f7a;
+    }
+
+    #submitBtn {
+      display: none;
+      background: #4a1f7a;
+      color: #2a083f;
+    }
+
+    #submitBtn:hover {
+      background: #4a1f7a;
+    }
+
+    /* =========================
+       MOBILE RESPONSIVE
+       ========================= */
+    @media (max-width: 600px) {
+
+      .test-container {
+        width: 95%;
+        padding: 18px;
+      }
+
+      .title {
+        font-size: 24px;
+        padding: 10px;
+      }
+
+      #question {
+        font-size: 18px;
+        line-height: 1.4;
+      }
+
+      .option {
+        font-size: 15px;
+        padding: 14px;
+      }
+
+      .btn-row {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+        min-height: 48px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="test-container">
+    <div class="title"> solutions </div>
+
+    <div id="question">Loading question...</div>
+    <div id="options"></div>
+
+    <div class="btn-row">
+      <button id="nextBtn">Next</button>
+      <button id="submitBtn">Submit</button>
+    </div>
+  </div>
+
+  <!-- Scripts UNCHANGED -->
+  <script src="2223question.js"></script>
+  <script src="2223test.js"></script>
+
+</body>
+</html>
+
