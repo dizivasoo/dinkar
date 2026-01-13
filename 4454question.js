@@ -1,0 +1,66 @@
+const questions = [
+  { q: "Biotechnology deals with", o: ["Use of chemicals only", "Use of organisms or enzymes to produce products", "Study of plants only", "Study of microbes only"], a: 1 },
+  { q: "Genetic engineering involves", o: ["DNA sequencing", "Recombinant DNA technology", "Protein synthesis", "Mutation breeding"], a: 1 },
+  { q: "Recombinant DNA is", o: ["DNA without genes", "DNA from same organism", "DNA formed by joining DNA from different sources", "RNA molecule"], a: 2 },
+  { q: "Restriction enzymes are also called", o: ["Ligases", "Molecular scissors", "Molecular glue", "Polymerases"], a: 1 },
+  { q: "Restriction enzymes belong to the class", o: ["Exonucleases", "Endonucleases", "Ligases", "Polymerases"], a: 1 },
+  { q: "First restriction enzyme discovered was", o: ["EcoRI", "HindII", "BamHI", "SalI"], a: 1 },
+  { q: "Restriction enzymes cut DNA at", o: ["Random sites", "Palindromic sequences", "Centromere", "Telomere"], a: 1 },
+  { q: "Palindromic sequence means", o: ["Same sequence in RNA", "Sequence read same in both directions", "Random sequence", "Protein sequence"], a: 1 },
+  { q: "Sticky ends are formed due to", o: ["Blunt cutting", "Uneven cutting", "Complete digestion", "DNA replication"], a: 1 },
+  { q: "Sticky ends help in", o: ["Replication", "Transcription", "Ligation of DNA fragments", "Translation"], a: 2 },
+
+  { q: "DNA ligase forms", o: ["Hydrogen bond", "Peptide bond", "Phosphodiester bond", "Glycosidic bond"], a: 2 },
+  { q: "Vector is used to", o: ["Cut DNA", "Join DNA", "Transfer DNA into host", "Replicate protein"], a: 2 },
+  { q: "Most commonly used vector is", o: ["Virus", "Plasmid", "Chromosome", "Ribosome"], a: 1 },
+  { q: "Plasmids are", o: ["Linear DNA", "Circular DNA", "RNA molecules", "Proteins"], a: 1 },
+  { q: "Plasmids naturally occur in", o: ["Plants", "Animals", "Bacteria", "Viruses"], a: 2 },
+
+  { q: "Ori site in plasmid is required for", o: ["Protein synthesis", "DNA replication", "Transcription", "Translation"], a: 1 },
+  { q: "Selectable markers help in", o: ["Cutting DNA", "Identifying transformants", "Joining DNA", "Replication"], a: 1 },
+  { q: "Common selectable marker genes provide resistance to", o: ["Virus", "Antibiotics", "Heat", "Cold"], a: 1 },
+  { q: "Example of selectable marker", o: ["lacZ", "ampR", "cry gene", "insulin gene"], a: 1 },
+  { q: "lacZ gene is used for", o: ["Antibiotic resistance", "Blue-white screening", "DNA replication", "Protein digestion"], a: 1 },
+
+  { q: "Transformation refers to", o: ["DNA synthesis", "Uptake of DNA by host cell", "Protein synthesis", "Mutation"], a: 1 },
+  { q: "Most commonly used host in genetic engineering", o: ["Yeast", "E. coli", "Virus", "Plant cell"], a: 1 },
+  { q: "Competent cells are", o: ["Diseased cells", "Cells capable of taking DNA", "Dead cells", "Mutant cells"], a: 1 },
+  { q: "Calcium chloride treatment helps bacteria to", o: ["Divide faster", "Take up DNA", "Kill plasmid", "Produce protein"], a: 1 },
+  { q: "Heat shock treatment is given at", o: ["0°C", "37°C", "42°C", "100°C"], a: 2 },
+
+  { q: "PCR stands for", o: ["Protein Chain Reaction", "Polymerase Chain Reaction", "Polypeptide Chain Reaction", "Primer Chain Reaction"], a: 1 },
+  { q: "PCR was developed by", o: ["Watson", "Crick", "Kary Mullis", "Boyer"], a: 2 },
+  { q: "PCR is used to", o: ["Cut DNA", "Join DNA", "Amplify DNA", "Translate DNA"], a: 2 },
+  { q: "PCR requires", o: ["RNA polymerase", "DNA polymerase", "Ligase", "Restriction enzyme"], a: 1 },
+  { q: "Thermostable DNA polymerase is obtained from", o: ["E. coli", "Bacillus", "Thermus aquaticus", "Yeast"], a: 2 },
+
+  { q: "Taq polymerase works best at", o: ["25°C", "37°C", "72°C", "100°C"], a: 2 },
+  { q: "First step of PCR is", o: ["Annealing", "Extension", "Denaturation", "Ligation"], a: 2 },
+  { q: "Annealing occurs at", o: ["High temperature", "Low temperature", "Moderate temperature", "100°C"], a: 2 },
+  { q: "Primers are", o: ["RNA molecules", "Short DNA sequences", "Proteins", "Enzymes"], a: 1 },
+  { q: "Gel electrophoresis separates DNA based on", o: ["Shape", "Charge", "Size", "Density"], a: 2 },
+
+  { q: "DNA moves towards", o: ["Positive electrode", "Negative electrode", "Both", "Neutral"], a: 0 },
+  { q: "Agarose gel is used because it", o: ["Is protein", "Has pores", "Is liquid", "Is acidic"], a: 1 },
+  { q: "Ethidium bromide is used to", o: ["Cut DNA", "Visualize DNA", "Replicate DNA", "Ligate DNA"], a: 1 },
+  { q: "DNA bands are visualized under", o: ["Infrared light", "UV light", "Sunlight", "X-rays"], a: 1 },
+  { q: "Elution refers to", o: ["Cutting DNA", "Separating DNA fragments", "Removing DNA from gel", "Joining DNA"], a: 2 },
+
+  { q: "Cloning means", o: ["Copying DNA", "Producing identical copies", "Cutting DNA", "Sequencing DNA"], a: 1 },
+  { q: "Recombinant DNA is introduced into host by", o: ["Translation", "Transformation", "Transcription", "Mutation"], a: 1 },
+  { q: "Bioreactors are used for", o: ["DNA cutting", "Large-scale production", "DNA sequencing", "Gel electrophoresis"], a: 1 },
+  { q: "Stirred tank bioreactor provides", o: ["Light", "Temperature control", "Oxygen supply", "All of these"], a: 3 },
+  { q: "Sparger helps in", o: ["Mixing", "Cooling", "Oxygen supply", "Heating"], a: 2 },
+
+  { q: "Downstream processing involves", o: ["DNA isolation", "Product purification", "PCR", "Cloning"], a: 1 },
+  { q: "Which is NOT a vector feature?", o: ["Ori", "Selectable marker", "Restriction site", "Ribosome"], a: 3 },
+  { q: "BamHI is a", o: ["Ligase", "Restriction enzyme", "Polymerase", "Marker"], a: 1 },
+  { q: "Blunt ends are produced by", o: ["Uneven cut", "Even cut", "Palindrome", "Ligase"], a: 1 },
+  { q: "Blunt ends are", o: ["Easier to ligate", "Harder to ligate", "Cannot be ligated", "Not real"], a: 1 },
+
+  { q: "Host cell provides", o: ["Enzymes", "Raw materials", "Energy", "All of these"], a: 3 },
+  { q: "Expression vector is used for", o: ["DNA storage", "Protein production", "DNA cutting", "Replication only"], a: 1 },
+  { q: "First genetically engineered product was", o: ["Vaccine", "Insulin", "Antibiotic", "Growth hormone"], a: 1 },
+  { q: "EcoRI cuts DNA between", o: ["G and A", "A and T", "G and C", "T and A"], a: 0 },
+  { q: "Biotechnology has maximum application in", o: ["Agriculture", "Medicine", "Industry", "All of these"], a: 3 }
+];

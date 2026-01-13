@@ -1,0 +1,85 @@
+const questions = [
+  { q: "Biodiversity refers to", o: ["Variety of ecosystems", "Variety of species", "Variety of genes", "All of these"], a: 3 },
+  { q: "Which level of biodiversity deals with genetic variation?", o: ["Species diversity", "Ecosystem diversity", "Genetic diversity", "Community diversity"], a: 2 },
+  { q: "Species richness means", o: ["Number of individuals", "Number of species", "Biomass", "Population size"], a: 1 },
+  { q: "Which country has the highest biodiversity?", o: ["India", "Brazil", "China", "Australia"], a: 1 },
+  { q: "India is considered a", o: ["Mega-diverse country", "Micro-diverse country", "Low diversity country", "Temperate country"], a: 0 },
+
+  { q: "Number of mega-diverse countries in the world is", o: ["10", "12", "17", "20"], a: 2 },
+  { q: "India has about what percentage of global species diversity?", o: ["2%", "4%", "6%", "8%"], a: 3 },
+  { q: "Latitudinal gradient in biodiversity shows", o: ["Decrease from equator to poles", "Increase from equator to poles", "No change", "Random pattern"], a: 0 },
+  { q: "Highest biodiversity is found in", o: ["Tundra", "Temperate forests", "Tropical rainforests", "Deserts"], a: 2 },
+  { q: "Which hypothesis explains latitudinal gradient?", o: ["Evolutionary hypothesis", "Climatic stability hypothesis", "Productivity hypothesis", "All of these"], a: 3 },
+
+  { q: "Species-area relationship was proposed by", o: ["Darwin", "Wallace", "Humboldt", "Linnaeus"], a: 2 },
+  { q: "Species-area relationship is expressed as", o: ["S = CAᶻ", "N = rK", "dN/dt = rN", "S = K/A"], a: 0 },
+  { q: "On log scale, species-area relationship is", o: ["Straight line", "Curve", "Circle", "Parabola"], a: 0 },
+  { q: "Value of Z for small areas is", o: ["0.1–0.2", "0.6–1.2", "2.0–3.0", "0.01–0.02"], a: 0 },
+  { q: "Value of Z for large areas (continents) is", o: ["0.1–0.2", "0.3–0.4", "0.6–1.2", "1.5–2.0"], a: 2 },
+
+  { q: "Biodiversity loss is fastest in", o: ["Temperate forests", "Tropical rainforests", "Deserts", "Tundra"], a: 1 },
+  { q: "Major cause of biodiversity loss is", o: ["Climate change", "Invasive species", "Habitat loss and fragmentation", "Overexploitation"], a: 2 },
+  { q: "Cutting of forests for agriculture leads to", o: ["Habitat fragmentation", "Species invasion", "Genetic drift", "Speciation"], a: 0 },
+  { q: "Which is an example of invasive alien species in India?", o: ["Neem", "Parthenium", "Teak", "Peepal"], a: 1 },
+  { q: "Nile perch caused extinction of fishes in", o: ["Lake Baikal", "Lake Tanganyika", "Lake Victoria", "Lake Malawi"], a: 2 },
+
+  { q: "Overexploitation led to extinction of", o: ["Dodo", "Passenger pigeon", "Steller’s sea cow", "All of these"], a: 3 },
+  { q: "Co-extinction means", o: ["Extinction of predator", "Extinction of prey", "Extinction of species associated with another", "Mass extinction"], a: 2 },
+  { q: "Example of co-extinction is", o: ["Tiger and deer", "Plant and pollinator", "Lion and zebra", "Hawk and snake"], a: 1 },
+  { q: "IUCN stands for", o: ["International Union for Conservation of Nature", "Indian Union for Conservation of Nature", "International Unit for Conservation of Nature", "Indian Union of Conservation Network"], a: 0 },
+  { q: "IUCN Red Data Book contains data on", o: ["Endangered plants", "Endangered animals", "Threatened species", "All of these"], a: 3 },
+
+  { q: "Which is NOT a threatened category?", o: ["Endangered", "Vulnerable", "Rare", "Normal"], a: 3 },
+  { q: "Biodiversity hotspots are regions with", o: ["High rainfall", "High species richness", "High endemism and high threat", "High population"], a: 2 },
+  { q: "Number of biodiversity hotspots in the world is", o: ["25", "30", "34", "36"], a: 3 },
+  { q: "Hotspots in India include", o: ["Western Ghats", "Eastern Himalayas", "Indo-Burma", "All of these"], a: 3 },
+  { q: "Which hotspot is NOT in India?", o: ["Western Ghats", "Himalayas", "Indo-Burma", "Madagascar"], a: 3 },
+
+  { q: "Endemic species are", o: ["Widely distributed", "Found only in specific region", "Recently evolved", "Migratory"], a: 1 },
+  { q: "Sacred groves are examples of", o: ["In-situ conservation", "Ex-situ conservation", "Species conservation", "Gene banks"], a: 0 },
+  { q: "In-situ conservation means", o: ["Conservation in natural habitat", "Conservation in zoo", "Conservation in botanical garden", "Cryopreservation"], a: 0 },
+  { q: "Ex-situ conservation includes", o: ["National parks", "Wildlife sanctuaries", "Zoological parks", "Biosphere reserves"], a: 2 },
+  { q: "Which is NOT an in-situ conservation method?", o: ["National park", "Wildlife sanctuary", "Botanical garden", "Biosphere reserve"], a: 2 },
+
+  { q: "Biosphere reserves are meant for", o: ["Conservation only", "Research only", "Conservation and sustainable use", "Tourism only"], a: 2 },
+  { q: "Project Tiger was launched in", o: ["1969", "1973", "1980", "1991"], a: 1 },
+  { q: "Which act protects wildlife in India?", o: ["Forest Conservation Act", "Wildlife Protection Act", "Biodiversity Act", "Environmental Act"], a: 1 },
+  { q: "Zoological parks help in", o: ["Education", "Research", "Breeding endangered species", "All of these"], a: 3 },
+  { q: "Botanical gardens conserve", o: ["Animals", "Plants", "Microbes", "Fungi only"], a: 1 },
+
+  { q: "Cryopreservation is done at", o: ["0°C", "–20°C", "–80°C", "–196°C"], a: 3 },
+  { q: "Which is NOT a reason for conserving biodiversity?", o: ["Ethical", "Economic", "Ecological", "Political"], a: 3 },
+  { q: "Aesthetic value refers to", o: ["Economic importance", "Emotional importance", "Beauty of nature", "Medicinal value"], a: 2 },
+  { q: "Ecosystem services include", o: ["Pollination", "Climate regulation", "Soil formation", "All of these"], a: 3 },
+  { q: "Which ecosystem has maximum biodiversity?", o: ["Desert", "Grassland", "Tropical rainforest", "Tundra"], a: 2 },
+
+  { q: "Extinction rate today is", o: ["Same as past", "Lower than normal", "100–1000 times higher", "Zero"], a: 2 },
+  { q: "Which is an example of ex-situ conservation?", o: ["Sacred groves", "National park", "Seed bank", "Wildlife sanctuary"], a: 2 },
+  { q: "Gene banks preserve", o: ["Whole organism", "DNA", "Seeds and germplasm", "Proteins"], a: 2 },
+  { q: "Convention on Biological Diversity was held at", o: ["Kyoto", "Rio de Janeiro", "Paris", "Geneva"], a: 1 },
+  { q: "Year of Convention on Biological Diversity", o: ["1987", "1992", "2000", "2005"], a: 1 },
+
+  { q: "Western Ghats is rich in", o: ["Endemic species", "Desert plants", "Arctic fauna", "Marine algae only"], a: 0 },
+  { q: "Species diversity is highest in", o: ["Temperate regions", "Polar regions", "Tropical regions", "Alpine regions"], a: 2 },
+  { q: "Which of the following is a keystone species?", o: ["Tiger", "Grass", "Bacteria", "Algae"], a: 0 },
+  { q: "Loss of keystone species leads to", o: ["Increase biodiversity", "Ecosystem collapse", "No effect", "Speciation"], a: 1 },
+  { q: "Keystone species regulate", o: ["Producers", "Ecosystem structure", "Climate", "Population size only"], a: 1 },
+
+  { q: "Flagship species are used for", o: ["Scientific research", "Tourism", "Conservation awareness", "Agriculture"], a: 2 },
+  { q: "Tiger is a flagship species for", o: ["Desert", "Forest", "Grassland", "Marine ecosystem"], a: 1 },
+  { q: "Mass extinction refers to", o: ["Extinction of one species", "Extinction of few species", "Large number of species extinction", "Local extinction"], a: 2 },
+  { q: "Current mass extinction is called", o: ["First", "Third", "Sixth", "Seventh"], a: 2 },
+  { q: "The term biodiversity was popularized by", o: ["Darwin", "E.O. Wilson", "Linnaeus", "Wallace"], a: 1 },
+
+  { q: "Ethical argument for biodiversity conservation means", o: ["Human benefit", "Moral duty to protect life", "Economic profit", "Scientific research"], a: 1 },
+  { q: "Which species has the highest threat of extinction?", o: ["Endemic species", "Widely distributed species", "Domestic species", "Weeds"], a: 0 },
+  { q: "Overfishing leads to", o: ["Increased biodiversity", "Decreased biodiversity", "No effect", "Speciation"], a: 1 },
+  { q: "Which is NOT an ecosystem service?", o: ["Oxygen production", "Nutrient cycling", "Pollination", "Industrial production"], a: 3 },
+  { q: "Which organism shows highest species richness?", o: ["Mammals", "Birds", "Insects", "Reptiles"], a: 2 },
+
+  { q: "Most diverse group of organisms is", o: ["Plants", "Animals", "Fungi", "Insects"], a: 3 },
+  { q: "Which forest type has highest endemism in India?", o: ["Himalayan forests", "Western Ghats", "Desert forests", "Mangroves"], a: 1 },
+  { q: "Biodiversity conservation ensures", o: ["Sustainable development", "Ecological balance", "Future resources", "All of these"], a: 3 },
+  { q: "Which law focuses on biodiversity conservation in India?", o: ["Wildlife Protection Act", "Biodiversity Act 2002", "Forest Act", "Environmental Act"], a: 1 },
+  { q: "Loss of biodiversity ultimately affects", o: ["Ecosystems", "Human survival", "Climate", "All of these"], a: 3 }
+];

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinakar's Library</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#f0f9ff,#f0fdf4);
+  min-height:100vh;
+}
+
+/* Header */
+.header{
+  padding:20px;
+  text-align:center;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(0,0,0,0.08);
+}
+
+.header h1{
+  font-size:26px;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight:800;
+}
+
+/* Container */
+.container{
+  padding:20px;
+  max-width:500px;
+  margin:auto;
+}
+
+/* Subject Card */
+.subject-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 20px;
+  margin-bottom:16px;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(12px);
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.subject-card:hover{
+  transform:translateY(-3px);
+}
+
+/* Left content */
+.subject-info{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:#fff;
+}
+
+.physics{ background:#2563eb; }
+.chemistry{ background:#7c3aed; }
+.maths{ background:#18171ad2; }
+.biology{ background:#18b136f0; }
+.english{ background:#ea580c; }
+
+.subject-name{
+  font-size:18px;
+  font-weight:600;
+}
+
+/* Arrow */
+.arrow{
+  font-size:18px;
+  color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Dinakar’s Library</h1>
+</div>
+
+<div class="container">
+
+  <div class="subject-card" onclick="go('physicschapterlist.html')">
+    <div class="subject-info">
+      <div class="icon physics">P</div>
+      <div class="subject-name">Physics</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="subject-card" onclick="go('chemistrychapterlist.html')">
+    <div class="subject-info">
+      <div class="icon chemistry">C</div>
+      <div class="subject-name">Chemistry</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="subject-card" onclick="go('mathschapterlist.html')">
+    <div class="subject-info">
+      <div class="icon maths">M</div>
+      <div class="subject-name">Mathematics</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="subject-card" onclick="go('biologychapterlist.html')">
+    <div class="subject-info">
+      <div class="icon biology">B</div>
+      <div class="subject-name">Biology</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="subject-card" onclick="go('coming soon.html')">
+    <div class="subject-info">
+      <div class="icon english">E</div>
+      <div class="subject-name">English</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+</script>
+
+</body>
+</html>

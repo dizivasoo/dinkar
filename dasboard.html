@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+/* ===== BACKGROUND ===== */
+body{
+  min-height:100vh;
+  background:
+    linear-gradient(135deg,#e0e7ff,#ecfeff,#f0fdf4),
+    url("https://www.transparenttextures.com/patterns/diamond-upholstery.png");
+  padding:16px;
+  color:#0f172a;
+}
+
+/* ===== GLASS CARD ===== */
+.card{
+  background:rgba(255,255,255,0.55);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.35);
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+  animation:fadeUp .6s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+
+/* ===== HEADER ===== */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+.name{
+  font-size:22px;
+  font-weight:900;
+}
+.streak{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#fff;
+  padding:8px 16px;
+  border-radius:20px;
+  font-weight:800;
+  font-size:14px;
+  box-shadow:0 6px 16px rgba(34,197,94,.4);
+}
+
+/* ===== LEVEL ===== */
+.level-box{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.badge{
+  background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  color:#fff;
+  padding:8px 16px;
+  border-radius:18px;
+  font-weight:800;
+  box-shadow:0 6px 18px rgba(99,102,241,.45);
+}
+.xp{
+  font-size:13px;
+  color:#475569;
+  margin-bottom:6px;
+}
+
+/* ===== XP BAR ===== */
+.xp-bar{
+  width:100%;
+  height:12px;
+  background:rgba(255,255,255,0.6);
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:8px;
+}
+.xp-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#22c55e,#4ade80);
+  border-radius:20px;
+  transition:width 1.2s ease;
+}
+
+/* ===== PIE ===== */
+.chart-wrap{
+  max-width:280px;
+  margin:auto;
+}
+
+/* ===== STATS ===== */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.stat{
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(10px);
+  border-radius:20px;
+  padding:16px;
+  text-align:center;
+  box-shadow:0 10px 22px rgba(0,0,0,.08);
+}
+.stat h2{
+  font-size:26px;
+  font-weight:900;
+  margin-bottom:4px;
+}
+.stat p{
+  font-size:13px;
+  color:#64748b;
+}
+
+/* ===== TAGS ===== */
+.tags{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.tag{
+  padding:8px 16px;
+  border-radius:18px;
+  font-size:13px;
+  font-weight:800;
+}
+.strong{
+  background:rgba(34,197,94,.15);
+  color:#166534;
+}
+.weak{
+  background:rgba(239,68,68,.15);
+  color:#991b1b;
+}
+
+/* ===== BUTTON ===== */
+button{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:20px;
+  background:linear-gradient(135deg,#2563eb,#4f46e5);
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+  box-shadow:0 14px 30px rgba(37,99,235,.4);
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="top">
+  <div class="name">👋 Hi, <span id="user">Dinkar</span></div>
+  <div class="streak">🔥 7 Day Streak</div>
+</div>
+
+<!-- LEVEL -->
+<div class="card">
+  <div class="level-box">
+    <div>
+      <div class="xp">Your Level</div>
+      <strong id="level">Level 3</strong>
+    </div>
+    <div class="badge">⭐ Pro Learner</div>
+  </div>
+
+  <!-- XP BAR (NEW, SAFE ADDITION) -->
+  <div class="xp-bar">
+    <div class="xp-fill" id="xpFill"></div>
+  </div>
+</div>
+
+<!-- PIE CHART -->
+<div class="card">
+  <h3 style="margin-bottom:10px">📊 Practice Distribution</h3>
+  <div class="chart-wrap">
+    <canvas id="chart"></canvas>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <h2 id="total">420</h2>
+    <p>Questions Solved</p>
+  </div>
+  <div class="stat">
+    <h2>78%</h2>
+    <p>Accuracy</p>
+  </div>
+</div>
+
+<!-- ANALYSIS -->
+<div class="card">
+  <h3 style="margin-bottom:10px">🧠 Strength Analysis</h3>
+  <div class="tags">
+    <div class="tag strong">Physics – Strong</div>
+    <div class="tag strong">Chemistry – Strong</div>
+    <div class="tag weak">Maths – Weak</div>
+  </div>
+</div>
+
+<button onclick="location.href='analysis.html'">
+  View Detailed Performance →
+</button>
+
+<script>
+/* ===== EXISTING DATA (UNCHANGED) ===== */
+const data = {
+  physics:140,
+  chemistry:120,
+  maths:60,
+  biology:100
+};
+
+const total =
+  data.physics + data.chemistry + data.maths + data.biology;
+
+document.getElementById("total").innerText = total;
+
+/* ===== LEVEL SYSTEM (UNCHANGED) ===== */
+let lvl = 1;
+if(total > 200) lvl = 2;
+if(total > 400) lvl = 3;
+if(total > 700) lvl = 4;
+document.getElementById("level").innerText = "Level " + lvl;
+
+/* ===== XP BAR (NEW, NON-BREAKING) ===== */
+const maxXP = lvl * 300;
+const xpPercent = Math.min((total / maxXP) * 100, 100);
+setTimeout(()=>{
+  document.getElementById("xpFill").style.width = xpPercent + "%";
+},300);
+
+/* ===== DONUT CHART (CONTINUOUS + CENTER TEXT) ===== */
+new Chart(document.getElementById("chart"),{
+  type:"doughnut",   // ✅ changed from pie
+  data:{
+    labels:["Physics","Chemistry","Maths","Biology"],
+    datasets:[{
+      data:[
+        data.physics,
+        data.chemistry,
+        data.maths,
+        data.biology
+      ],
+      backgroundColor:[
+        "#3b82f6",
+        "#22c55e",
+        "#ef4444",
+        "#a855f7"
+      ],
+      borderWidth: 0   // ✅ removes gaps
+    }]
+  },
+  options:{
+    cutout: "70%",     // ✅ donut thickness
+    plugins:{
+      legend:{ position:"bottom" }
+    }
+  },
+  plugins:[{
+    id:"centerText",
+    beforeDraw(chart){
+      const {ctx, width, height} = chart;
+      ctx.restore();
+
+      const text = total + "";
+      ctx.font = "900 28px Segoe UI";
+      ctx.fillStyle = "#0f172a";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, width / 2, height / 2 - 6);
+
+      ctx.font = "14px Segoe UI";
+      ctx.fillStyle = "#64748b";
+      ctx.fillText("Total", width / 2, height / 2 + 20);
+
+      ctx.save();
+    }
+  }]
+});
+
+</script>
+
+</body>
+</html>

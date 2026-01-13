@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths Chapters</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#eef2ff,#ecfeff);
+  min-height:100vh;
+}
+
+/* Header */
+.header{
+  padding:18px;
+  text-align:center;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header h1{
+  font-size:24px;
+  font-weight:800;
+}
+
+/* Container */
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:20px;
+}
+
+/* Chapter Card */
+.chapter{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 18px;
+  margin-bottom:14px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(12px);
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+.chapter:hover{
+  transform:translateY(-2px);
+}
+
+/* Left */
+.chapter-info{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.chapter-no{
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  background:#2a2a2af0;
+  color:#ffffffdf;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:14px;
+}
+
+.chapter-name{
+  font-size:16px;
+  font-weight:600;
+}
+
+/* Arrow */
+.arrow{
+  font-size:18px;
+  color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1> Maths – Class 12</h1>
+</div>
+
+<div class="container">
+  
+   <div class="chapter" onclick="location.href='3333.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">1</div>
+      <div class="chapter-name">Relations - Fuctions</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+  
+    <div class="chapter" onclick="location.href='3334.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">2</div>
+      <div class="chapter-name">Inverse Trignometric</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+<div class="chapter" onclick="location.href='coming soon.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">3</div>
+      <div class="chapter-name">Algebra</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="chapter" onclick="location.href='coming soon.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">4</div>
+      <div class="chapter-name">Diffential calculus</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+ <div class="chapter" onclick="location.href='coming soon.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">5</div>
+      <div class="chapter-name"> Application of Derivatives</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+<div class="chapter" onclick="location.href='3338.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">6</div>
+      <div class="chapter-name"> Integrals </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+<div class="chapter" onclick="location.href='coming soon.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">7</div>
+      <div class="chapter-name">Application of Integrals</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+<div class="chapter" onclick="location.href='3340.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">8</div>
+      <div class="chapter-name">Diffential Equation</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+<div class="chapter" onclick="location.href='3341.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">9</div>
+      <div class="chapter-name"> Vector</div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+ 
+<div class="chapter" onclick="location.href='3342.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">10</div>
+      <div class="chapter-name">3D Geometry </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+ 
+<div class="chapter" onclick="location.href='3343.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">11</div>
+      <div class="chapter-name"> Linear Programming </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+ 
+<div class="chapter" onclick="location.href='3344.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">12</div>
+      <div class="chapter-name"> Probablity  </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+<div class="chapter" onclick="location.href='3348.html'">
+    <div class="chapter-info">
+      <div class="chapter-no">13</div>
+      <div class="chapter-name">  Differentiation </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+</div>
+
+<script>
+function openChapter(chapter){
+  // Example redirection
+  window.location.href = "chapter" + chapter + ".html";
+}
+</script>
+
+</body>
+</html>

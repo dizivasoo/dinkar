@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dinkar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --jee:#2563eb;
+  --neet:#16a34a;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  background:
+    linear-gradient(135deg,#dbdbdb,#f3f3f3),
+    url("C:\Users\MY-PC\Downloads\Ocean blue - blue gradient.jfif");
+  color:#000000;
+}
+
+/* ===== GLASS EFFECT ===== */
+.glass{
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.4);
+  border-radius:20px;
+}
+
+/* ===== HEADER ===== */
+header{
+  padding:16px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header h1{
+  font-size:22px;
+  font-weight:900;
+}
+header button{
+  padding:8px 16px;
+  border:none;
+  background:#6366f1;
+  color:#fff;
+  border-radius:8px;
+}
+
+
+
+/* ===== HERO ===== */
+.hero{
+  margin:20px;
+  padding:30px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:30px;
+  align-items:center;
+}
+.hero-text{
+  flex:1;
+}
+.hero-text h2{
+  font-size:clamp(26px,6vw,40px);
+  margin-bottom:12px;
+}
+.hero-text p{
+  font-size:16px;
+  color:#555;
+  margin-bottom:20px;
+}
+.hero-text button{
+  padding:12px 24px;
+  background:#6366f1;
+  border:none;
+  color:#fff;
+  border-radius:10px;
+  font-size:16px;
+}
+.hero-img{
+  flex:1;
+  min-height:220px;
+  background:url("https://illustrations.popsy.co/indigo/student-exam.svg") center/contain no-repeat;
+}
+
+/* ===== EXAM TOGGLE BOX ===== */
+.exam-box{
+  margin:30px auto;
+  width:90%;
+  height:150px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:24px;
+  cursor:pointer;
+  transition:.3s;
+}
+.exam-box span{
+  font-size:clamp(40px,10vw,70px);
+  font-weight:900;
+  color:white;
+}
+.neet{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.jee{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+
+/* ===== SUBJECTS ===== */
+.subjects{
+  margin:20px;
+  padding:30px;
+}
+.subjects h3{
+  font-size:28px;
+  text-align:center;
+  margin-bottom:25px;
+}
+.subject-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:16px;
+}
+.subject{
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+  font-weight:700;
+  background:#6366f1;
+  cursor:pointer;
+  transition:.3s;
+}
+.subject:hover{
+  transform:translateY(-4px);
+}
+
+/* ===== FEATURES ===== */
+.features{
+  margin:20px;
+  padding:30px;
+}
+.features h3{
+  text-align:center;
+  font-size:28px;
+  margin-bottom:30px;
+}
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.feature{
+  padding:24px;
+  border-radius:20px;
+  text-align:center;
+}
+.feature img{
+  width:80px;
+  margin-bottom:16px;
+}
+.feature p{
+  color:#555;
+}
+
+/* ===== HOW IT WORKS ===== */
+.steps{
+  margin:20px;
+  padding:30px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:30px;
+  align-items:center;
+}
+.steps-img{
+  flex:1;
+  min-height:220px;
+  background:url("C:\Users\MY-PC\Downloads\Exams Customizable Cartoon Illustrations _ Bro Style.jfif") center/contain no-repeat;
+}
+.steps-text{
+  flex:1;
+}
+.steps-text h3{
+  font-size:30px;
+  margin-bottom:16px;
+}
+.step{
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+/* ===== CTA ===== */
+.cta{
+  margin:20px;
+  padding:30px;
+  text-align:center;
+  background:linear-gradient(135deg,#7c3aed,#6366f1);
+  color:white;
+}
+.cta h3{
+  font-size:32px;
+  margin-bottom:16px;
+}
+.cta button{
+  padding:14px 28px;
+  border:none;
+  border-radius:12px;
+  background:white;
+  color:#6366f1;
+  font-weight:800;
+}
+
+
+/* ===== FOOTER ===== */
+footer{
+  margin:20px;
+  padding:20px;
+  text-align:center;
+  color:#666;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .hero,.steps{
+    flex-direction:column;
+    text-align:center;
+  }
+}
+</style>
+</head>
+
+<body>
+<header class="glass">
+  <h1>dinkar</h1>
+  <button onclick="go('coming soon.html')">Login</button>
+</header>
+
+<section class="hero glass">
+  <div class="hero-text">
+    <h2>India’s Smart Practice Platform</h2>
+    <p>NEET & JEE focused mock tests, analysis & rank improvement.</p>
+    <button onclick="go('dinkar library.html')">sure karte hai!</button>
+  </div>
+  <div class="hero-img"></div>
+</section>
+
+<!-- EXAM TOGGLE -->
+<div id="examBox" class="exam-box neet">
+  <span id="examText">NEET</span>
+</div>
+
+<!-- SUBJECTS -->
+<section class="subjects glass">
+<h3>SUBJECTS</h3>
+<div class="subject-grid">
+  <div class="subject" onclick="goSubject('coming soon.html')">Physics</div>
+  <div class="subject" onclick="goSubject('chemistry')">Chemistry</div>
+  <div class="subject" onclick="goSubject('maths')">Maths</div>
+  <div class="subject" onclick="goSubject('biology')">Biology</div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section class="features glass">
+<h3>Why Dinkar?</h3>
+<div class="feature-grid">
+  <div class="feature glass">
+    <img src="C:\Users\MY-PC\Downloads\Exams Customizable Cartoon Illustrations _ Bro Style.jfif">
+    <p>Real exam-level questions</p>
+  </div>
+  <div class="feature glass">
+    <img src="C:\Users\MY-PC\Downloads\download (2).jfif">
+    <p>Instant performance analysis</p>
+  </div>
+  <div class="feature glass">
+    <img src="C:\Users\MY-PC\Downloads\illustration of man with smartphone.jfif">
+    <p>Mobile-first practice</p>
+  </div>
+</div>
+</section>
+
+<!-- STEPS -->
+<section class="steps glass">
+  <div class="steps-img">  <div class="hero-img">
+
+</div>
+  </div>      
+  <div class="steps-text">    
+    <h3>How it works</h3>
+    <div class="step">1️⃣ Select NEET or JEE</div>
+    <div class="step">2️⃣ Choose subject & practice</div>
+    <div class="step">3️⃣ Track score & improve</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta glass">
+  <h3>Start Your Preparation Today</h3>
+  <button onclick="go('dinkar library.html')">Join Free</button>
+</section>
+
+<footer class="glass">
+  © 2026 Mockshala · Built for Indian students 🇮🇳
+</footer>
+
+<script>
+let exam="NEET";
+const box=document.getElementById("examBox");
+const text=document.getElementById("examText");
+
+box.onclick=()=>{
+  if(exam==="NEET"){
+    exam="JEE";
+    text.innerText="JEE";
+    box.className="exam-box jee";
+  }else{
+    exam="NEET";
+    text.innerText="NEET";
+    box.className="exam-box neet";
+  }
+};
+
+function go(page){
+  window.location.href=page;
+}
+function goSubject(sub){
+  window.location.href=exam.toLowerCase()+"-"+sub+".html";
+}
+</script>
+
+</body>
+</html>
