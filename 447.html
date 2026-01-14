@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> reproductive health </title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+body{
+  background:linear-gradient(135deg,#eef2ff,#ecfeff);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ================= TEST BOX ================= */
+.test-box{
+  width:95%;
+  max-width:520px;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(12px);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+.header h2{
+  font-size:22px;
+  font-weight:800;
+}
+
+.progress{
+  font-size:14px;
+  color:#555;
+  margin-top:6px;
+}
+
+.question{
+  font-size:18px;
+  font-weight:600;
+  margin:20px 0;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.option{
+  padding:14px;
+  border-radius:12px;
+  background:#f1f5f9;
+  border:1px solid #e5e7eb;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.option:hover{
+  background:#e0e7ff;
+}
+
+.option.correct{
+  background:#dcfce7;
+  border-color:#22c55e;
+  color:#166534;
+  font-weight:600;
+}
+
+.option.wrong{
+  background:#fee2e2;
+  border-color:#ef4444;
+  color:#7f1d1d;
+  font-weight:600;
+}
+
+.btn{
+  margin-top:20px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#2563eb;
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+/* ================= RESULT SECTION ================= */
+.result-card{
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(16px);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.15);
+  text-align:center;
+}
+
+.result-card h2{
+  font-size:24px;
+  font-weight:900;
+}
+
+/* Donut Chart */
+.donut{
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  margin:22px auto;
+  background:
+    conic-gradient(
+      #22c55e 0deg,
+      #22c55e var(--correct),
+      #ef4444 var(--correct),
+      #ef4444 360deg
+    );
+  position:relative;
+  animation:fillDonut 1.2s ease-out;
+}
+
+.donut::after{
+  content:'';
+  position:absolute;
+  inset:26px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.95);
+}
+
+@keyframes fillDonut{
+  from{
+    background:conic-gradient(#e5e7eb 0deg,#e5e7eb 360deg);
+  }
+
+}
+/* Animated Donut */
+.donut{
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  margin:22px auto;
+  position:relative;
+
+  --angle: 0deg;
+
+  background:conic-gradient(
+    #22c55e 0deg,
+    #22c55e var(--angle),
+    #ef4444 var(--angle),
+    #ef4444 360deg
+  );
+
+  animation: fillDonut 1.4s ease-out forwards;
+}
+
+@keyframes fillDonut{
+  from{
+    --angle: 0deg;
+  }
+  to{
+    --angle: var(--target);
+  }
+}
+
+.donut::after{
+  content:'';
+  position:absolute;
+  inset:26px;
+  background:rgba(255,255,255,0.95);
+  border-radius:50%;
+}
+
+
+@keyframes donutFill{
+  from{
+    background:conic-gradient(#e5e7eb 0deg,#e5e7eb 360deg);
+  }
+  to{
+    background:conic-gradient(
+      #22c55e 0deg,
+      #22c55e var(--correct),
+      #ef4444 var(--correct),
+      #ef4444 360deg
+    );
+  }
+}
+
+.donut::after{
+  content:'';
+  position:absolute;
+  inset:26px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.95);
+}
+
+/* Retake Button */
+.retake-btn{
+  margin-top:22px;
+  padding:14px;
+  width:100%;
+  border:none;
+  border-radius:14px;
+  background:#2563eb;
+  color:#fff;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.retake-btn:hover{
+  background:#1d4ed8;
+}
+
+/* Score */
+.result-score{
+  font-size:22px;
+  font-weight:800;
+  margin-top:8px;
+}
+
+.result-stats{
+  display:flex;
+  justify-content:space-between;
+  margin-top:18px;
+  padding:0 20px;
+  font-size:15px;
+  font-weight:700;
+}
+.result-actions{
+  display:flex;
+  gap:12px;
+  margin-top:18px;
+}
+
+.btn.secondary{
+  background:rgba(255,255,255,0.35);
+  color:#1f2937;
+  border:1px solid rgba(255,255,255,0.5);
+  backdrop-filter:blur(10px);
+}
+
+.btn.secondary:hover{
+  background:rgba(255,255,255,0.55);
+}
+
+.correct-text{color:#16a34a}
+.wrong-text{color:#dc2626}
+</style>
+</head>
+
+<body>
+
+<div class="test-box">
+  <div class="header">
+    <h2>Dinkar Test</h2>
+    <div class="progress" id="progress">Question 1 / 10</div>
+  </div>
+
+  <div class="question" id="questionText"></div>
+  <div class="options" id="optionsBox"></div>
+
+  <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>
+    Next Question
+  </button>
+</div>
+
+<!-- Sounds -->
+<audio id="correctSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3">
+</audio>
+
+<audio id="wrongSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3">
+</audio>
+
+<script>
+/* QUESTIONS */
+const questions = [
+{q:"Reproductive health includes",o:["Physical","Mental","Social","All"],a:3},
+{q:"Contraceptive pill contains",o:["Estrogen","Progesterone","Both","None"],a:2},
+{q:"Copper-T is a",o:["Barrier","IUD","Hormonal","Natural method"],a:1},
+{q:"STD spreads by",o:["Touch","Air","Sexual contact","Food"],a:2},
+{q:"AIDS is caused by",o:["Bacteria","Virus","Fungus","Protozoa"],a:1},
+{q:"Vasectomy is done in",o:["Female","Male","Both","None"],a:1},
+{q:"Tubectomy is done in",o:["Male","Female","Both","None"],a:1},
+{q:"IVF stands for",o:["In vitro fertilization","Internal fertilization","Instant fertilization","None"],a:0},
+{q:"Medical termination of pregnancy is called",o:["Fertilization","Abortion","Implantation","Gestation"],a:1},
+{q:"Awareness helps to reduce",o:["Birth rate","STD","Population","All"],a:3}
+];
+
+
+let index = 0;
+let score = 0;
+let answered = false;
+
+const qText = document.getElementById("questionText");
+const optionsBox = document.getElementById("optionsBox");
+const nextBtn = document.getElementById("nextBtn");
+const progress = document.getElementById("progress");
+
+const correctSound = document.getElementById("correctSound");
+const wrongSound = document.getElementById("wrongSound");
+
+function loadQuestion(){
+  answered = false;
+  nextBtn.disabled = true;
+  optionsBox.innerHTML = "";
+
+  const q = questions[index];
+  qText.textContent = q.q;
+  progress.textContent = `Question ${index+1} / 10`;
+
+  q.o.forEach((opt,i)=>{
+    const div = document.createElement("div");
+    div.className = "option";
+    div.textContent = opt;
+
+    div.onclick = () => {
+      if(answered) return;
+      answered = true;
+
+      if(i === q.a){
+        div.classList.add("correct");
+        correctSound.currentTime = 0;
+        correctSound.play();
+        score++;
+      } else {
+        div.classList.add("wrong");
+        wrongSound.currentTime = 0;
+        wrongSound.play();
+        optionsBox.children[q.a].classList.add("correct");
+      }
+      nextBtn.disabled = false;
+    };
+
+    optionsBox.appendChild(div);
+  });
+}
+function goDashboard(){
+  window.location.href = "dashboard.html";
+}
+
+function nextQuestion(){
+  index++;
+  if(index < questions.length){
+    loadQuestion();
+  } else {
+    showResult();
+  }
+}
+function retakeTest(){
+  index = 0;
+  score = 0;
+  loadQuestion();
+
+  document.querySelector(".test-box").innerHTML = `
+    <div class="header">
+      <h2>Dinkar Test</h2>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="question" id="questionText"></div>
+    <div class="options" id="optionsBox"></div>
+
+    <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>
+      Next Question
+    </button>
+  `;
+
+  // Rebind elements
+  qText = document.getElementById("questionText");
+  optionsBox = document.getElementById("optionsBox");
+  nextBtn = document.getElementById("nextBtn");
+  progress = document.getElementById("progress");
+
+  loadQuestion();
+}
+
+/* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
+function showResult(){
+  const correct = score;
+  const wrong = 10 - score;
+  const degree = (correct / 10) * 360;
+localStorage.getItem("biology_chapter_4")
+  document.querySelector(".test-box").innerHTML = `
+    <div class="result-card">
+      <h2>Test Completed 🎉</h2>
+
+      <div class="donut" style="--target:${degree}deg"></div>
+
+
+      <div class="result-score">
+        Score: ${correct} / 10
+      </div>
+
+      <div class="result-stats">
+        <div class="correct-text">✔ Correct: ${correct}</div>
+        <div class="wrong-text">✖ Wrong: ${wrong}</div>
+      </div>
+
+  
+<div class="result-actions">
+  <button class="btn secondary" onclick="goDashboard()">Dashboard</button>
+  <button class="btn" onclick="location.reload()">Retake</button>
+</div>
+
+    </div>
+  `;
+}
+
+
+loadQuestion();
+</script>
+
+</body>
+</html>

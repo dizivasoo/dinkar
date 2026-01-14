@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physics – Class 12 | Dinkar</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#dbeafe,#e0f2fe),
+    linear-gradient(135deg,#eff6ff,#ecfeff);
+  display:flex;
+  justify-content:center;
+}
+
+.page{
+  width:100%;
+  max-width:540px;
+  padding:20px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(14px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.12);
+  margin-bottom:24px;
+}
+
+.header h1{
+  font-size:26px;
+  font-weight:900;
+  color:#1e3a8a;
+}
+
+.header p{
+  font-size:14px;
+  color:#334155;
+  margin-top:6px;
+}
+
+/* CHAPTER CARD */
+.chapter{
+  padding:16px;
+  margin-bottom:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(12px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.10);
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.chapter:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,0.9);
+}
+
+/* TOP ROW */
+.chapter-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.no{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+
+.name{
+  font-size:16px;
+  font-weight:600;
+  color:#0f172a;
+}
+
+.arrow{
+  font-size:22px;
+  color:#475569;
+}
+
+/* PROGRESS */
+.progress-wrap{
+  margin-top:10px;
+}
+
+.progress-bar{
+  height:8px;
+  border-radius:10px;
+  background:#e5e7eb;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+  transition:width 0.6s ease;
+}
+
+.progress-text{
+  font-size:12px;
+  margin-top:4px;
+  color:#475569;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <h1>Physics – Class 12</h1>
+    <p>Your chapter-wise progress</p>
+  </div>
+
+  <!-- CHAPTER LIST -->
+  <div id="chapterList"></div>
+
+</div>
+
+<script>
+/* CHAPTER NAMES */
+const chapters = [
+  "Electric Charges and Fields",
+  "Electrostatic Potential and Capacitance",
+  "Current Electricity",
+  "Moving Charges and Magnetism",
+  "Magnetism and Matter",
+  "Electromagnetic Induction",
+  "Alternating Current",
+  "Electromagnetic Waves",
+  "Ray Optics and Optical Instruments",
+  "Wave Optics",
+  "Dual Nature of Radiation and Matter",
+  "Atoms",
+  "Nuclei",
+  "Semiconductor Electronics",
+  "Communication Systems"
+];
+
+/* LINKED TEST FILES */
+const chapterFiles = [
+  "111.html",
+  "112.html",
+  "113.html",
+  "114.html",
+  "115.html",
+  "116.html",
+  "117.html",
+  "118.html",
+  "119.html",
+  "120.html",
+  "121.html",
+  "122.html",
+  "123.html",
+  "124.html",
+  "125.html"
+];
+
+const TOTAL = 10;
+const list = document.getElementById("chapterList");
+
+/* CREATE CHAPTER CARDS */
+chapters.forEach((name, i) => {
+
+  const score = Number(localStorage.getItem(`physics_chapter_${i+1}`)) || 0;
+  const percent = Math.round((score / TOTAL) * 100);
+
+  const card = document.createElement("div");
+  card.className = "chapter";
+
+  /* LINK TO TEST PAGE */
+  card.addEventListener("click", () => {
+    window.location.href = chapterFiles[i];
+  });
+
+  card.innerHTML = `
+    <div class="chapter-top">
+      <div class="left">
+        <div class="no">${i + 1}</div>
+        <div class="name">${name}</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${percent}%"></div>
+      </div>
+      <div class="progress-text">
+        ${score}/${TOTAL} questions completed (${percent}%)
+      </div>
+    </div>
+  `;
+
+  list.appendChild(card);
+});
+</script>
+
+</body>
+</html>

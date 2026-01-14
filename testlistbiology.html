@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biology – Class 12 | Dinkar</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#fce7f3,#fdf2f8),
+    linear-gradient(135deg,#ecfeff,#fff1f2);
+  display:flex;
+  justify-content:center;
+}
+
+.page{
+  width:100%;
+  max-width:540px;
+  padding:20px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(14px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.12);
+  margin-bottom:24px;
+}
+
+.header h1{
+  font-size:26px;
+  font-weight:900;
+  color:#831843;
+}
+
+.header p{
+  font-size:14px;
+  color:#9d174d;
+  margin-top:6px;
+}
+
+/* CHAPTER CARD */
+.chapter{
+  padding:16px;
+  margin-bottom:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(12px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.10);
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.chapter:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,0.9);
+}
+
+/* TOP ROW */
+.chapter-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.no{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ec4899,#db2777);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+
+.name{
+  font-size:16px;
+  font-weight:600;
+  color:#4a044e;
+}
+
+.arrow{
+  font-size:22px;
+  color:#9d174d;
+}
+
+/* PROGRESS */
+.progress-wrap{
+  margin-top:10px;
+}
+
+.progress-bar{
+  height:8px;
+  border-radius:10px;
+  background:#fbcfe8;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,#ec4899,#be185d);
+  transition:width 0.6s ease;
+}
+
+.progress-text{
+  font-size:12px;
+  margin-top:4px;
+  color:#831843;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <h1>Biology – Class 12</h1>
+    <p>Your chapter-wise progress</p>
+  </div>
+
+  <!-- CHAPTER LIST -->
+  <div id="chapterList"></div>
+
+</div>
+
+<script>
+/* BIOLOGY CHAPTERS */
+const chapters = [
+  "Reproduction in Organisms",
+  "Sexual Reproduction in Flowering Plants",
+  "Human Reproduction",
+  "Reproductive Health",
+  "Principles of Inheritance and Variation",
+  "Molecular Basis of Inheritance",
+  "Evolution",
+  "Human Health and Disease",
+  "Strategies for Enhancement in Food Production",
+  "Microbes in Human Welfare",
+  "Biotechnology – Principles and Processes",
+  "Biotechnology and its Applications",
+  "Organisms and Populations",
+  "Ecosystem",
+  "Biodiversity and Conservation",
+  "Environmental Issues"
+];
+
+/* CHAPTER FILES (SEQUENTIAL) */
+const chapterFiles = [
+  "444.html",
+  "445.html",
+  "446.html",
+  "447.html",
+  "448.html",
+  "449.html",
+  "450.html",
+  "451.html",
+  "452.html",
+  "453.html",
+  "454.html",
+  "455.html",
+  "456.html",
+  "457.html",
+  "458.html",
+  "459.html"
+];
+
+const TOTAL = 10;
+const list = document.getElementById("chapterList");
+
+/* CREATE CARDS */
+chapters.forEach((name, i) => {
+
+  const score = Number(localStorage.getItem(`biology_chapter_${i+1}`)) || 0;
+  const percent = Math.round((score / TOTAL) * 100);
+
+  const card = document.createElement("div");
+  card.className = "chapter";
+
+  card.addEventListener("click", () => {
+    window.location.href = chapterFiles[i];
+  });
+
+  card.innerHTML = `
+    <div class="chapter-top">
+      <div class="left">
+        <div class="no">${i + 1}</div>
+        <div class="name">${name}</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${percent}%"></div>
+      </div>
+      <div class="progress-text">
+        ${score}/${TOTAL} questions completed (${percent}%)
+      </div>
+    </div>
+  `;
+
+  list.appendChild(card);
+});
+</script>
+
+</body>
+</html>
