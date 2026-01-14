@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <button id="installBtn" style="
+  display:none;
+  padding:12px 20px;
+  border:none;
+  border-radius:12px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+">
+  📲 Install App
+</button>
+<link rel="manifest" href="manifest.json">
+
 <meta charset="UTF-8">
 <title>Dinkar</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -328,8 +342,41 @@ function go(page){
 function goSubject(sub){
   window.location.href=exam.toLowerCase()+"-"+sub+".html";
 }
+  
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = "block";
+});
+
+installBtn.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+  const choiceResult = await deferredPrompt.userChoice;
+
+  if (choiceResult.outcome === "accepted") {
+    console.log("App installed");
+  }
+
+  deferredPrompt = null;
+  installBtn.style.display = "none";
+});
+self.addEventListener("install", () => {
+  console.log("Service Worker Installed");
+});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+
+
 </script>
 
 </body>
 </html>
+
 
