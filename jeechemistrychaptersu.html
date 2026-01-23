@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE chemistry – Dinkar</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,system-ui,sans-serif}
+
+body{
+  background:linear-gradient(135deg,#020617,#020617);
+  color:#fff;
+  min-height:100vh;
+}
+
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:16px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:18px;
+  font-size:22px;
+  font-weight:900;
+  color:#38bdf8;
+}
+
+/* CHAPTER LIST */
+.chapter{
+  padding:18px;
+  margin-bottom:14px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  border:1px solid #1e293b;
+  cursor:pointer;
+  transition:.2s;
+}
+.chapter:hover{transform:scale(1.02)}
+.chapter h3{font-size:16px;font-weight:700}
+
+/* TEST BOX */
+.test-box{
+  background:#020617;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid #1e293b;
+}
+
+.test-header{
+  text-align:center;
+  margin-bottom:12px;
+}
+.test-header h2{
+  font-size:18px;
+  color:#38bdf8;
+}
+.progress{
+  font-size:13px;
+  opacity:.8;
+  margin-top:4px;
+}
+
+.question{
+  margin:20px 0;
+  font-size:17px;
+  font-weight:600;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.option{
+  padding:14px;
+  border-radius:14px;
+  background:#020617;
+  border:1px solid #334155;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.option.correct{
+  background:#052e16;
+  border-color:#22c55e;
+  color:#22c55e;
+}
+
+.option.wrong{
+  background:#450a0a;
+  border-color:#ef4444;
+  color:#ef4444;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:16px;
+  border:none;
+  border-radius:14px;
+  background:#38bdf8;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+
+  <div class="header">JEE Chemistry – Dinkar</div>
+
+  <div id="chapterList"></div>
+
+</div>
+
+<!-- Sounds -->
+<audio id="correctSound" src="successed-295058.mp3"></audio>
+<audio id="wrongSound" src="error-010-206498.mp3"></audio>
+
+<script>
+/* ---------------- CHAPTERS ---------------- */
+const chapters = [
+  "some basic concepts in chemistry",
+"Atomic Structure",
+"Chemical Bonding and Molecular Structure",
+"Chemical Thermodynamics",
+"Solutions",
+"Equilibrium",
+"Redox Reactions and Electrochemistry",
+"Chemical Kinetics",
+"p-block Elements",
+"d-block and f-block Elements",
+"Coordination Compounds",
+"Purification and Characterisation of Organic Compounds",
+"Some Basic Principles of Organic Chemistry",
+"Hydrocarbons",
+"Organic Compounds Containing Halogens",
+"Organic Compounds Containing Oxygen",
+"Organic Compounds Containing Nitrogen",
+"Biomolecules",
+
+];
+/* --------- SAMPLE VERY HARD QUESTIONS (PER CHAPTER) ---------
+You can add up to 20 per chapter (structure stays same) */
+
+const questionBank = {
+ "some basic concepts in chemistry": [
+    {q: "The number of moles of water in 488 g of BaCl₂.2H₂O is (Ba=137, Cl=35.5, O=16, H=1)", o: ["2", "4", "1", "3"], a: 1},
+    {q: "Which of the following contains the maximum number of atoms?", o: ["1g of Au(s)", "1g of Na(s)", "1g of Li(s)", "1g of Cl₂(g)"], a: 2},
+    {q: "The molarity of pure water is", o: ["18 M", "1 M", "55.5 M", "100 M"], a: 2},
+    {q: "An organic compound contains 40% C, 6.7% H and 53.3% O. Its empirical formula is", o: ["CH₂O", "CHO", "C₂H₂O", "CH₃O"], a: 0},
+    {q: "If 0.5 moles of BaCl₂ is mixed with 0.2 moles of Na₃PO₄, the maximum moles of Ba₃(PO₄)₂ formed is", o: ["0.7", "0.5", "0.2", "0.1"], a: 3},
+    {q: "The number of significant figures in 0.0006032 is", o: ["7", "4", "5", "8"], a: 1},
+    {q: "10 g of hydrogen and 64 g of oxygen were exploded in a vessel. The amount of water produced is", o: ["3 mol", "4 mol", "1 mol", "5 mol"], a: 1},
+    {q: "The normality of 0.3 M phosphorous acid (H₃PO₃) is", o: ["0.3 N", "0.6 N", "0.9 N", "0.1 N"], a: 1},
+    {q: "The density of 3M solution of NaCl is 1.25 g/mL. The molality of the solution is", o: ["2.79 m", "3.00 m", "1.25 m", "0.85 m"], a: 0},
+    {q: "How many moles of Mg₃(PO₄)₂ will contain 0.25 mole of oxygen atoms?", o: ["0.02", "3.125×10⁻²", "1.25×10⁻²", "2.5×10⁻²"], a: 1},
+    {q: "The number of molecules in 16g of methane (CH₄) is", o: ["3.0×10²³", "6.022×10²³", "1.2×10²⁴", "6.022×10²²"], a: 1},
+    {q: "6.022 × 10²⁰ molecules of urea are present in 100 mL of its solution. The concentration is", o: ["0.01 M", "0.001 M", "0.1 M", "0.02 M"], a: 0},
+    {q: "Volume of 0.1 M NaOH required to neutralize 10 mL of 0.1 M H₂SO₄ is", o: ["10 mL", "5 mL", "20 mL", "40 mL"], a: 2},
+    {q: "The ratio of mass of one atom of C-12 to one atom of S-32 is", o: ["1:2", "3:8", "1:3", "3:5"], a: 1},
+    {q: "A mixture of 2.3 g formic acid and 4.5 g oxalic acid is treated with conc. H₂SO₄. Remaining gas weight after passing through KOH is", o: ["1.4 g", "3.0 g", "2.8 g", "4.4 g"], a: 2},
+    {q: "The mass of 11.2 L of ammonia gas at STP is", o: ["17 g", "8.5 g", "34 g", "20 g"], a: 1},
+    {q: "0.5 moles of H₂ gas and 1.0 moles of He gas are mixed. The total number of atoms is", o: ["1.5 Na", "2.0 Na", "2.5 Na", "3.0 Na"], a: 1},
+    {q: "The percentage of nitrogen in urea (NH₂CONH₂) is approx", o: ["38%", "46%", "70%", "28%"], a: 1},
+    {q: "Which law states that 'equal volumes of all gases under same conditions contain same number of molecules'?", o: ["Dalton's Law", "Avogadro's Law", "Gay-Lussac's Law", "Boyle's Law"], a: 1},
+    {q: "The mole fraction of glucose in 10% (w/w) aqueous solution is", o: ["0.01", "0.02", "0.1", "0.011"], a: 3}
+  ],
+
+"Atomic Structure": [
+    {q: "The radius of which of the following orbits is same as that of the first Bohr orbit of hydrogen atom?", o: ["He+ (n=2)", "Li2+ (n=2)", "Li2+ (n=3)", "Be3+ (n=2)"], a: 3},
+    {q: "The number of radial nodes in 3p orbital is", o: ["1", "2", "0", "3"], a: 0},
+    {q: "Which electronic transition in Hydrogen spectrum gives the longest wavelength?", o: ["n=2 to n=1", "n=3 to n=2", "n=4 to n=3", "n=5 to n=4"], a: 3},
+    {q: "The uncertainty in momentum of an electron is 1 × 10⁻⁵ kg m/s. The uncertainty in its position will be", o: ["5.27 × 10⁻³⁰ m", "1.05 × 10⁻²⁶ m", "5.27 × 10⁻²⁹ m", "3.25 × 10⁻³¹ m"], a: 0},
+    {q: "The maximum number of electrons in a subshell is given by the expression", o: ["4l + 2", "2l + 1", "2n²", "n + l"], a: 0},
+    {q: "Which of the following sets of quantum numbers is not possible?", o: ["n=3, l=2, m=0", "n=2, l=2, m=1", "n=4, l=0, m=0", "n=3, l=2, m=-2"], a: 1},
+    {q: "The energy of an electron in the second Bohr orbit of Hydrogen atom is", o: ["-13.6 eV", "-3.4 eV", "-1.51 eV", "-0.85 eV"], a: 1},
+    {q: "Which series of hydrogen spectrum lies in the visible region?", o: ["Lyman", "Balmer", "Paschen", "Brackett"], a: 1},
+    {q: "The total number of orbitals associated with the third shell (n=3) is", o: ["3", "6", "9", "27"], a: 2},
+    {q: "Orientation of an atomic orbital is governed by", o: ["Principal Q.N.", "Azimuthal Q.N.", "Magnetic Q.N.", "Spin Q.N."], a: 2},
+    {q: "The wavelength of a matter wave is independent of", o: ["Mass", "Velocity", "Momentum", "Charge"], a: 3},
+    {q: "According to Aufbau principle, which orbital is filled after 4p?", o: ["4d", "4f", "5s", "5p"], a: 2},
+    {q: "The velocity of an electron in the first orbit of H-atom is v. Its velocity in the second orbit will be", o: ["v/2", "2v", "v/4", "4v"], a: 0},
+    {q: "The total number of angular nodes for a 4d orbital is", o: ["1", "2", "3", "0"], a: 1},
+    {q: "The ratio of the energy of a photon of 2000 Å wavelength to that of 4000 Å radiation is", o: ["1:4", "4:1", "1:2", "2:1"], a: 3},
+    {q: "Which atom has the electronic configuration 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d⁵?", o: ["Cr", "Mn", "Cu", "Fe"], a: 0},
+    {q: "The number of unpaired electrons in Fe3+ (Z=26) is", o: ["4", "5", "6", "3"], a: 1},
+    {q: "An orbital with l=0 is symmetric about the nucleus. It is called", o: ["p-orbital", "s-orbital", "d-orbital", "f-orbital"], a: 1},
+    {q: "The spin magnetic moment of Co2+ (Z=27) is approx", o: ["3.87 BM", "4.90 BM", "5.92 BM", "1.73 BM"], a: 0},
+    {q: "The de Broglie wavelength of a ball of mass 0.1 kg moving with 10 m/s is", o: ["6.6 × 10⁻³⁴ m", "6.6 × 10⁻³⁵ m", "6.6 × 10⁻³³ m", "6.6 × 10⁻³⁶ m"], a: 1}
+],
+
+ "Chemical Bonding and Molecular Structure": [
+    {q: "Which of the following molecules has the maximum dipole moment?", o: ["NF₃", "NH₃", "BF₃", "ClO₂"], a: 1},
+    {q: "The hybridisation of atomic orbitals of Nitrogen in NO₂⁺, NO₃⁻ and NH₄⁺ respectively are", o: ["sp, sp³, sp²", "sp, sp², sp³", "sp², sp, sp³", "sp², sp³, sp"], a: 1},
+    {q: "According to MOT, which of the following species does not exist?", o: ["He₂⁺", "Be₂", "B₂", "Li₂"], a: 1},
+    {q: "The shape of XeF₄ according to VSEPR theory is", o: ["Tetrahedral", "Square Planar", "Pyramidal", "See-saw"], a: 1},
+    {q: "In which of the following pairs, both species have the same bond order?", o: ["N₂, O₂", "O₂⁻, B₂", "N₂⁺, O₂⁺", "CN⁻, NO⁺"], a: 3},
+    {q: "Which of the following has a pπ-dπ bonding?", o: ["NO₃⁻", "SO₃²⁻", "BO₃³⁻", "CO₃²⁻"], a: 1},
+    {q: "The bond angle is maximum in", o: ["NH₃", "NH₄⁺", "PCL₃", "SCl₂"], a: 1},
+    {q: "Which of the following molecules is paramagnetic?", o: ["N₂", "O₂", "C₂", "Li₂"], a: 1},
+    {q: "The nodal plane in the π-bond of ethene is located in", o: ["The molecular plane", "A plane parallel to molecular plane", "A plane perpendicular to molecular plane", "None"], a: 0},
+    {q: "Which of the following has the shortest bond length?", o: ["O₂", "O₂⁺", "O₂⁻", "O₂²⁻"], a: 1},
+    {q: "The number of lone pairs of electrons on the central I-atom in I₃⁻ is", o: ["2", "3", "4", "1"], a: 1},
+    {q: "During the change of O₂ to O₂⁻, the incoming electron goes into which orbital?", o: ["π2pₓ", "π*2pₓ", "σ2pᶻ", "σ*2pᶻ"], a: 1},
+    {q: "Which of the following is isostructural with CO₂?", o: ["HgCl₂", "SnCl₂", "C₂H₄", "NO₂"], a: 0},
+    {q: "Which of the following contains both covalent and ionic bonds?", o: ["CCl₄", "CaCl₂", "NH₄Cl", "H₂O"], a: 2},
+    {q: "The species having pyramidal shape is", o: ["SO₃", "BrF₃", "SiO₃²⁻", "OSF₂"], a: 3},
+    {q: "Which one of the following compounds shows the presence of intramolecular hydrogen bond?", o: ["H₂O₂", "HCN", "Cellulose", "Concentrated acetic acid"], a: 2},
+    {q: "The correct order of bond dissociation enthalpy of halogen molecules is", o: ["F₂ > Cl₂ > Br₂ > I₂", "Cl₂ > Br₂ > F₂ > I₂", "Cl₂ > F₂ > Br₂ > I₂", "I₂ > Br₂ > Cl₂ > F₂"], a: 1},
+    {q: "The hybridisation of 'C' in diamond, graphite and acetylene are respectively", o: ["sp³, sp, sp²", "sp³, sp², sp", "sp², sp³, sp", "sp, sp², sp³"], a: 1},
+    {q: "The types of hybrid orbitals of nitrogen in NO₂⁺ and NO₂⁻ are respectively", o: ["sp, sp²", "sp, sp³", "sp², sp", "sp², sp³"], a: 0},
+    {q: "What is the formal charge on the central oxygen atom in O₃?", o: ["0", "+1", "-1", "+2"], a: 1}
+  ],
+
+"Chemical Thermodynamics": [
+    {q: "For an isothermal expansion of an ideal gas into vacuum, the work done (w) and heat change (q) are", o: ["w = 0, q > 0", "w > 0, q = 0", "w = 0, q = 0", "w < 0, q < 0"], a: 2},
+    {q: "Which of the following is an intensive property?", o: ["Enthalpy", "Entropy", "Temperature", "Volume"], a: 2},
+    {q: "The condition for a reaction to be spontaneous at all temperatures is", o: ["ΔH < 0, ΔS > 0", "ΔH > 0, ΔS < 0", "ΔH < 0, ΔS < 0", "ΔH > 0, ΔS > 0"], a: 0},
+    {q: "For the reaction C(s) + O₂(g) → CO₂(g), which is true?", o: ["ΔH = ΔU", "ΔH > ΔU", "ΔH < ΔU", "ΔH = 0"], a: 0},
+    {q: "The entropy of the universe is", o: ["Constant", "Decreasing", "Increasing", "Zero"], a: 2},
+    {q: "In an adiabatic process, no exchange of _______ takes place between system and surroundings.", o: ["Matter", "Energy", "Heat", "Work"], a: 2},
+    {q: "The heat of neutralization of a strong acid and a strong base is always", o: ["-57.1 kJ/mol", "0 kJ/mol", "+57.1 kJ/mol", "Variable"], a: 0},
+    {q: "A process is called reversible when", o: ["P_ext > P_int", "P_ext < P_int", "P_ext is infinitesimally different from P_int", "P_ext = 0"], a: 2},
+    {q: "The bond enthalpy of H-H bond is the energy required to", o: ["Break 1 mole of H₂ molecules into atoms", "Form 1 mole of H₂ molecules", "Break 1 molecule of H₂", "Vaporize 1 mole of H₂"], a: 0},
+    {q: "Which of the following is a state function?", o: ["Heat", "Work", "Enthalpy", "Distance"], a: 2},
+    {q: "The relationship between Cp and Cv for an ideal gas is", o: ["Cp = Cv", "Cv - Cp = R", "Cp - Cv = R", "Cp/Cv = R"], a: 2},
+    {q: "For a cyclic process, the change in internal energy (ΔU) is", o: ["Positive", "Negative", "Zero", "Infinity"], a: 2},
+    {q: "Standard enthalpy of formation of O₂(g) at 298 K is", o: ["100 kJ/mol", "Zero", "-285 kJ/mol", "435 kJ/mol"], a: 1},
+    {q: "The Third Law of Thermodynamics helps in determining", o: ["Standard Enthalpy", "Standard Free Energy", "Absolute Entropy", "Heat of combustion"], a: 2},
+    {q: "If ΔG is negative, the reaction is", o: ["Spontaneous", "Non-spontaneous", "At equilibrium", "Endothermic"], a: 0},
+    {q: "The work done during expansion of a gas from V1 to V2 against a constant external pressure P is", o: ["P(V2 - V1)", "-P(V2 - V1)", "P(V1/V2)", "Zero"], a: 1},
+    {q: "Hess's Law is based on", o: ["First Law of Thermodynamics", "Second Law of Thermodynamics", "Third Law of Thermodynamics", "Law of Conservation of Mass"], a: 0},
+    {q: "During the expansion of an ideal gas under adiabatic conditions, the temperature", o: ["Increases", "Decreases", "Remains constant", "First increases then decreases"], a: 1},
+    {q: "For the reaction N₂(g) + 3H₂(g) → 2NH₃(g), the value of Δn_g is", o: ["-2", "2", "4", "0"], a: 0},
+    {q: "The criterion for equilibrium at constant T and P is", o: ["ΔU = 0", "ΔS = 0", "ΔG = 0", "ΔH = 0"], a: 2}
+  ],
+
+
+  "Solutions": [
+    {q: "The molality of a solution containing 36 g of glucose (molar mass = 180) in 500 g of water is", o: ["0.2 m", "0.4 m", "0.8 m", "1.0 m"], a: 1},
+    {q: "Which of the following is a colligative property?", o: ["Surface tension", "Viscosity", "Osmotic pressure", "Refractive index"], a: 2},
+    {q: "According to Raoult's law, the relative lowering of vapour pressure for a solution is equal to", o: ["Mole fraction of solvent", "Mole fraction of solute", "Molality", "Molarity"], a: 1},
+    {q: "An ideal solution is formed when its components", o: ["Have zero heat of mixing", "Have zero volume change", "Obey Raoult's law", "All of these"], a: 3},
+    {q: "The Van't Hoff factor (i) for a dilute solution of K₂SO₄ is", o: ["1", "2", "3", "4"], a: 2},
+    {q: "Which of the following aqueous solutions will have the highest boiling point?", o: ["1.0 M Glucose", "1.0 M NaCl", "1.0 M CaCl₂", "1.0 M FeCl₃"], a: 3},
+    {q: "The osmotic pressure of a solution can be increased by", o: ["Increasing temperature", "Decreasing temperature", "Increasing volume", "Decreasing concentration"], a: 0},
+    {q: "Azeotropic mixtures are", o: ["Constant boiling mixtures", "Mixtures of two solids", "Always ideal solutions", "Separable by fractional distillation"], a: 0},
+    {q: "If the molarity of a solution is doubled, its osmotic pressure will", o: ["Remain same", "Be halved", "Be doubled", "Increase four times"], a: 2},
+    {q: "The units of ebullioscopic constant (Kb) are", o: ["K kg mol⁻¹", "mol kg K⁻¹", "K mol kg⁻¹", "kg mol⁻¹ K"], a: 0},
+    {q: "For a non-ideal solution showing positive deviation from Raoult's law", o: ["ΔH_mix > 0", "ΔV_mix > 0", "Intermolecular forces A-B < A-A", "All of these"], a: 3},
+    {q: "At a given temperature, isosmotic solutions have the same", o: ["Molarity", "Molality", "Mole fraction", "Density"], a: 0},
+    {q: "The value of Henry's constant (Kh) is", o: ["Greater for gases with higher solubility", "Greater for gases with lower solubility", "Constant for all gases", "Independent of temperature"], a: 1},
+    {q: "Which of the following concentration terms is independent of temperature?", o: ["Molarity", "Normality", "Molality", "Formality"], a: 2},
+    {q: "During the process of osmosis, the solvent moves from", o: ["Higher concentration to lower", "Lower concentration to higher", "Dilute to concentrated", "Both B and C"], a: 3},
+    {q: "The freezing point of a 0.1 M sugar solution as compared to 0.1 M MgCl₂ solution is", o: ["Higher", "Lower", "Same", "Double"], a: 0},
+    {q: "Camphor is often used in molecular mass determination (Rast method) because it has a high", o: ["Boiling point", "K_f value", "K_b value", "Vapour pressure"], a: 1},
+    {q: "The vapour pressure of a pure liquid A is 40 mmHg. In a solution with B, the mole fraction of A is 0.5. The partial pressure of A is", o: ["40 mmHg", "80 mmHg", "20 mmHg", "10 mmHg"], a: 2},
+    {q: "The Van't Hoff factor (i) for a compound which undergoes dimerization in benzene is", o: ["i = 1", "i = 2", "i = 0.5", "i = 1.5"], a: 2},
+    {q: "Reverse osmosis occurs when the applied pressure is", o: ["Equal to osmotic pressure", "Less than osmotic pressure", "Greater than osmotic pressure", "Zero"], a: 2}
+  ],
+
+  "Equilibrium": [
+    {q: "For the reaction PCl₅(g) ⇌ PCl₃(g) + Cl₂(g), the relationship between Kp and Kc is", o: ["Kp = Kc", "Kp = Kc(RT)", "Kp = Kc(RT)⁻¹", "Kp = Kc(RT)²"], a: 1},
+    {q: "In which of the following equilibrium, Kp and Kc are equal?", o: ["N₂ + 3H₂ ⇌ 2NH₃", "2SO₂ + O₂ ⇌ 2SO₃", "H₂ + I₂ ⇌ 2HI", "PCl₅ ⇌ PCl₃ + Cl₂"], a: 2},
+    {q: "According to Le Chatelier's principle, adding heat to an endothermic reaction will shift the equilibrium to", o: ["The left", "The right", "No change", "First right then left"], a: 1},
+    {q: "The pH of a 10⁻⁸ M HCl solution is", o: ["8", "7", "Between 6 and 7", "Between 7 and 8"], a: 2},
+    {q: "Which of the following acts as a polyprotic Lewis acid?", o: ["BF₃", "CO₂", "SiF₄", "NH₃"], a: 2},
+    {q: "The solubility product of AgCl is 1.0 x 10⁻¹⁰. Its solubility in 0.1 M NaCl solution will be", o: ["10⁻⁵ M", "10⁻⁹ M", "10⁻¹⁰ M", "10⁻⁴ M"], a: 1},
+    {q: "A buffer solution can be prepared by mixing", o: ["CH₃COOH + CH₃COONa", "HCl + NaCl", "NH₄OH + NH₄Cl", "Both A and C"], a: 3},
+    {q: "The conjugate base of H₂PO₄⁻ is", o: ["H₃PO₄", "HPO₄²⁻", "PO₄³⁻", "H₂PO₄"], a: 1},
+    {q: "If the concentration of OH⁻ ions in a solution is 10⁻⁴ M, the pH of the solution is", o: ["4", "10", "7", "14"], a: 1},
+    {q: "For the reaction N₂(g) + O₂(g) ⇌ 2NO(g), the value of Kc is 4 x 10⁻⁴. The Kc for NO(g) ⇌ 1/2 N₂(g) + 1/2 O₂(g) is", o: ["50", "25", "2 x 10⁻²", "400"], a: 0},
+    {q: "Which of the following salts will undergo anionic hydrolysis?", o: ["NaCl", "NH₄Cl", "CH₃COONa", "CuSO₄"], a: 2},
+    {q: "In the reaction I₂ + I⁻ ⇌ I₃⁻, the Lewis acid is", o: ["I₂", "I⁻", "I₃⁻", "None"], a: 0},
+    {q: "The pH of a 0.1 M solution of a weak acid (Ka = 10⁻⁵) is", o: ["3", "5", "1", "6"], a: 0},
+    {q: "Which gas is more soluble in water at high pressure according to Henry's law?", o: ["He", "O₂", "NH₃", "All equally"], a: 2},
+    {q: "The degree of dissociation of a weak electrolyte increases with", o: ["Increase in concentration", "Decrease in temperature", "Dilution", "Decrease in pressure"], a: 2},
+    {q: "What is the correct expression for Ksp of Zr₃(PO₄)₄?", o: ["6912 s⁷", "108 s⁵", "144 s⁷", "s⁷"], a: 0},
+    {q: "The addition of an inert gas at constant volume to an equilibrium system", o: ["Shifts it to the right", "Shifts it to the left", "Does not affect equilibrium", "Depends on Δn"], a: 2},
+    {q: "For a reaction to be at equilibrium, the Gibbs free energy change (ΔG) must be", o: ["Positive", "Negative", "Zero", "Maximum"], a: 2},
+    {q: "Human blood is a buffer solution whose pH is maintained at", o: ["7.0", "7.4", "6.8", "8.2"], a: 1},
+    {q: "Which of the following is not a characteristic of chemical equilibrium?", o: ["Rate of forward = Rate of reverse", "Catalyst changes equilibrium constant", "It is dynamic", "Measurable properties become constant"], a: 1}
+  ],
+
+"Redox Reactions and Electrochemistry" : [
+    {q: "The oxidation state of Sulfur in the tetrathionate ion (S₄O₆²⁻) is", o: ["+2", "+2.5", "+4", "+6"], a: 1},
+    {q: "In the balancing of: MnO₄⁻ + C₂O₄²⁻ + H⁺ → Mn²⁺ + CO₂ + H₂O, the coefficient of H⁺ is", o: ["8", "16", "5", "10"], a: 1},
+    {q: "The standard cell potential (E°cell) for the Daniell cell (Zn-Cu) is", o: ["0.42 V", "1.10 V", "-1.10 V", "2.0 V"], a: 1},
+    {q: "Which of the following is the strongest reducing agent based on E° values: Zn (-0.76V), Cu (+0.34V), Ag (+0.80V), Li (-3.05V)?", o: ["Zn", "Cu", "Ag", "Li"], a: 3},
+    {q: "The amount of electricity required to deposit 1 mole of Aluminum from Al³⁺ solution is", o: ["1 Faraday", "2 Faradays", "3 Faradays", "0.5 Faradays"], a: 2},
+    {q: "According to Kohlrausch's law, the limiting molar conductivity of BaCl₂ is given by", o: ["λ°Ba²⁺ + λ°Cl⁻", "λ°Ba²⁺ + 2λ°Cl⁻", "2λ°Ba²⁺ + λ°Cl⁻", "λ°Ba²⁺ / 2 + λ°Cl⁻"], a: 1},
+    {q: "In the Nernst equation, the slope of the plot E_cell vs log Q at 298K is", o: ["0.0591/n", "-0.0591/n", "0.0591", "n/0.0591"], a: 1},
+    {q: "The oxidation number of Oxygen in H₂O₂ and OF₂ are respectively", o: ["-1, -2", "-1, +2", "-2, +2", "-2, -2"], a: 1},
+    {q: "Which of the following will happen if a copper rod is placed in an aqueous solution of ZnSO₄?", o: ["Copper will dissolve", "Zinc will be deposited", "No reaction will occur", "Copper will be oxidized"], a: 2},
+    {q: "Molar conductivity of an electrolyte increases with", o: ["Increase in concentration", "Decrease in concentration (dilution)", "Decrease in temperature", "Increase in pressure"], a: 1},
+    {q: "The device that converts chemical energy of a spontaneous redox reaction into electrical energy is", o: ["Electrolytic cell", "Galvanic cell", "Voltameter", "Calorimeter"], a: 1},
+    {q: "What is the oxidation state of Fe in [Fe(H₂O)₅NO]SO₄?", o: ["+1", "+2", "+3", "0"], a: 0},
+    {q: "The unit of specific conductivity (κ) is", o: ["S cm⁻¹", "S cm² mol⁻¹", "S cm² eq⁻¹", "Ohm cm"], a: 0},
+    {q: "The product obtained at the anode during the electrolysis of dilute H₂SO₄ using Pt electrodes is", o: ["H₂", "O₂", "SO₂", "S"], a: 1},
+    {q: "A reaction is spontaneous if the cell potential (E_cell) is", o: ["Zero", "Negative", "Positive", "Infinity"], a: 2},
+    {q: "The oxidation state of Nitrogen in Hydrazoic acid (HN₃) is", o: ["-3", "+3", "-1/3", "+1/3"], a: 2},
+    {q: "Which law states that the mass of substance deposited at an electrode is proportional to the charge passed?", o: ["Raoult's Law", "Faraday's First Law", "Faraday's Second Law", "Ohm's Law"], a: 1},
+    {q: "In a salt bridge, KCl is used because", o: ["It is a strong electrolyte", "Mobility of K⁺ and Cl⁻ are nearly equal", "It is cheap", "It is highly soluble"], a: 1},
+    {q: "The standard hydrogen electrode (SHE) is assigned a potential of", o: ["1.0 V", "0.5 V", "0.0 V", "-1.0 V"], a: 2},
+    {q: "Corrosion of iron is essentially a", o: ["Neutralization reaction", "Redox reaction", "Adsorption process", "Decomposition reaction"], a: 1}
+  ],
+  
+"Chemical Kinetics": [
+    {q: "For a reaction A + 2B → C, the rate law is given by Rate = k[A][B]. What is the overall order of the reaction?", o: ["1", "2", "3", "0"], a: 1},
+    {q: "The unit of rate constant for a zero-order reaction is", o: ["s⁻¹", "mol L⁻¹ s⁻¹", "L mol⁻¹ s⁻¹", "L² mol⁻² s⁻¹"], a: 1},
+    {q: "If the concentration of the reactant is doubled and the half-life remains the same, the order of reaction is", o: ["0", "1", "2", "3"], a: 1},
+    {q: "The activation energy of a reaction can be determined from the slope of which plot?", o: ["log k vs T", "log k vs 1/T", "k vs T", "log k vs 1/log T"], a: 1},
+    {q: "For a first-order reaction, the time required for 99.9% completion is approximately how many times the half-life?", o: ["2 times", "10 times", "5 times", "100 times"], a: 1},
+    {q: "A catalyst increases the rate of reaction by", o: ["Increasing activation energy", "Decreasing activation energy", "Increasing enthalpy", "Decreasing enthalpy"], a: 1},
+    {q: "Which of the following does not affect the rate constant of a reaction?", o: ["Temperature", "Catalyst", "Concentration of reactants", "Activation energy"], a: 2},
+    {q: "The rate of a chemical reaction doubles for every 10°C rise in temperature. This is known as", o: ["Collision frequency", "Temperature coefficient", "Activation factor", "Threshold energy"], a: 1},
+    {q: "Molecularity of a reaction can never be", o: ["1", "2", "3", "0"], a: 3},
+    {q: "For the reaction 2A + B → Products, if B is taken in large excess, the reaction follows", o: ["Second order", "Pseudo-first order", "Zero order", "Third order"], a: 1},
+    {q: "The half-life period of a zero-order reaction is proportional to", o: ["Initial concentration [A]₀", "1/[A]₀", "[A]₀²", "Independent of [A]₀"], a: 0},
+    {q: "In the Arrhenius equation k = Ae^(-Ea/RT), 'A' represents", o: ["Activation energy", "Frequency factor", "Gas constant", "Rate of reaction"], a: 1},
+    {q: "The rate-determining step of a complex reaction is the", o: ["Fastest step", "Slowest step", "Last step", "Intermediate step"], a: 1},
+    {q: "For a reaction A → B, the rate constant is 0.693 x 10⁻³ s⁻¹. The half-life is", o: ["10 s", "100 s", "1000 s", "693 s"], a: 2},
+    {q: "The decomposition of NH₃ on a hot platinum surface is an example of", o: ["First order", "Second order", "Zero order", "Fractional order"], a: 2},
+    {q: "Radioactive decay follows which order kinetics?", o: ["Zero order", "First order", "Second order", "Third order"], a: 1},
+    {q: "According to collision theory, the rate of reaction depends on", o: ["Collision frequency", "Effective collisions", "Proper orientation", "All of the above"], a: 3},
+    {q: "If Ea for the forward reaction is 50 kJ and ΔH is -20 kJ, the Ea for the backward reaction is", o: ["30 kJ", "70 kJ", "20 kJ", "50 kJ"], a: 1},
+    {q: "The plot of log(a-x) vs time for a first-order reaction is a straight line with slope", o: ["-k/2.303", "k/2.303", "-k", "2.303/k"], a: 0},
+    {q: "Which order reaction has a rate independent of the concentration of reactants?", o: ["First", "Second", "Zero", "Third"], a: 2}
+  ],
+
+  "p-block Elements" : [
+    {q: "The correct order of catenation tendency in group 14 elements is", o: ["C >> Si > Ge ≈ Sn", "C > Si > Ge > Sn", "Si > C > Ge > Sn", "Ge > Sn > Si > C"], a: 0},
+    {q: "In which of the following, the 'Inert Pair Effect' is most prominent?", o: ["Al", "Ga", "In", "Tl"], a: 3},
+    {q: "Boric acid (H₃BO₃) is a Monobasic acid because it", o: ["Contains one replaceable H", "Gives H⁺ in water", "Accepts OH⁻ from water", "Acts as a proton donor"], a: 2},
+    {q: "Which of the following is known as Inorganic Benzene?", o: ["B₃N₃H₆", "B₂H₆", "B₃O₃H₆", "C₆H₆"], a: 0},
+    {q: "The shape of XeF₂ and XeF₄ are respectively", o: ["Linear, Square Planar", "Linear, Tetrahedral", "Bent, Square Planar", "Bent, Tetrahedral"], a: 0},
+    {q: "Which element of group 15 forms the most stable +5 oxidation state?", o: ["Bi", "Sb", "As", "P"], a: 3},
+    {q: "The structure of Diborane (B₂H₆) contains", o: ["Four 2c-2e bonds", "Two 3c-2e bonds", "Both A and B", "None"], a: 2},
+    {q: "Nitrogen forms N₂ gas while Phosphorus forms P₄ solid because", o: ["N can form pπ-pπ bonds", "P cannot form pπ-pπ bonds", "N is more electronegative", "All of these"], a: 3},
+    {q: "The strongest oxidizing agent among the halogens is", o: ["F₂", "Cl₂", "Br₂", "I₂"], a: 0},
+    {q: "Which of the following noble gases is used in magnetic resonance imaging (MRI)?", o: ["He", "Ne", "Ar", "Xe"], a: 0},
+    {q: "The hybridization of Xe in XeF₆ is", o: ["sp³d²", "sp³d³", "d²sp³", "sp³"], a: 1},
+    {q: "Which silicate unit is present in pyroxenes?", o: ["SiO₄⁴⁻", "Si₂O₇⁶⁻", "(SiO₃²⁻)n", "Si₄O₁₁⁶⁻"], a: 2},
+    {q: "White phosphorus is stored under", o: ["Kerosene", "Water", "Alcohol", "Ether"], a: 1},
+    {q: "The basicity of Orthophosphoric acid (H₃PO₄) is", o: ["1", "2", "3", "4"], a: 2},
+    {q: "Which gas is used in light bulbs to provide an inert atmosphere?", o: ["He", "Ar", "Ne", "Rn"], a: 1},
+    {q: "The correct order of Boiling Point for Hydrides of Group 16 is", o: ["H₂O > H₂Te > H₂Se > H₂S", "H₂O > H₂S > H₂Se > H₂Te", "H₂Te > H₂Se > H₂S > H₂O", "H₂S > H₂Se > H₂Te > H₂O"], a: 0},
+    {q: "Brown ring test is used for the detection of", o: ["Nitrite", "Nitrate", "Ammonia", "Nitrogen oxide"], a: 1},
+    {q: "Which of the following phosphorus allotropes is most reactive?", o: ["Red Phosphorus", "White Phosphorus", "Black Phosphorus", "Violet Phosphorus"], a: 1},
+    {q: "The anhydride of Nitric acid (HNO₃) is", o: ["N₂O₃", "N₂O₄", "N₂O₅", "NO₂"], a: 2},
+    {q: "Bleaching action of Chlorine is due to", o: ["Reduction", "Oxidation", "Hydrogenation", "Dehydration"], a: 1}
+  ],
+
+
+"d-block and f-block Elements"  : [
+    {q: "Which of the following transition metal ions is colorless in aqueous solution?", o: ["Ti⁴⁺", "V²⁺", "Fe³⁺", "Mn²⁺"], a: 0},
+    {q: "The 'Spin-only' magnetic moment of Ni²⁺ (Z=28) is approximately", o: ["1.73 BM", "2.83 BM", "3.87 BM", "4.90 BM"], a: 1},
+    {q: "Lanthanoid contraction is caused by", o: ["Poor shielding of 4f electrons", "Effective shielding of 4f electrons", "Poor shielding of 5d electrons", "Effective shielding of 5d electrons"], a: 0},
+    {q: "Which of the following is a 'coinage' metal?", o: ["Zn", "Fe", "Cu", "Sn"], a: 2},
+    {q: "The highest oxidation state exhibited by actinoids is", o: ["+4", "+5", "+6", "+7"], a: 3},
+    {q: "Which of the following oxides is amphoteric?", o: ["V₂O₃", "CrO", "Cr₂O₃", "V₂O₅"], a: 3},
+    {q: "The number of unpaired electrons in gaseous Gd³⁺ (Z=64) is", o: ["5", "6", "7", "8"], a: 2},
+    {q: "Potassium dichromate (K₂Cr₂O₇) acts as a strong oxidizing agent in", o: ["Acidic medium", "Basic medium", "Neutral medium", "All media"], a: 0},
+    {q: "Interstitial compounds are formed when small atoms like H, C, or N are trapped inside", o: ["Crystal lattices of metals", "Empty d-orbitals", "Molecular orbitals", "Ionic bonds"], a: 0},
+    {q: "The color of KMnO₄ is due to", o: ["d-d transition", "Charge transfer spectra", "f-f transition", "Polarization"], a: 1},
+    {q: "Which element of the 3d series has the highest melting point?", o: ["Fe", "Mn", "Cr", "Cu"], a: 2},
+    {q: "The most common oxidation state of lanthanoids is", o: ["+2", "+3", "+4", "+5"], a: 1},
+    {q: "Which of the following is not a transition element?", o: ["Sc", "Ti", "Zn", "Fe"], a: 2},
+    {q: "In the chromate ion (CrO₄²⁻), the hybridization of Cr is", o: ["sp³", "dsp²", "sp³d", "d³s"], a: 3},
+    {q: "Mischmetal is an alloy consisting mainly of", o: ["Lanthanoid metals", "Actinoid metals", "Transition metals", "Alkali metals"], a: 0},
+    {q: "The catalyst used in the Haber process for ammonia synthesis is", o: ["V₂O₅", "Fe + Mo", "Ni", "Pt"], a: 1},
+    {q: "Which ion has the maximum magnetic moment?", o: ["Mn²⁺", "Fe²⁺", "Ti²⁺", "Cr²⁺"], a: 0},
+    {q: "Transition elements form complex compounds primarily due to", o: ["Small size", "High nuclear charge", "Availability of empty d-orbitals", "All of these"], a: 3},
+    {q: "The structure of the Manganate ion (MnO₄²⁻) is", o: ["Tetrahedral", "Square Planar", "Octahedral", "Pyramidal"], a: 0},
+    {q: "Zn, Cd, and Hg are often not considered 'true' transition elements because", o: ["They are soft", "They have low melting points", "They have full d-orbitals", "They are diamagnetic"], a: 2}
+  ],
+
+
+"Coordination Compounds" : [
+    {q: "According to Werner's theory, the secondary valency of a central metal atom corresponds to its", o: ["Oxidation state", "Coordination number", "Magnetic moment", "Charge"], a: 1},
+    {q: "The IUPAC name of [Co(NH₃)₅Cl]Cl₂ is", o: ["Pentaamminechloridocobalt(III) chloride", "Pentaamminechlorocobalt(II) chloride", "Chloropentaamminecobalt(III) chloride", "Pentaamminedichloridocobalt(III)"], a: 0},
+    {q: "Which of the following complexes can exhibit geometrical isomerism?", o: ["[Pt(NH₃)₃Cl]⁺", "[Pt(NH₃)Cl₃]⁻", "[Pt(NH₃)₂Cl₂]", "[Co(NH₃)₆]³⁺"], a: 2},
+    {q: "The number of ions produced by the complex [Co(NH₃)₆]Cl₃ in an aqueous solution is", o: ["6", "4", "3", "2"], a: 1},
+    {q: "Which of the following ligands is an example of an ambidentate ligand?", o: ["Ethylene diamine", "Oxalate", "SCN⁻", "EDTA"], a: 2},
+    {q: "The hybridization of the central metal ion in [Fe(CN)₆]³⁻ is", o: ["sp³d²", "d²sp³", "dsp²", "sp³"], a: 1},
+    {q: "The crystal field stabilization energy (CFSE) for a high-spin d⁴ octahedral complex is", o: ["-0.6 Δo", "-1.6 Δo", "-0.4 Δo", "-0.8 Δo"], a: 0},
+    {q: "Which of the following complexes is paramagnetic?", o: ["[Ni(CO)₄]", "[Ni(CN)₄]²⁻", "[NiCl₄]²⁻", "[Co(NH₃)₆]³⁺"], a: 2},
+    {q: "Facial and Meridional isomerism is associated with which type of complex?", o: ["[MA₃B₃]", "[MA₄B₂]", "[MA₅B]", "[M(AA)₂]"], a: 0},
+    {q: "The coordination number and oxidation state of Cr in K₃[Cr(C₂O₄)₃] are respectively", o: ["3, +3", "6, +3", "6, +6", "3, 0"], a: 1},
+    {q: "Which of the following ligands has the highest field strength in the spectrochemical series?", o: ["F⁻", "H₂O", "NH₃", "CN⁻"], a: 3},
+    {q: "The correct name for the linkage isomer of [Co(NH₃)₅(NO₂)]Cl₂ is", o: ["Pentaamminenitritocobalt(III) chloride", "Pentaamminenitrocobalt(III) chloride", "Pentaamminenitritocobalt(II) chloride", "None of these"], a: 0},
+    {q: "Synergic bonding is observed in", o: ["Metal carbonyls", "Amine complexes", "Aquo complexes", "Oxalate complexes"], a: 0},
+    {q: "The 'Spin-only' magnetic moment of [MnBr₄]²⁻ is 5.9 BM. The geometry of the complex is", o: ["Square planar", "Tetrahedral", "Octahedral", "Pentagonal bipyramidal"], a: 1},
+    {q: "Which complex is used as an anti-cancer agent?", o: ["Wilkinson's catalyst", "Cis-platin", "Zeise's salt", "EDTA"], a: 1},
+    {q: "In an octahedral field, the d-orbitals split into two sets called", o: ["t2g and eg", "eg and t1g", "sp and d", "t2 and e"], a: 0},
+    {q: "The number of donor atoms in EDTA⁴⁻ is", o: ["2", "4", "6", "8"], a: 2},
+    {q: "Which of the following is an outer orbital complex?", o: ["[Co(NH₃)₆]³⁺", "[Mn(CN)₆]³⁻", "[Fe(H₂O)₆]³⁺", "[Cr(NH₃)₆]³⁺"], a: 2},
+    {q: "The geometry of [Ni(CN)₄]²⁻ is", o: ["Tetrahedral", "Square Planar", "Octahedral", "Pyramidal"], a: 1},
+    {q: "Optical isomerism is most commonly shown by which type of coordination compounds?", o: ["Square planar", "Tetrahedral", "Octahedral with chelating ligands", "Linear"], a: 2}
+  ],
+
+"Purification and Characterisation of Organic Compounds"  : [
+    {q: "The best and latest technique for isolation, purification and separation of organic compounds is", o: ["Crystallisation", "Distillation", "Sublimation", "Chromatography"], a: 3},
+    {q: "In Lassaigne's test, the organic compound is fused with a small piece of Na metal to", o: ["Increase reactivity", "Convert covalent bonds to ionic bonds", "Decrease melting point", "Act as a catalyst"], a: 1},
+    {q: "A Prussian blue color in Lassaigne's test indicates the presence of", o: ["Nitrogen", "Sulfur", "Chlorine", "Oxygen"], a: 0},
+    {q: "Which of the following compounds will NOT give a positive Lassaigne's test for nitrogen?", o: ["Aniline", "Glycine", "Hydrazine (NH₂NH₂)", "Urea"], a: 2},
+    {q: "Steam distillation is used for the purification of substances which are", o: ["Steam volatile and water immiscible", "Steam volatile and water miscible", "Non-volatile and water immiscible", "Non-volatile and water miscible"], a: 0},
+    {q: "Glycerol is purified by", o: ["Simple distillation", "Vacuum distillation", "Steam distillation", "Fractional distillation"], a: 1},
+    {q: "In the estimation of nitrogen by Kjeldahl's method, the nitrogen present is converted to", o: ["N₂ gas", "NH₃ gas", "(NH₄)₂SO₄", "NO₂"], a: 2},
+    {q: "Which method is used to estimate the percentage of nitrogen in an organic compound by collecting N₂ gas?", o: ["Kjeldahl's method", "Dumas method", "Carius method", "Leibig's method"], a: 1},
+    {q: "Carius method is used for the quantitative estimation of", o: ["Nitrogen", "Carbon and Hydrogen", "Halogens and Sulfur", "Oxygen"], a: 2},
+    {q: "In chromatography, the 'Rf' value stands for", o: ["Rate of flow", "Retardation factor", "Relative fraction", "Reaction factor"], a: 1},
+    {q: "Beilstein test is used for the detection of", o: ["Nitrogen", "Halogens", "Sulfur", "Carbon"], a: 1},
+    {q: "If an organic compound contains both N and S, Lassaigne's test gives a blood-red color due to the formation of", o: ["Fe₄[Fe(CN)₆]₃", "NaSCN", "Fe(SCN)₃", "Na₂S"], a: 2},
+    {q: "The separation of two liquids by fractional distillation is possible only when their boiling points differ by", o: ["Less than 10 K", "More than 25 K", "At least 50 K", "Zero"], a: 1},
+    {q: "An organic compound on heating with CuO produces CO₂ and H₂O. This indicates the presence of", o: ["C and H", "N and S", "Halogens", "Oxygen"], a: 0},
+    {q: "Silver nitrate solution is added to Lassaigne's extract to detect halogens. A white precipitate soluble in NH₄OH indicates", o: ["Chlorine", "Bromine", "Iodine", "Fluorine"], a: 0},
+    {q: "In column chromatography, the substance with more affinity for the stationary phase", o: ["Moves faster", "Moves slower", "Does not move", "Sublimes"], a: 1},
+    {q: "Which of the following is used as an adsorbent in column chromatography?", o: ["Alumina", "Silica gel", "Both A and B", "Neither A nor B"], a: 2},
+    {q: "Differential extraction is based on the difference in", o: ["Boiling points", "Solubilities in different solvents", "Melting points", "Molecular weights"], a: 1},
+    {q: "The formula used to calculate % of Carbon in Liebig’s method is", o: ["(12/44) * (Mass of CO₂/Mass of compound) * 100", "(12/18) * (Mass of H₂O/Mass of compound) * 100", "(44/12) * 100", "(14/17) * 100"], a: 0},
+    {q: "The distillation technique used for separating ortho-nitrophenol and para-nitrophenol is", o: ["Fractional distillation", "Steam distillation", "Vacuum distillation", "Crystallisation"], a: 1}
+  ],
+
+"Some Basic Principles of Organic Chemistry"  : [
+    {q: "The IUPAC name of CH₃-CH(OH)-CH₂-C(CH₃)₃ is", o: ["2,2-dimethyl-4-pentanol", "4,4-dimethyl-2-pentanol", "1,1,1-trimethyl-3-butanol", "4,4,4-trimethyl-2-butanol"], a: 1},
+    {q: "Which of the following electronic effects is a permanent effect?", o: ["Electromeric effect", "Inductive effect", "Inductomeric effect", "All of these"], a: 1},
+    {q: "The most stable carbocation among the following is", o: ["(CH₃)₃C⁺", "(CH₃)₂CH⁺", "CH₃CH₂⁺", "CH₃⁺"], a: 0},
+    {q: "Hyperconjugation involves the overlap of which orbitals?", o: ["σ-p", "p-p", "π-π", "σ-σ"], a: 0},
+    {q: "Which of the following is a nucleophile?", o: ["BF₃", "AlCl₃", "NH₃", "NO₂⁺"], a: 2},
+    {q: "The number of structural isomers for C₄H₁₀ is", o: ["2", "3", "4", "5"], a: 0},
+    {q: "Resonance structures must have the same", o: ["Number of unpaired electrons", "Position of nuclei", "Total charge", "All of the above"], a: 3},
+    {q: "Which of the following represents the correct decreasing order of -I effect?", o: ["-NO₂ > -CN > -F", "-F > -CN > -NO₂", "-CN > -NO₂ > -F", "-NO₂ > -F > -CN"], a: 0},
+    {q: "The hybridisation of Carbon in a free radical is generally", o: ["sp", "sp²", "sp³", "dsp²"], a: 1},
+    {q: "Keto-enol tautomerism is observed in", o: ["Benzaldehyde", "Acetone", "Benzophenone", "Formaldehyde"], a: 1},
+    {q: "Homolytic fission of a C-C bond leads to the formation of", o: ["Carbocations", "Carbanions", "Free radicals", "Carbenes"], a: 2},
+    {q: "Which effect explains the stability of 2-butene over 1-butene?", o: ["Inductive effect", "Resonance", "Hyperconjugation", "Electromeric effect"], a: 2},
+    {q: "The priority order of functional groups in IUPAC nomenclature is", o: ["-COOH > -SO₃H > -COOR > -COCl", "-COOH > -COOR > -SO₃H > -COCl", "-SO₃H > -COOH > -COOR > -COCl", "-COOR > -COOH > -SO₃H > -COCl"], a: 0},
+    {q: "Which of the following is an electrophile?", o: ["H₂O", "NH₃", "SO₃", "ROH"], a: 2},
+    {q: "Metamerism is shown by", o: ["Ethers", "Alkanes", "Alcohols", "Aldehydes"], a: 0},
+    {q: "The displacement of electrons in a multi-bond towards one of the atoms in the presence of an attacking reagent is", o: ["Inductive effect", "Resonance", "Electromeric effect", "Hyperconjugation"], a: 2},
+    {q: "The number of σ and π bonds in pent-2-en-4-yne are", o: ["10σ, 3π", "8σ, 5π", "7σ, 3π", "9σ, 3π"], a: 0},
+    {q: "Which among the following is the strongest acid?", o: ["CH₃COOH", "ClCH₂COOH", "Cl₂CHCOOH", "Cl₃CCOOH"], a: 3},
+    {q: "An organic compound has an empirical formula CH₂O and a vapor density of 30. Its molecular formula is", o: ["CH₂O", "C₂H₄O₂", "C₃H₆O₃", "CHO"], a: 1},
+    {q: "Geometric isomerism is possible in", o: ["1-butene", "2-butene", "Isobutene", "Propene"], a: 1}
+  ],
+
+
+"Hydrocarbons": [
+    {q: "Which of the following alkanes cannot be made in good yield by Wurtz reaction?", o: ["n-Butane", "n-Hexane", "n-Heptane", "2,3-Dimethylbutane"], a: 2},
+    {q: "The corect order of reactivity of Halogens towards alkanes is", o: ["F₂ > Cl₂ > Br₂ > I₂", "I₂ > Br₂ > Cl₂ > F₂", "Cl₂ > F₂ > Br₂ > I₂", "F₂ > Br₂ > Cl₂ > I₂"], a: 0},
+    {q: "In the presence of peroxide, HCl and HI do not give anti-Markovnikov addition to alkenes because", o: ["One step is endothermic", "Both steps are exothermic", "Both are highly ionic", "They are strong acids"], a: 0},
+    {q: "The ozonolysis of 2-methylbut-2-ene yields", o: ["Propanone and Ethanal", "Propanone and Methanal", "Ethanal and Methanal", "Butanone and Methanal"], a: 0},
+    {q: "Which of the following hydrocarbons is the most acidic?", o: ["Ethane", "Ethene", "Ethyne", "Benzene"], a: 2},
+    {q: "Lindlar's catalyst is used for the partial reduction of alkynes to get", o: ["Trans-alkenes", "Cis-alkenes", "Alkanes", "Cycloalkanes"], a: 1},
+    {q: "The electrophile involved in the nitration of benzene is", o: ["NO₂", "NO₂⁺", "NO₃⁻", "NO⁺"], a: 1},
+    {q: "Kolbe’s electrolytic decarboxylation of sodium propionate produces", o: ["Methane", "Ethane", "n-Butane", "Propane"], a: 2},
+    {q: "Which of the following is an anti-aromatic compound?", o: ["Benzene", "Cyclooctatetraene", "Cyclobutadiene", "Naphthalene"], a: 2},
+    {q: "The product of the reaction of 1-butyne with HgSO₄/H₂SO₄ is", o: ["Butanal", "Butan-2-one", "Butan-1-ol", "Butan-2-ol"], a: 1},
+    {q: "Which reagent is used for the conversion of Benzene to Hexachlorocyclohexane (Gammexane)?", o: ["Cl₂/FeCl₃", "Cl₂/UV light", "HCl/Sn", "SOCl₂"], a: 1},
+    {q: "The major product of the reaction of propene with HBr in the absence of peroxide is", o: ["1-bromopropane", "2-bromopropane", "1,2-dibromopropane", "Propyl alcohol"], a: 1},
+    {q: "Hückel's rule for aromaticity states that the system must have", o: ["4n π electrons", "(4n+2) π electrons", "n π electrons", "6 π electrons"], a: 1},
+    {q: "Friedel-Crafts alkylation of benzene with n-propyl chloride mainly gives", o: ["n-Propylbenzene", "Isopropylbenzene", "Ethylbenzene", "Chlorobenzene"], a: 1},
+    {q: "The catalyst used in the hydrogenation of ethene to ethane is", o: ["Raney Ni", "V₂O₅", "Anhydrous AlCl₃", "Fe/Mo"], a: 0},
+    {q: "Which of the following alkanes has the highest boiling point?", o: ["n-Pentane", "Isopentane", "Neopentane", "n-Butane"], a: 0},
+    {q: "In the chlorination of methane, the step CH₃• + Cl₂ → CH₃Cl + Cl• is called", o: ["Initiation", "Propagation", "Termination", "Inhibition"], a: 1},
+    {q: "Which alkyne on treatment with Na/liquid NH₃ gives a trans-alkene?", o: ["Ethyne", "Propyne", "But-2-yne", "All of these"], a: 2},
+    {q: "Aromatization of n-hexane by heating with Cr₂O₃/Al₂O₃ at 773K gives", o: ["Cyclohexane", "Benzene", "Toluene", "n-Hexene"], a: 1},
+    {q: "The most stable conformation of n-butane is", o: ["Gauche", "Eclipsed", "Anti-staggered", "Partially eclipsed"], a: 2}
+  ],
+
+"Organic Compounds Containing Halogens"  : [
+    {q: "The correct order of reactivity of alkyl halides towards SN2 reaction is", o: ["Primary > Secondary > Tertiary", "Tertiary > Secondary > Primary", "Secondary > Primary > Tertiary", "All are equally reactive"], a: 0},
+    {q: "Which of the following will undergo SN1 reaction most readily?", o: ["(CH₃)₃C-Cl", "(CH₃)₂CH-Cl", "CH₃CH₂-Cl", "CH₃-Cl"], a: 0},
+    {q: "Finkelstein reaction is used for the preparation of", o: ["Alkyl fluorides", "Alkyl iodides", "Alkyl chlorides", "Alkyl bromides"], a: 1},
+    {q: "The reaction of Silver fluoride (AgF) with alkyl chloride to form alkyl fluoride is known as", o: ["Wurtz reaction", "Swarts reaction", "Finkelstein reaction", "Sandmeyer reaction"], a: 1},
+    {q: "Which of the following is most reactive towards nucleophilic substitution?", o: ["Vinyl chloride", "Allyl chloride", "Chlorobenzene", "Ethyl chloride"], a: 1},
+    {q: "SN1 reactions are generally carried out in", o: ["Polar protic solvents", "Polar aprotic solvents", "Non-polar solvents", "Benzene"], a: 0},
+    {q: "The major product of the reaction between 2-bromobutane and alcoholic KOH is", o: ["1-butene", "2-butene (cis)", "2-butene (trans)", "2-butanol"], a: 2},
+    {q: "Chiral molecules that are non-superimposable mirror images of each other are called", o: ["Diastereomers", "Enantiomers", "Meso compounds", "Structural isomers"], a: 1},
+    {q: "The nucleophile involved in the formation of alkyl nitrites from alkyl halides using KNO₂ is", o: ["N-atom of NO₂⁻", "O-atom of NO₂⁻", "K⁺ ion", "None"], a: 1},
+    {q: "In SN2 reactions, the configuration of the product is", o: ["Retained", "Inverted", "Racemized", "Variable"], a: 1},
+    {q: "Which of the following has the highest boiling point?", o: ["CH₃F", "CH₃Cl", "CH₃Br", "CH₃I"], a: 3},
+    {q: "Reaction of chlorobenzene with Mg in dry ether gives", o: ["Benzene", "Phenol", "Phenylmagnesium chloride", "Diphenyl"], a: 2},
+    {q: "DDT is an organochlorine compound used as an", o: ["Antibiotic", "Insecticide", "Antiseptic", "Fertilizer"], a: 1},
+    {q: "Which of the following compounds does not undergo nucleophilic substitution under ordinary conditions?", o: ["Ethyl bromide", "Isopropyl chloride", "Chlorobenzene", "Benzyl chloride"], a: 2},
+    {q: "The catalyst used in the Sandmeyer reaction for preparing chlorobenzene is", o: ["CuCl/HCl", "FeCl₃", "Cu powder/HCl", "AlCl₃"], a: 0},
+    {q: "The IUPAC name of the compound CH₃-CH(Cl)-CH(Br)-CH₃ is", o: ["2-bromo-3-chlorobutane", "3-bromo-2-chlorobutane", "2-chloro-3-bromobutane", "1-bromo-2-chlorobutane"], a: 0},
+    {q: "Grignard reagent (RMgX) should be prepared under anhydrous conditions because it reacts with water to form", o: ["Alkane", "Alcohol", "Ether", "Ketone"], a: 0},
+    {q: "When two halogen atoms are attached to the same carbon atom, it is called a", o: ["Vicinal dihalide", "Geminal dihalide", "α,ω-dihalide", "Isolated dihalide"], a: 1},
+    {q: "Which of the following is used as a solvent and for dry cleaning?", o: ["Chloroform", "Iodoform", "Tetrachloroethene", "Ethyl chloride"], a: 2},
+    {q: "Wurtz-Fittig reaction involves the reaction of", o: ["Two alkyl halides", "Two aryl halides", "One alkyl and one aryl halide", "One alkyl halide and one alcohol"], a: 2}
+  ],
+
+  "Organic Compounds Containing Oxygen": [
+    {q: "Which of the following has the highest boiling point?", o: ["n-Butane", "Ethoxyethane", "n-Pentane", "Butan-1-ol"], a: 3},
+    {q: "The reaction of CH₃MgBr with acetone followed by hydrolysis yields", o: ["Primary alcohol", "Secondary alcohol", "Tertiary alcohol", "Isopropyl alcohol"], a: 2},
+    {q: "Lucas reagent is a mixture of", o: ["Conc. HCl + Anhydrous ZnCl₂", "Conc. HNO₃ + Anhydrous ZnCl₂", "Conc. HCl + Hydrated ZnCl₂", "Dil. HCl + Anhydrous ZnCl₂"], a: 0},
+    {q: "Phenol is more acidic than ethanol because", o: ["Phenoxide ion is resonance stabilized", "Ethanol is a liquid", "Phenol has a higher molecular weight", "Ethoxide ion is more stable"], a: 0},
+    {q: "Reimer-Tiemann reaction of phenol with CHCl₃ and KOH yields", o: ["Benzaldehyde", "Salicylaldehyde", "Salicylic acid", "Benzoic acid"], a: 1},
+    {q: "The Williamson synthesis of ethers involves which mechanism?", o: ["SN1", "SN2", "E1", "E2"], a: 1},
+    {q: "In the reaction of HI with CH₃-O-C(CH₃)₃, the products are", o: ["CH₃I and (CH₃)₃C-OH", "CH₃OH and (CH₃)₃C-I", "CH₃I and (CH₃)₃C-I", "CH₃OH and (CH₃)₃C-OH"], a: 1},
+    {q: "Which of the following does not give Fehling's test?", o: ["Acetaldehyde", "Benzaldehyde", "Propanal", "Ethanal"], a: 1},
+    {q: "Cannizzaro reaction is given by aldehydes which", o: ["Contain alpha-hydrogen", "Do not contain alpha-hydrogen", "Are very reactive", "Are aromatic only"], a: 1},
+    {q: "The product of Aldol condensation of acetaldehyde is", o: ["3-hydroxybutanal", "2-hydroxybutanal", "But-2-enal", "Propanal"], a: 0},
+    {q: "Rosenmund reduction converts acid chlorides to aldehydes using", o: ["Pd/BaSO₄", "LiAlH₄", "NaBH₄", "Zn-Hg/HCl"], a: 0},
+    {q: "The correct order of acidity is", o: ["Trichloroacetic acid > Dichloroacetic acid > Monochloroacetic acid", "Acetic acid > Monochloroacetic acid > Trichloroacetic acid", "Monochloroacetic acid > Dichloroacetic acid > Trichloroacetic acid", "All are equal"], a: 0},
+    {q: "Clemmensen reduction of ketones uses which reagent?", o: ["NH₂NH₂/KOH", "Zn-Hg/Conc. HCl", "LiAlH₄", "H₂/Pd"], a: 1},
+    {q: "Hell-Volhard-Zelinsky (HVZ) reaction is used to prepare", o: ["Alpha-halo acids", "Beta-halo acids", "Acid chlorides", "Acid anhydrides"], a: 0},
+    {q: "Which of the following gives the Iodoform test?", o: ["Methanol", "Acetophenone", "Benzophenone", "Propan-1-ol"], a: 1},
+    {q: "Formaldehyde reacts with NH₃ to form", o: ["Urotropine", "Urea", "Formamide", "Methylamine"], a: 0},
+    {q: "Acid-catalyzed dehydration of secondary and tertiary alcohols follows", o: ["E1 mechanism", "E2 mechanism", "SN1 mechanism", "SN2 mechanism"], a: 0},
+    {q: "Aspirin is prepared by the acetylation of", o: ["Salicylic acid", "Salicylaldehyde", "Phenol", "Benzoic acid"], a: 0},
+    {q: "Which of the following will not react with NaOH?", o: ["Phenol", "Benzyl alcohol", "p-Nitrophenol", "Acetic acid"], a: 1},
+    {q: "The hybridisation of Carbon in the carbonyl group is", o: ["sp", "sp²", "sp³", "dsp²"], a: 1}
+  ],
+
+
+"Organic Compounds Containing Nitrogen": [
+    {q: "The correct order of basic strength of methyl substituted amines in aqueous solution is", o: ["(CH₃)₂NH > CH₃NH₂ > (CH₃)₃N > NH₃", "(CH₃)₃N > (CH₃)₂NH > CH₃NH₂ > NH₃", "NH₃ > CH₃NH₂ > (CH₃)₂NH > (CH₃)₃N", "(CH₃)₂NH > (CH₃)₃N > CH₃NH₂ > NH₃"], a: 0},
+    {q: "Hoffmann Bromamide degradation reaction is used to prepare", o: ["Primary amines", "Secondary amines", "Tertiary amines", "Quaternary ammonium salts"], a: 0},
+    {q: "Which of the following amines gives the Carbylamine test?", o: ["Aniline", "N-Methylaniline", "N,N-Dimethylaniline", "All of these"], a: 0},
+    {q: "Gabriel Phthalimide synthesis is specifically used for the preparation of", o: ["Aromatic primary amines", "Aliphatic primary amines", "Secondary amines", "Tertiary amines"], a: 1},
+    {q: "The reagent used in Hinsberg's test to distinguish amines is", o: ["Benzene sulphonyl chloride", "Benzene sulphonic acid", "Phenyl isocyanide", "Acetyl chloride"], a: 0},
+    {q: "Nitrous acid (NaNO₂ + HCl) reacts with primary aliphatic amines to give", o: ["Nitroalkanes", "Alcohols and N₂ gas", "Secondary amines", "Nitrosamines"], a: 1},
+    {q: "The reduction of nitrobenzene with Sn/HCl yields", o: ["Azobenzene", "Aniline", "Hydrazobenzene", "Nitrosobenzene"], a: 1},
+    {q: "Which of the following is the strongest base?", o: ["Aniline", "p-Nitroaniline", "p-Toluidine", "Benzylamine"], a: 3},
+    {q: "In the reaction of aniline with Br₂/H₂O, the product obtained is", o: ["o-Bromoaniline", "p-Bromoaniline", "2,4,6-Tribromoaniline", "m-Bromoaniline"], a: 2},
+    {q: "Azo-dye test is used to identify", o: ["Primary aliphatic amines", "Primary aromatic amines", "Secondary amines", "Tertiary amines"], a: 1},
+    {q: "The conversion of an amide to an amine with one carbon atom less is called", o: ["Gabriel synthesis", "Hoffmann degradation", "Mendius reaction", "Schiemann reaction"], a: 1},
+    {q: "Which of the following will not dissolve in Hinsberg's reagent (after adding KOH)?", o: ["Primary amine", "Secondary amine", "Tertiary amine", "All will dissolve"], a: 1},
+    {q: "Reaction of aniline with Chloroform and alcoholic KOH produces", o: ["Phenyl cyanide", "Phenyl isocyanide", "Chlorobenzene", "Nitrobenzene"], a: 1},
+    {q: "The hybridization of Nitrogen in amines is", o: ["sp", "sp²", "sp³", "sp³d"], a: 2},
+    {q: "Diazotization of aniline is carried out at", o: ["0-5°C", "25-30°C", "80-100°C", "Room temperature"], a: 0},
+    {q: "Sandmeyer reaction is used to convert benzene diazonium chloride to", o: ["Chlorobenzene", "Fluorobenzene", "Iodobenzene", "Nitrobenzene"], a: 0},
+    {q: "Which of the following amines is a liquid at room temperature?", o: ["Methylamine", "Ethylamine", "Aniline", "Dimethylamine"], a: 2},
+    {q: "The boiling points of amines follow the order", o: ["Primary > Secondary > Tertiary", "Tertiary > Secondary > Primary", "Secondary > Primary > Tertiary", "All have same boiling point"], a: 0},
+    {q: "Coupling of benzene diazonium chloride with phenol in alkaline medium gives", o: ["Yellow dye", "Orange dye", "Red dye", "Blue dye"], a: 1},
+    {q: "Reduction of alkyl nitriles (R-CN) with LiAlH₄ gives", o: ["Primary amine", "Secondary amine", "Amide", "Alcohol"], a: 0}
+  ],
+
+  "Biomolecules": [
+    {q: "Which of the following is a non-reducing sugar?", o: ["Glucose", "Fructose", "Lactose", "Sucrose"], a: 3},
+    {q: "The glycosidic linkage in Maltose is between", o: ["C1 of glucose and C4 of glucose", "C1 of glucose and C2 of fructose", "C1 of galactose and C4 of glucose", "C1 of glucose and C6 of glucose"], a: 0},
+    {q: "Which of the following amino acids is optically inactive?", o: ["Alanine", "Glycine", "Valine", "Leucine"], a: 1},
+    {q: "The helical structure of proteins is stabilized by", o: ["Ionic bonds", "Hydrogen bonds", "Dipeptide bonds", "Van der Waals forces"], a: 1},
+    {q: "Which nitrogenous base is present in DNA but not in RNA?", o: ["Adenine", "Guanine", "Cytosine", "Thymine"], a: 3},
+    {q: "Deficiency of Vitamin K causes", o: ["Beri-beri", "Scurvy", "Increase in blood clotting time", "Night blindness"], a: 2},
+    {q: "The process of changing the native structure of a protein by heating or pH change is called", o: ["Renaturation", "Denaturation", "Polymerization", "Hydrolysis"], a: 1},
+    {q: "Glucose on prolonged heating with HI gives", o: ["n-Hexane", "Gluconic acid", "Saccharic acid", "Hexanoic acid"], a: 0},
+    {q: "Alpha-D-glucose and Beta-D-glucose are", o: ["Epimers", "Anomers", "Enantiomers", "Metamers"], a: 1},
+    {q: "Which of the following is a basic amino acid?", o: ["Lysine", "Aspartic acid", "Valine", "Alanine"], a: 0},
+    {q: "The pyrimidine bases present in RNA are", o: ["Cytosine and Adenine", "Cytosine and Guanine", "Cytosine and Uracil", "Cytosine and Thymine"], a: 2},
+    {q: "Which of the following is a fat-soluble vitamin?", o: ["Vitamin B1", "Vitamin C", "Vitamin B6", "Vitamin A"], a: 3},
+    {q: "In a protein molecule, different amino acids are linked together by", o: ["Peptide bonds", "Dative bonds", "Glycosidic bonds", "Hydrogen bonds"], a: 0},
+    {q: "The sugar unit present in DNA is", o: ["D-2-deoxyribose", "D-Ribose", "D-Fructose", "D-Glucose"], a: 0},
+    {q: "Which test is used to detect the presence of proteins?", o: ["Molisch test", "Biuret test", "Benedict's test", "Tollen's test"], a: 1},
+    {q: "A Zwitterion is a", o: ["Positively charged ion", "Negatively charged ion", "Dipolar ion with zero net charge", "Free radical"], a: 2},
+    {q: "Starch is a polymer of", o: ["Alpha-D-Glucose", "Beta-D-Glucose", "Fructose", "Galactose"], a: 0},
+    {q: "Which of the following is a polysaccharide?", o: ["Glucose", "Sucrose", "Cellulose", "Maltose"], a: 2},
+    {q: "The functional group present in Glucose is", o: ["Ketone", "Aldehyde", "Ether", "Ester"], a: 1},
+    {q: "Which vitamin is also known as Ascorbic acid?", o: ["Vitamin A", "Vitamin B12", "Vitamin C", "Vitamin D"], a: 2}
+  ]
+
+
+};
+
+/* ---------------- UI LOGIC ---------------- */
+const app = document.getElementById("app");
+
+chapters.forEach(ch=>{
+  const div=document.createElement("div");
+  div.className="chapter";
+  div.innerHTML=`<h3>${ch}</h3>`;
+  div.onclick=()=>startTest(ch);
+  chapterList.appendChild(div);
+});
+
+let idx=0,score=0,currentQ=[],chapterName="";
+
+function startTest(ch){
+  chapterName=ch;
+  currentQ=[...questionBank[ch]];
+  idx=0;score=0;
+  loadQuestion();
+}
+
+function loadQuestion(){
+  const q=currentQ[idx];
+  app.innerHTML=`
+  <div class="test-box">
+    <div class="test-header">
+      <h2>${chapterName}</h2>
+      <div class="progress">Question ${idx+1} / 20</div>
+    </div>
+
+    <div class="question">${q.q}</div>
+    <div class="options">
+      ${q.o.map((o,i)=>`<div class="option" onclick="select(${i})">${o}</div>`).join("")}
+    </div>
+
+    <button class="hidden" id="nextBtn" onclick="next()">Next</button>
+  </div>`;
+}
+
+function select(i){
+  const q=currentQ[idx];
+  const opts=document.querySelectorAll(".option");
+  if(i===q.a){
+    opts[i].classList.add("correct");
+    correctSound.play();
+    score++;
+  }else{
+    opts[i].classList.add("wrong");
+    opts[q.a].classList.add("correct");
+    wrongSound.play();
+  }
+  document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function next(){
+  idx++;
+  if(idx<currentQ.length) loadQuestion();
+  else showResult();
+}
+
+function showResult(){
+  app.innerHTML=`
+  <div class="test-box">
+    <h2 style="text-align:center;color:#38bdf8">Test Completed</h2>
+    <p style="text-align:center;margin-top:12px">Score: ${score} / ${currentQ.length}</p>
+    <button onclick="location.reload()">Back to Chapters</button>
+  </div>`;
+}
+</script>
+
+</body>
+</html>

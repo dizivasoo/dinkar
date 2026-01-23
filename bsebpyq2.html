@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinkar | BSEB PYQ</title>
+
+<style>
+/* ===== RESET ===== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body{
+  background:#f4f6fa;
+  color:#111;
+  overflow-x:hidden;
+}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 18px;
+  backdrop-filter:blur(14px);
+  background:rgba(255,255,255,0.75);
+  box-shadow:0 8px 24px rgba(255, 255, 255, 0.2);
+}
+
+header h1{
+  font-size:18px;
+  font-weight:800;
+}
+
+.menu-btn{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:260px;
+  height:100%;
+  background:#111;
+  color:#fff;
+  padding:20px;
+  transition:0.3s ease;
+  z-index:200;
+}
+
+.sidebar.active{
+  left:0;
+}
+
+.sidebar h2{
+  margin-bottom:20px;
+  font-size:20px;
+}
+
+.sidebar a{
+  display:block;
+  padding:12px 0;
+  color:#dddddd;
+  text-decoration:none;
+  font-size:15px;
+}
+
+.sidebar a:hover{
+  color:#fff;
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(208, 208, 208, 0.4);
+  display:none;
+  z-index:150;
+}
+
+.overlay.active{
+  display:block;
+}
+
+/* ===== MAIN ===== */
+main{
+  padding:18px;
+}
+
+/* ===== MODEL PAPER CARD ===== */
+.model-card{
+  height:180px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#000000,#333);
+  color:#fff;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  box-shadow:0 18px 40px rgba(244, 244, 244, 0.25);
+  margin-bottom:22px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.model-card:hover{
+  transform:translateY(-6px);
+}
+
+.model-card h2{
+  font-size:22px;
+  font-weight:900;
+}
+
+.model-card p{
+  font-size:14px;
+  opacity:0.85;
+  margin-top:6px;
+}
+
+/* ===== SUBJECT GRID ===== */
+.subjects{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+/* ===== SUBJECT CARD ===== */
+.subject{
+  position:relative;
+  height:140px;
+  border-radius:20px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 14px 30px rgba(140, 140, 140, 0.18);
+  transition:0.3s ease;
+  overflow:hidden;
+}
+
+.subject:hover{
+  transform:translateY(-6px) scale(1.02);
+}
+
+/* RANDOM SIZE */
+.subject.wide{
+  grid-column:span 2;
+  height:160px;
+}
+
+/* TEXT */
+.subject h3{
+  font-size:18px;
+  font-weight:900;
+}
+
+.subject p{
+  font-size:13px;
+  opacity:0.9;
+  margin-top:4px;
+}
+
+/* DARK OVERLAY */
+.subject::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(152, 152, 152, 0.55),transparent);
+}
+
+.subject *{
+  position:relative;
+  z-index:2;
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#fff;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  box-shadow:0 -6px 18px rgba(208, 208, 208, 0.12);
+}
+
+.bottom-nav div{
+  text-align:center;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.bottom-nav div:hover{
+  font-weight:600;
+}
+
+/* ===== SPACE FOR NAV ===== */
+.spacer{
+  height:70px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <h2>Dinkar</h2>
+  <a href="index.html">Home</a>
+  <a href="bseb-pyq.html">BSEB PYQ</a>
+  <a href="neet preparation.html">NEET Preparation</a>
+  <a href="jeepreparation.html">JEE Preparation</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+  <h1>BSEB PYQ</h1>
+  <div style="width:22px;"></div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- MODEL PAPER -->
+  <div class="model-card" onclick="go('modelpapersubjectslibrary.html')">
+    <h2>Model Papers</h2>
+    <p>Latest pattern • Exam focused</p>
+  </div>
+
+  <!-- SUBJECTS -->
+  <div class="subjects">
+
+    <div class="subject wide"
+      style="background:linear-gradient(135deg,#2563eb,#1e40af)"
+      onclick="go('physicspyq.html')">
+      <h3>Physics</h3>
+      <p>2015 – 2025 PYQs</p>
+    </div>
+
+    <div class="subject"
+      style="background:linear-gradient(135deg,#16a34a,#14532d)"
+      onclick="go('biologypyq.html')">
+      <h3>Biology</h3>
+      <p>2015 – 2025 PYQs</p>
+    </div>
+
+    <div class="subject"
+      style="background:linear-gradient(135deg,#ea580c,#9a3412)"
+      onclick="go('chemistrypyq.html')">
+      <h3>Chemistry</h3>
+      <p>2015 – 2025 PYQs</p>
+    </div>
+
+    <div class="subject wide"
+      style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"
+      onclick="go('mathspyq.html')">
+      <h3>Mathematics</h3>
+      <p>2015 – 2025 PYQs</p>
+    </div>
+
+    <div class="subject"
+      style="background:linear-gradient(135deg,#0f766e,#134e4a)"
+      onclick="go('english-pyq.html')">
+      <h3>English</h3>
+      <p>2015 – 2025 PYQs</p>
+    </div>
+
+    <div class="subject"
+      style="background:linear-gradient(135deg,#b91c1c,#7f1d1d)"
+      onclick="go('hindi-pyq.html')">
+      <h3>Hindi</h3>
+      <p>2015 – 2025 PYQs</p>
+    </div>
+
+  </div>
+
+  <div class="spacer"></div>
+</main>
+
+
+<script>
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+function go(page){
+  window.location.href = page;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEET Preparation | Dinkar</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",system-ui,sans-serif;
+}
+
+body{
+  background:#f0fdf4;
+  color:#052e16;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:260px;
+  height:100%;
+  background:#052e16;
+  color:#ecfdf5;
+  padding:22px;
+  transition:.35s ease;
+  z-index:1001;
+}
+
+.sidebar.active{left:0;}
+
+.sidebar h2{
+  font-size:22px;
+  font-weight:900;
+  margin-bottom:24px;
+}
+
+.sidebar a{
+  display:block;
+  padding:12px 0;
+  color:#d1fae5;
+  text-decoration:none;
+  font-weight:600;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.sidebar a:hover{color:#ffffff;}
+
+/* OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
+  z-index:1000;
+}
+.overlay.active{display:block;}
+
+/* HEADER */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 18px;
+  background:#ffffff;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+.menu{font-size:22px;cursor:pointer;}
+
+.header h1{
+  font-size:18px;
+  font-weight:900;
+  color:#166534;
+}
+
+/* HERO */
+.hero{
+  margin:20px;
+  padding:28px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:#fff;
+}
+
+.hero h2{font-size:22px;font-weight:900;}
+.hero p{font-size:14px;margin-top:8px;opacity:.95;}
+
+.hero button{
+  margin-top:18px;
+  padding:14px 20px;
+  border:none;
+  border-radius:14px;
+  background:#ffffff;
+  color:#166534;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* SECTIONS */
+.section{padding:12px 18px 28px;}
+.section h3{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:14px;
+}
+
+/* TOOLS */
+.tools{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.tool{
+  padding:20px;
+  border-radius:18px;
+  background:#ffffff;
+  box-shadow:0 10px 24px rgba(0,0,0,.1);
+  cursor:pointer;
+  transition:.25s;
+}
+.tool:hover{transform:translateY(-4px);}
+
+.tool h4{font-size:16px;font-weight:800;color:#14532d;}
+.tool p{font-size:13px;margin-top:6px;color:#166534;}
+
+/* SUBJECTS (IMPROVED VISIBILITY) */
+.subjects{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.subject{
+  padding:28px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#ffffff;
+  font-weight:900;
+  font-size:20px;
+  box-shadow:0 16px 30px rgba(22,163,74,.45);
+  cursor:pointer;
+  transition:.3s;
+}
+
+.subject:hover{
+  transform:scale(1.03);
+}
+
+/* DAILY TASK CHECKLIST */
+.tasks{
+  background:#ffffff;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 12px 26px rgba(0,0,0,.1);
+}
+
+.task{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.task input{width:18px;height:18px;}
+
+/* BOTTOM NAV */
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#ffffff;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  box-shadow:0 -6px 16px rgba(0,0,0,.08);
+}
+
+.bottom div{
+  font-size:12px;
+  font-weight:700;
+  color:#166534;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <h2>Dinkar</h2>
+  <a href="index.html"> Home</a>
+  <a href="neetlibrary.html">Mock Tests</a>
+  <a href="coming soon.html">Short Notes</a>
+  <a href="neetpyq.html">Previous Year Questions</a>
+  <a href="coming soon.html">Study Planner</a>
+  <a href="coming soon.html">Performance</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="menu" onclick="toggleSidebar()">☰</div>
+  <h1>NEET Preparation</h1>
+  <div></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>Crack NEET with Dinkar</h2>
+  <p>Smart practice • Concept clarity • Discipline</p>
+  <button onclick="location.href='neetlibrary.html'">Start NEET Test</button>
+</div>
+
+<!-- TOOLS -->
+<div class="section">
+  <h3>Essential Tools</h3>
+  <div class="tools">
+    <div class="tool" onclick="location.href='neetlibrary.html'">
+      <h4>Mock Tests</h4><p>Chapter & full syllabus</p>
+    </div>
+    <div class="tool" onclick="location.href='neetpyq.html'">
+      <h4>PYQs</h4><p>2020–2025</p>
+    </div>
+    <div class="tool" onclick="location.href='coming soon.html'">
+      <h4>Short Notes</h4><p>Fast revision</p>
+    </div>
+    <div class="tool" onclick="location.href='coming soon.html'">
+      <h4>Analysis</h4><p>Accuracy & time</p>
+    </div>
+  </div>
+</div>
+
+<!-- SUBJECTS -->
+<div class="section">
+  <h3>NEET Subjects</h3>
+  <div class="subjects">
+    <div class="subject" onclick="location.href='neetphysicschapter.html'">Physics</div>
+    <div class="subject" onclick="location.href='neetchemistrychapter.html'">Chemistry</div>
+    <div class="subject" onclick="location.href='neetbiologychapter.html'">Biology</div>
+  </div>
+</div>
+
+<!-- DAILY TASK CHECKLIST -->
+<div class="section">
+  <h3>Daily Task Checklist</h3>
+  <div class="tasks">
+    <div class="task"><input type="checkbox"> Revise Biology (1 chapter)</div>
+    <div class="task"><input type="checkbox"> Solve 30 Physics MCQs</div>
+    <div class="task"><input type="checkbox"> Chemistry formula revision</div>
+    <div class="task"><input type="checkbox"> Attempt 1 mini mock test</div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+
+
+<script>
+function toggleSidebar(){
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+}
+</script>
+
+</body>
+</html>

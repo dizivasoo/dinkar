@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEET Library | Dinkar</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",system-ui,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#022c22,#052e16);
+  color:#fff;
+}
+
+.page{
+  max-width:520px;
+  margin:auto;
+  padding:22px;
+}
+
+/* HEADER */
+.header{
+  padding:22px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#064e3b,#022c22);
+  box-shadow:0 18px 36px rgba(0,0,0,.6);
+  text-align:center;
+}
+
+.header h1{
+  font-size:24px;
+  font-weight:900;
+}
+
+.header p{
+  font-size:14px;
+  opacity:.85;
+  margin-top:6px;
+}
+
+/* SUBJECT CARDS */
+.subjects{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+}
+
+.subject{
+  padding:26px;
+  border-radius:26px;
+  cursor:pointer;
+  transition:.25s ease;
+  box-shadow:0 18px 34px rgba(0,0,0,.45);
+}
+
+.subject:hover{
+  transform:translateY(-4px) scale(1.02);
+}
+
+/* THEMES */
+.physics{
+  background:linear-gradient(135deg,#065f46,#10b981);
+}
+
+.chemistry{
+  background:linear-gradient(135deg,#047857,#22c55e);
+}
+
+.biology{
+  background:linear-gradient(135deg,#14532d,#4ade80);
+}
+
+.subject h2{
+  font-size:22px;
+  font-weight:900;
+}
+
+.subject p{
+  font-size:14px;
+  margin-top:6px;
+  opacity:.9;
+}
+
+.tag{
+  display:inline-block;
+  margin-top:12px;
+  padding:6px 14px;
+  font-size:12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.2);
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>NEET Library</h1>
+    <p>Focused medical preparation hub</p>
+  </div>
+
+  <!-- SUBJECTS -->
+  <div class="subjects">
+
+    <div class="subject physics" onclick="go('neetphysicschapter.html')">
+      <h2>Physics</h2>
+      <p>Concept clarity • Medical numericals</p>
+      <span class="tag">Mechanics • Modern • Optics</span>
+    </div>
+
+    <div class="subject chemistry" onclick="go('neetchemistrychapter.html')">
+      <h2>Chemistry</h2>
+      <p>NCERT focused • High scoring</p>
+      <span class="tag">Physical • Organic • Inorganic</span>
+    </div>
+
+    <div class="subject biology" onclick="go('neetbiologychapter.html')">
+      <h2>Biology</h2>
+      <p>Most important subject for NEET</p>
+      <span class="tag">Botany • Zoology • NCERT</span>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+</script>
+
+</body>
+</html>

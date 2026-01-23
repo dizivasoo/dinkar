@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Neet Biology – Dinkar</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,system-ui,sans-serif}
+
+body{
+  background:linear-gradient(135deg,#020617,#020617);
+  color:#fff;
+  min-height:100vh;
+}
+
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:16px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:18px;
+  font-size:22px;
+  font-weight:900;
+  color:#38bdf8;
+}
+
+/* CHAPTER LIST */
+.chapter{
+  padding:18px;
+  margin-bottom:14px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  border:1px solid #1e293b;
+  cursor:pointer;
+  transition:.2s;
+}
+.chapter:hover{transform:scale(1.02)}
+.chapter h3{font-size:16px;font-weight:700}
+
+/* TEST BOX */
+.test-box{
+  background:#020617;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid #1e293b;
+}
+
+.test-header{
+  text-align:center;
+  margin-bottom:12px;
+}
+.test-header h2{
+  font-size:18px;
+  color:#38bdf8;
+}
+.progress{
+  font-size:13px;
+  opacity:.8;
+  margin-top:4px;
+}
+
+.question{
+  margin:20px 0;
+  font-size:17px;
+  font-weight:600;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.option{
+  padding:14px;
+  border-radius:14px;
+  background:#020617;
+  border:1px solid #334155;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.option.correct{
+  background:#052e16;
+  border-color:#22c55e;
+  color:#22c55e;
+}
+
+.option.wrong{
+  background:#450a0a;
+  border-color:#ef4444;
+  color:#ef4444;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:16px;
+  border:none;
+  border-radius:14px;
+  background:#38bdf8;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+
+  <div class="header">Neet Biology  – Dinkar</div>
+
+  <div id="chapterList"></div>
+
+</div>
+
+<!-- Sounds -->
+<audio id="correctSound" src="successed-295058.mp3"></audio>
+<audio id="wrongSound" src="error-010-206498.mp3"></audio>
+
+<script>
+/* ---------------- CHAPTERS ---------------- */
+const chapters = [
+
+"Diversity in Living Organisms",
+"Structural Organisation in Animals and Plants",
+"Cell Structure and Function",
+"Plant Physiology",
+"Human Physiology",
+"reproducton",
+  "Genetics and Evolution",
+  "Biology and Human Welfare",
+"biotechnology and it's applications",
+"ecology and enviroment",
+];
+
+/* --------- SAMPLE VERY HARD QUESTIONS (PER CHAPTER) ---------
+You can add up to 20 per chapter (structure stays same) */
+
+const questionBank = {
+ "Diversity in Living Organisms": [
+    {q: "Which of the following is a defining characteristic of living organisms?", o: ["Growth", "Reproduction", "Metabolism", "Self-replication"], a: 2},
+    {q: "The taxonomic unit 'Phylum' in animals is equivalent to which hierarchical level in plants?", o: ["Class", "Order", "Division", "Family"], a: 2},
+    {q: "Five kingdom system of classification was proposed by", o: ["Linnaeus", "Whittaker", "Aristotle", "Bentham and Hooker"], a: 1},
+    {q: "The cell wall of fungi is composed of", o: ["Cellulose", "Hemicellulose", "Chitin", "Pectin"], a: 2},
+    {q: "Naked cytoplasm, multinucleated and saprophytic are the characteristics of", o: ["Monerans", "Protists", "Fungi", "Slime molds"], a: 3},
+    {q: "Which of the following are known as 'Chief producers' in the oceans?", o: ["Dinoflagellates", "Diatoms", "Euglenoids", "Cyanobacteria"], a: 1},
+    {q: "Cidariology is the study of", o: ["Arthropoda", "Cnidaria", "Mollusca", "Echinodermata"], a: 1},
+    {q: "The 'Amphibians of the plant kingdom' are", o: ["Algae", "Bryophytes", "Pteridophytes", "Gymnosperms"], a: 1},
+    {q: "Double fertilization is a characteristic feature of", o: ["Gymnosperms", "Angiosperms", "Pteridophytes", "Bryophytes"], a: 1},
+    {q: "Which of the following is a 'living fossil'?", o: ["Cycas", "Pinus", "Ginkgo", "Both 1 and 3"], a: 3},
+    {q: "Classification given by Bentham and Hooker is", o: ["Artificial", "Natural", "Phylogenetic", "Numerical"], a: 1},
+    {q: "Floridean starch is the reserve food in", o: ["Chlorophyceae", "Phaeophyceae", "Rhodophyceae", "Cyanophyceae"], a: 2},
+    {q: "The scientific name of Mango is correctly written as", o: ["Mangifera Indica", "mangifera indica", "Mangifera indica", "Mangifera indica Linn."], a: 3},
+    {q: "Metameric segmentation is first observed in the phylum", o: ["Platyhelminthes", "Aschelminthes", "Annelida", "Arthropoda"], a: 2},
+    {q: "Water vascular system is a distinctive feature of", o: ["Porifera", "Cnidaria", "Echinodermata", "Chordata"], a: 2},
+    {q: "Flame cells are the excretory structures for", o: ["Annelids", "Coelenterates", "Platyhelminthes", "Echinoderms"], a: 2},
+    {q: "Which of the following is a hemichordate?", o: ["Balanoglossus", "Herdmania", "Branchiostoma", "Petromyzon"], a: 0},
+    {q: "Choanocytes are characteristic cells of", o: ["Cnidaria", "Porifera", "Ctenophora", "Platyhelminthes"], a: 1},
+    {q: "Radial symmetry is usually exhibited by animals which", o: ["Are attached to substratum", "Have ciliary mode of feeding", "Are aquatic", "Move rapidly"], a: 0},
+    {q: "Which of the following is a cold-blooded animal?", o: ["Pigeon", "Rabbit", "Shark", "Whale"], a: 2},
+    {q: "The term 'Systematics' refers to", o: ["Identification and study of organ systems", "Diversity of organisms and their relationship", "Classification", "Nomenclature"], a: 1},
+    {q: "Archaebacteria differ from eubacteria in", o: ["Cell shape", "Mode of reproduction", "Cell membrane structure", "Mode of nutrition"], a: 2},
+    {q: "Viroids differ from viruses in having", o: ["DNA molecules without protein coat", "RNA molecules with protein coat", "RNA molecules without protein coat", "DNA molecules with protein coat"], a: 2},
+    {q: "Algin is obtained from", o: ["Red algae", "Brown algae", "Green algae", "Golden algae"], a: 1},
+    {q: "The heart is three-chambered in all except", o: ["Frogs", "Snakes", "Crocodiles", "Lizards"], a: 2},
+    {q: "Peptidoglycan is a characteristic constituent of cell wall of", o: ["Bacteria and Cyanobacteria", "Archaebacteria", "Fungi", "All monerans"], a: 0},
+    {q: "The dominant phase in the life cycle of bryophytes is", o: ["Sporophyte", "Gametophyte", "Capsule", "Seta"], a: 1},
+    {q: "Presence of pneumatic bones is the feature of", o: ["Reptiles", "Amphibians", "Aves", "Mammals"], a: 2},
+    {q: "Coralloid roots of Cycas are associated with", o: ["Fungi", "Cyanobacteria", "Rhizobium", "Mycorrhiza"], a: 1},
+    {q: "The correctly matched pair is", o: ["Class - Mammalia", "Order - Musca", "Genus - Dicotyledonae", "Family - Triticum"], a: 0},
+    {q: "Which phylum has a 'tube-within-a-tube' body plan?", o: ["Porifera", "Coelenterata", "Aschelminthes", "Platyhelminthes"], a: 2},
+    {q: "The function of nematoblasts in Cnidarians is", o: ["Locomotion", "Defense and offense", "Digestion", "Reproduction"], a: 1},
+    {q: "A true coelom is absent in", o: ["Annelida", "Mollusca", "Echinodermata", "Platyhelminthes"], a: 3},
+    {q: "Which one of the following is an oviparous mammal?", o: ["Platypus", "Kangaroo", "Elephant", "Whale"], a: 0},
+    {q: "Holdfast, stipe and frond constitute the plant body in", o: ["Volvox", "Chara", "Laminaria", "Porphyra"], a: 2},
+    {q: "Taxonomic key is used for", o: ["Naming plants", "Identification of plants and animals", "Storing specimens", "Drawing phylogenetic trees"], a: 1},
+    {q: "ICBN stands for", o: ["International Code of Biological Nomenclature", "International Code of Botanical Nomenclature", "International Class of Biological Nomenclature", "International Classification of Botanical Nomenclature"], a: 1},
+    {q: "In which group of organisms the cell walls form two thin overlapping shells which fit together?", o: ["Dinoflagellates", "Slime moulds", "Chrysophytes", "Euglenoids"], a: 2},
+    {q: "Which of the following is also called 'Fungus animals'?", o: ["Slime moulds", "Protozoa", "Ascomycetes", "Lichens"], a: 0},
+    {q: "The smallest living organism is", o: ["Virus", "Bacterium", "Mycoplasma", "Yeast"], a: 2},
+    {q: "In Agaricus, the fruiting body is", o: ["Basidiocarp", "Ascocarp", "Cleistothecium", "Apothecium"], a: 0},
+    {q: "Protonema stage is found in", o: ["Ferns", "Mosses", "Liverworts", "Gymnosperms"], a: 1},
+    {q: "The first vascular plants are", o: ["Thallophytes", "Bryophytes", "Pteridophytes", "Spermatophytes"], a: 2},
+    {q: "In gymnosperms, the pollen chamber represents", o: ["A cell where pollen grains are stored", "An opening in the megaspore", "The microsporangium", "A cavity in the ovule"], a: 3},
+    {q: "Coelomate, triploblastic and bilaterally symmetrical animals are found in phylum", o: ["Arthropoda", "Aschelminthes", "Cnidaria", "Ctenophora"], a: 0},
+    {q: "Body cavity of Cockroach is", o: ["Coelom", "Haemocoel", "Pseudocoelom", "Gastrovascular cavity"], a: 1},
+    {q: "Radula is found in", o: ["Pila", "Asterias", "Sycon", "Nereis"], a: 0},
+    {q: "Which of the following is not a characteristic of Chordates?", o: ["Dorsal hollow nerve cord", "Ventral heart", "Post-anal tail", "Solid ventral nerve cord"], a: 3},
+    {q: "Planaria possesses high capacity of", o: ["Metamorphosis", "Regeneration", "Alternation of generation", "Bioluminescence"], a: 1},
+    {q: "A phylum that includes only marine animals is", o: ["Porifera", "Cnidaria", "Echinodermata", "Mollusca"], a: 2}
+  ],
+
+"Structural Organisation in Animals and Plants": [
+    // --- Cell: The Unit of Life ---
+    {q: "Which organelle is known as the 'Powerhouse of the cell'?", o: ["Lysosome", "Chloroplast", "Mitochondria", "Golgi Body"], a: 2},
+    {q: "The fluid mosaic model of the plasma membrane was proposed by", o: ["Schleiden and Schwann", "Singer and Nicolson", "Robert Brown", "Camillo Golgi"], a: 1},
+    {q: "Which of the following is absent in animal cells?", o: ["Mitochondria", "Centrioles", "Large central vacuole", "Ribosomes"], a: 2},
+    {q: "The site of protein synthesis in the cell is", o: ["Smooth ER", "Rough ER", "Lysosomes", "Peroxisomes"], a: 1},
+    {q: "Which organelle contains hydrolytic enzymes?", o: ["Lysosomes", "Vacuoles", "Ribosomes", "Mitochondria"], a: 0},
+    {q: "The stacks of flattened sacs in the Golgi apparatus are called", o: ["Cristae", "Cisternae", "Thylakoids", "Grana"], a: 1},
+    {q: "Ribosomes found in prokaryotic cells are of the type", o: ["50S", "70S", "80S", "60S"], a: 1},
+    {q: "Extrachromosomal DNA is found in", o: ["Mitochondria", "Chloroplast", "Nucleus", "Both 1 and 2"], a: 3},
+    {q: "The primary constituent of the plant cell wall is", o: ["Chitin", "Cellulose", "Peptidoglycan", "Pectin"], a: 1},
+    {q: "The function of the nucleolus is the synthesis of", o: ["DNA", "rRNA", "mRNA", "tRNA"], a: 1},
+
+    // --- Cell Cycle and Division ---
+    {q: "In which stage of the cell cycle does DNA replication occur?", o: ["G1 phase", "S phase", "G2 phase", "M phase"], a: 1},
+    {q: "The stage of meiosis where crossing over takes place is", o: ["Leptotene", "Zygotene", "Pachytene", "Diplotene"], a: 2},
+    {q: "The 'quiescent stage' of the cell cycle is", o: ["G1", "G0", "S", "M"], a: 1},
+    {q: "During mitosis, chromosomes align at the equator during", o: ["Prophase", "Metaphase", "Anaphase", "Telophase"], a: 1},
+    {q: "Synapsis occurs between", o: ["Two non-homologous chromosomes", "Two homologous chromosomes", "Sister chromatids", "Non-sister chromatids"], a: 1},
+    {q: "Splitting of centromeres occurs in", o: ["Anaphase", "Anaphase II", "Metaphase", "Both 1 and 2"], a: 3},
+    {q: "The enzyme involved in crossing over is", o: ["Ligase", "Polymerase", "Recombinase", "Endonuclease"], a: 2},
+    {q: "Cell plate formation occurs during cytokinesis in", o: ["Animal cells", "Plant cells", "Bacterial cells", "Fungal cells"], a: 1},
+    {q: "In meiosis, the number of chromosomes is reduced to half during", o: ["Meiosis I", "Meiosis II", "Mitosis", "Interphase"], a: 0},
+    {q: "Chiasmata are visible during which stage?", o: ["Pachytene", "Diplotene", "Diakinesis", "Zygotene"], a: 1},
+
+    // --- Photosynthesis and Respiration ---
+    {q: "The primary CO2 acceptor in C3 plants is", o: ["PEP", "RuBP", "OAA", "PGA"], a: 1},
+    {q: "Kranz anatomy is a characteristic feature of", o: ["C3 plants", "C4 plants", "CAM plants", "Algae"], a: 1},
+    {q: "The enzyme responsible for CO2 fixation in C4 plants is", o: ["RuBisCO", "PEP carboxylase", "Carbonic anhydrase", "ATPase"], a: 1},
+    {q: "The first stable product of the Calvin cycle is", o: ["OAA", "PGA", "PEP", "Glucose"], a: 1},
+    {q: "Photolysis of water occurs in", o: ["PS I", "PS II", "Stroma", "Cytoplasm"], a: 1},
+    {q: "The end product of glycolysis is", o: ["Acetyl CoA", "Citric acid", "Pyruvic acid", "Lactic acid"], a: 2},
+    {q: "How many ATP molecules are produced in a single turn of the Krebs cycle via substrate level phosphorylation?", o: ["1", "2", "3", "38"], a: 0},
+    {q: "The final electron acceptor in the Electron Transport System (ETS) is", o: ["Oxygen", "Cytochrome c", "NADH", "Water"], a: 0},
+    {q: "Fermentation takes place under which condition?", o: ["Aerobic", "Anaerobic", "High pressure", "High temperature"], a: 1},
+    {q: "The site of Krebs cycle in eukaryotes is", o: ["Cytoplasm", "Mitochondrial matrix", "Inner mitochondrial membrane", "Peroxisomes"], a: 1},
+
+    // --- Transport and Growth ---
+    {q: "Movement of water through the cell wall and intercellular spaces is called", o: ["Apoplast", "Symplast", "Osmosis", "Active transport"], a: 0},
+    {q: "Guttation occurs through specialized structures called", o: ["Stomata", "Hydathodes", "Lenticels", "Pores"], a: 1},
+    {q: "The theory of 'Cohesion-Tension' explains", o: ["Phloem transport", "Ascent of sap", "Root pressure", "Translocation"], a: 1},
+    {q: "Which plant hormone is responsible for 'bolting'?", o: ["Auxin", "Gibberellin", "Cytokinin", "Ethylene"], a: 1},
+    {q: "The hormone used to ripen fruits commercially is", o: ["ABA", "Auxin", "Ethylene", "Gibberellin"], a: 2},
+    {q: "Apical dominance is caused by", o: ["Cytokinin", "Auxin", "Gibberellin", "Ethylene"], a: 1},
+    {q: "Which of the following is a stress hormone?", o: ["IAA", "GA3", "ABA", "Zeatin"], a: 2},
+    {q: "Opening of stomata is regulated by the influx of which ion?", o: ["Ca2+", "K+", "Mg2+", "Cl-"], a: 1},
+    {q: "Mass flow hypothesis was proposed by", o: ["Munch", "Priestley", "Calvin", "Hatch and Slack"], a: 0},
+    {q: "In phloem, food is transported in the form of", o: ["Glucose", "Starch", "Sucrose", "Fructose"], a: 2},
+
+    // --- Mix & Critical Thinking ---
+    {q: "The pigment chlorophyll contains which metal ion?", o: ["Fe", "Mg", "Mn", "Cu"], a: 1},
+    {q: "Which phase of respiration is common to both aerobic and anaerobic types?", o: ["Krebs Cycle", "ETS", "Glycolysis", "Link Reaction"], a: 2},
+    {q: "The net gain of ATP in Glycolysis is", o: ["2", "4", "36", "38"], a: 0},
+    {q: "Which cell organelle is called 'cell within a cell'?", o: ["Ribosome", "Chloroplast", "Nucleus", "ER"], a: 1},
+    {q: "Sister chromatids are held together by", o: ["Centromere", "Centrosome", "Kinetochore", "Telomere"], a: 0},
+    {q: "The number of turns of Calvin cycle required to produce one molecule of glucose is", o: ["1", "3", "6", "12"], a: 2},
+    {q: "Photorespiration is a characteristic of", o: ["C3 plants", "C4 plants", "Both", "None"], a: 0},
+    {q: "The RQ (Respiratory Quotient) for carbohydrates is", o: ["0.7", "0.9", "1.0", "Infinite"], a: 2},
+    {q: "Which complex in ETS is also known as Cytochrome c oxidase?", o: ["Complex I", "Complex II", "Complex III", "Complex IV"], a: 3},
+    {q: "The term 'plasmolysis' occurs when a cell is placed in a", o: ["Isotonic solution", "Hypotonic solution", "Hypertonic solution", "Pure water"], a: 2}
+  ],
+
+
+"Cell Structure and Function": [
+    // --- Cell: The Unit of Life ---
+    {q: "Which of the following is the smallest living cell?", o: ["Bacterium", "Mycoplasma", "Ostrich egg", "Red Blood Cell"], a: 1},
+    {q: "The concept of 'Omnis cellula-e cellula' was proposed by", o: ["Robert Hooke", "Rudolf Virchow", "Schleiden", "Schwann"], a: 1},
+    {q: "Which organelle is called the 'Protein factory' of the cell?", o: ["Lysosome", "Mitochondria", "Ribosome", "Chloroplast"], a: 2},
+    {q: "The membranous extensions into the cytoplasm in some cyanobacteria are", o: ["Basal bodies", "Chromatophores", "Mesosomes", "Pili"], a: 1},
+    {q: "The function of polysomes is to translate", o: ["DNA into RNA", "mRNA into proteins", "rRNA into proteins", "mRNA into DNA"], a: 1},
+    {q: "Which of the following is not part of the endomembrane system?", o: ["ER", "Golgi complex", "Lysosomes", "Peroxisomes"], a: 3},
+    {q: "Smooth Endoplasmic Reticulum (SER) is the major site for synthesis of", o: ["Proteins", "Lipids", "Carbohydrates", "Nucleic acids"], a: 1},
+    {q: "The 'cis' and 'trans' faces of Golgi apparatus are", o: ["Convex and Concave", "Concave and Convex", "Both Convex", "Both Concave"], a: 0},
+    {q: "Acidic pH is maintained inside which organelle?", o: ["Vacuoles", "Lysosomes", "Mitochondria", "Chloroplasts"], a: 1},
+    {q: "The infoldings of the inner mitochondrial membrane are called", o: ["Cisternae", "Cristae", "Grana", "Thylakoids"], a: 1},
+    {q: "The matrix of which organelle contains enzymes for the Krebs cycle?", o: ["Chloroplast", "Mitochondria", "Lysosome", "Nucleus"], a: 1},
+    {q: "Anthocyanin pigments are found in", o: ["Chromoplasts", "Amyloplasts", "Vacuoles", "Elaioplasts"], a: 2},
+    {q: "The stack of organized flattened membranous sacs in chloroplasts are", o: ["Stroma", "Grana", "Cristae", "Cisternae"], a: 1},
+    {q: "Ribosomes of the chloroplasts are", o: ["70S", "80S", "60S", "50S"], a: 0},
+    {q: "The arrangement of microtubules in a eukaryotic flagellum is", o: ["9 + 0", "9 + 2", "7 + 2", "5 + 4"], a: 1},
+    {q: "The central part of the proximal region of the centriole is proteinaceous and called", o: ["Spoke", "Hub", "Central tubule", "Linker"], a: 1},
+    {q: "The primary constriction of a chromosome is called", o: ["Telomere", "Satellite", "Centromere", "Chromatid"], a: 2},
+    {q: "Nucleolus is the site of synthesis of", o: ["mRNA", "tRNA", "rRNA", "DNA"], a: 2},
+    {q: "Chromosomes with the centromere at the very tip are", o: ["Metacentric", "Acrocentric", "Telocentric", "Sub-metacentric"], a: 2},
+    {q: "Satellite chromosomes have a non-staining", o: ["Primary constriction", "Secondary constriction", "Tertiary constriction", "Centromere"], a: 1},
+    {q: "Middle lamella is mainly composed of", o: ["Calcium pectate", "Cellulose", "Hemicellulose", "Lignin"], a: 0},
+    {q: "Which organelle helps in osmoregulation in Amoeba?", o: ["Food vacuole", "Contractile vacuole", "Sap vacuole", "Gas vacuole"], a: 1},
+    {q: "The fluid mosaic model emphasizes the _____ nature of lipids.", o: ["Solid", "Quasi-fluid", "Gaseous", "Crystal"], a: 1},
+    {q: "Integral proteins of the cell membrane are", o: ["On the surface", "Partially or totally buried", "Easily removed", "Absent in eukaryotes"], a: 1},
+    {q: "Which of the following lacks a membrane?", o: ["Mitochondria", "Nucleolus", "Centriole", "Both 2 and 3"], a: 3},
+
+    // --- Cell Cycle and Division ---
+    {q: "Which phase represents the interval between mitosis and DNA replication?", o: ["S phase", "G1 phase", "G2 phase", "M phase"], a: 1},
+    {q: "If a cell has 2C DNA at G1, the amount of DNA after S phase will be", o: ["C", "2C", "4C", "8C"], a: 2},
+    {q: "Cells that do not divide further exit G1 and enter an inactive stage called", o: ["M phase", "S phase", "G0 phase", "G2 phase"], a: 2},
+    {q: "The condensation of chromatin material occurs during", o: ["Prophase", "Metaphase", "Anaphase", "Telophase"], a: 0},
+    {q: "The best stage to study the morphology of chromosomes is", o: ["Prophase", "Metaphase", "Anaphase", "Telophase"], a: 1},
+    {q: "Small disc-shaped structures at the surface of centromeres are", o: ["Chromatids", "Kinetochores", "Centrioles", "Spindles"], a: 1},
+    {q: "Characterized by the splitting of centromeres is", o: ["Metaphase", "Anaphase", "Prophase", "Telophase"], a: 1},
+    {q: "The formation of 'Recombination nodules' occurs in", o: ["Zygotene", "Pachytene", "Diplotene", "Diakinesis"], a: 1},
+    {q: "The process of pairing of homologous chromosomes is", o: ["Crossing over", "Synapsis", "Terminalisation", "Disjunction"], a: 1},
+    {q: "Dissolution of the synaptonemal complex occurs in", o: ["Zygotene", "Pachytene", "Diplotene", "Diakinesis"], a: 2},
+    {q: "Which stage is characterized by terminalisation of chiasmata?", o: ["Pachytene", "Diplotene", "Diakinesis", "Zygotene"], a: 2},
+    {q: "Meiosis II is also known as", o: ["Reductional division", "Equational division", "Multiplication division", "None"], a: 1},
+    {q: "The exchange of genetic material between non-sister chromatids is", o: ["Synapsis", "Crossing over", "Linkage", "Mutation"], a: 1},
+    {q: "In which stage do the homologous chromosomes separate while sister chromatids remain associated?", o: ["Anaphase I", "Anaphase II", "Metaphase I", "Metaphase II"], a: 0},
+    {q: "Interkinesis is a short-lived stage between", o: ["G1 and S", "S and G2", "Meiosis I and Meiosis II", "Prophase and Metaphase"], a: 2},
+    {q: "Colchicine interferes with cell division by inhibiting", o: ["DNA replication", "Spindle formation", "Cytokinesis", "ATP synthesis"], a: 1},
+    {q: "Plant cells differ from animal cells in cytokinesis by", o: ["Cell furrow", "Cell plate", "Cleavage", "Centriole movement"], a: 1},
+    {q: "The enzyme recombinase is required in which stage of meiosis?", o: ["Pachytene", "Zygotene", "Diplotene", "Diakinesis"], a: 0},
+    {q: "Bivalents or tetrads are visible during", o: ["Leptotene", "Zygotene", "Pachytene", "Diplotene"], a: 1},
+    {q: "The number of mitotic divisions required to produce 128 cells is", o: ["7", "127", "64", "32"], a: 0},
+    {q: "At the end of Meiosis II, the number of haploid cells produced is", o: ["2", "4", "8", "1"], a: 1},
+    {q: "A cell plate is formed by which organelle?", o: ["Mitochondria", "Golgi apparatus", "ER", "Ribosome"], a: 1},
+    {q: "Which protein makes up the spindle fibers?", o: ["Actin", "Myosin", "Tubulin", "Albumin"], a: 2},
+    {q: "The 'X' shaped structures formed during Diplotene are", o: ["Bivalents", "Chiasmata", "Centromeres", "Kinetochores"], a: 1},
+    {q: "Nuclear envelope reappears during", o: ["Prophase", "Metaphase", "Anaphase", "Telophase"], a: 3}
+  ],
+
+ "Plant Physiology": [
+    // --- Transport in Plants & Mineral Nutrition ---
+    {q: "The movement of water through the cell wall and intercellular spaces is called", o: ["Symplast", "Apoplast", "Vacuolar path", "Active transport"], a: 1},
+    {q: "Guttation is the result of", o: ["Transpiration", "Root pressure", "Osmosis", "Photosynthesis"], a: 1},
+    {q: "Which element is essential for the photolysis of water during photosynthesis?", o: ["Mg", "Fe", "Mn", "Cu"], a: 2},
+    {q: "The theory of 'Cohesion-Tension' explains", o: ["Phloem transport", "Ascent of sap", "Root pressure", "Guttation"], a: 1},
+    {q: "Which mineral is a constituent of chlorophyll?", o: ["Calcium", "Magnesium", "Iron", "Potassium"], a: 1},
+    {q: "Nitrogenase enzyme found in root nodules is highly sensitive to", o: ["CO2", "Molecular Oxygen", "Nitrogen", "Hydrogen"], a: 1},
+    {q: "Water potential of pure water at standard temperature is", o: ["10", "100", "Zero", "Negative"], a: 2},
+    {q: "Stomata open when guard cells show", o: ["Exosmosis", "Endosmosis", "Plasmolysis", "Lower turgor"], a: 1},
+    {q: "Which of the following is a free-living nitrogen-fixing bacterium?", o: ["Rhizobium", "Azotobacter", "Frankia", "Nitrosomonas"], a: 1},
+    {q: "The primary function of hydathodes is", o: ["Transpiration", "Photosynthesis", "Guttation", "Respiration"], a: 2},
+
+    // --- Photosynthesis in Higher Plants ---
+    {q: "The primary CO2 acceptor in C3 plants is", o: ["PEP", "RuBP", "OAA", "PGA"], a: 1},
+    {q: "Kranz anatomy is a characteristic feature of", o: ["C3 plants", "C4 plants", "CAM plants", "Algae"], a: 1},
+    {q: "The first stable product of C4 pathway is", o: ["Malic acid", "Oxaloacetic acid (OAA)", "PGA", "PEP"], a: 1},
+    {q: "Photosynthetic pigments are located in the", o: ["Stroma", "Thylakoid membranes", "Matrix", "Inner membrane"], a: 1},
+    {q: "In non-cyclic photophosphorylation, the final electron acceptor is", o: ["ATP", "NADP+", "Water", "Cytochrome"], a: 1},
+    {q: "Which enzyme is the most abundant protein on Earth?", o: ["PEPcase", "RuBisCO", "Carbonic anhydrase", "ATPase"], a: 1},
+    {q: "The process of photorespiration involves which organelles?", o: ["Chloroplast only", "Chloroplast and Peroxisome", "Chloroplast, Peroxisome, and Mitochondria", "Chloroplast and Vacuole"], a: 2},
+    {q: "The reaction center of PS II is", o: ["P700", "P680", "P800", "P600"], a: 1},
+    {q: "The number of ATP and NADPH molecules required to produce one glucose molecule in C3 cycle is", o: ["12 ATP, 12 NADPH", "18 ATP, 12 NADPH", "30 ATP, 12 NADPH", "18 ATP, 18 NADPH"], a: 1},
+    {q: "Red drop effect is due to the inactivation of", o: ["PS I", "PS II", "Both 1 and 2", "None"], a: 1},
+
+    // --- Respiration in Plants ---
+    {q: "The common phase between aerobic and anaerobic respiration is", o: ["Krebs cycle", "Glycolysis", "ETS", "Link reaction"], a: 1},
+    {q: "The net gain of ATP molecules from one molecule of glucose in glycolysis is", o: ["2", "4", "36", "38"], a: 0},
+    {q: "The site of Krebs cycle in the cell is", o: ["Cytoplasm", "Mitochondrial Matrix", "Oxysomes", "Inner membrane"], a: 1},
+    {q: "The final electron acceptor in the Electron Transport System (ETS) is", o: ["Hydrogen", "Cytochrome a3", "Oxygen", "Water"], a: 2},
+    {q: "The Respiratory Quotient (RQ) of organic acids is generally", o: ["Equal to 1", "Less than 1", "More than 1", "Zero"], a: 2},
+    {q: "Oxidative phosphorylation occurs in the", o: ["Matrix", "Inner mitochondrial membrane", "Outer membrane", "Cytoplasm"], a: 1},
+    {q: "Pyruvic acid is converted into Acetyl CoA in the", o: ["Cytoplasm", "Mitochondrial matrix", "Peroxisome", "Stroma"], a: 1},
+    {q: "FADH2 is produced during which step of Krebs cycle?", o: ["Citric acid to Alpha-ketoglutaric acid", "Succinic acid to Fumaric acid", "Malic acid to OAA", "Succinyl CoA to Succinic acid"], a: 1},
+    {q: "How many molecules of NADH are produced per glucose molecule in the Krebs cycle?", o: ["2", "3", "6", "8"], a: 2},
+    {q: "The enzyme involved in the first step of glycolysis is", o: ["Enolase", "Hexokinase", "Pyruvate kinase", "Aldolase"], a: 1},
+
+    // --- Plant Growth & Development ---
+    {q: "Which hormone is known as the 'Stress Hormone'?", o: ["Auxin", "Gibberellin", "Abscisic Acid (ABA)", "Ethylene"], a: 2},
+    {q: "The 'Bakane' or foolish seedling disease of rice led to the discovery of", o: ["Auxins", "Gibberellins", "Cytokinins", "ABA"], a: 1},
+    {q: "Fruit ripening is promoted by", o: ["IAA", "Ethylene", "Zeatin", "GA3"], a: 1},
+    {q: "Apical dominance is primarily caused by", o: ["Cytokinin", "Auxin", "Gibberellin", "Ethylene"], a: 1},
+    {q: "The hormone that promotes cell division and delays senescence is", o: ["Auxin", "Gibberellin", "Cytokinin", "ABA"], a: 2},
+    {q: "Bolting in rosette plants can be induced by", o: ["ABA", "Auxin", "Gibberellin", "Ethylene"], a: 2},
+    {q: "Photoperiodism was first discovered in", o: ["Potato", "Tobacco", "Rice", "Wheat"], a: 1},
+    {q: "The site of perception of light in plants for photoperiodism is", o: ["Stem", "Roots", "Leaves", "Flowers"], a: 2},
+    {q: "Vernalization refers to the promotion of flowering by", o: ["High temperature", "Low temperature", "Short days", "Long days"], a: 1},
+    {q: "The hormone used to eradicate dicotyledonous weeds in lawns is", o: ["2,4-D", "IAA", "ABA", "GA3"], a: 0},
+
+    // --- Mixed Concepts ---
+    {q: "In phloem, sugar is transported primarily as", o: ["Glucose", "Fructose", "Sucrose", "Starch"], a: 2},
+    {q: "The pressure flow hypothesis was proposed by", o: ["Dixon", "Munch", "Calvin", "Priestley"], a: 1},
+    {q: "When a plant cell is placed in a hypertonic solution, it becomes", o: ["Turgid", "Plasmolysed", "Flaccid", "Swollen"], a: 1},
+    {q: "The end product of oxidative phosphorylation is", o: ["NADH", "Oxygen", "ATP + Water", "Pyruvic acid"], a: 2},
+    {q: "Cytochrome c oxidase (Complex IV) contains which metal ions?", o: ["Fe and Mg", "Fe and Cu", "Mg and Mn", "Cu and Zn"], a: 1},
+    {q: "Which pigment acts as a reaction center for PS I?", o: ["P680", "P700", "Chlorophyll b", "Carotene"], a: 1},
+    {q: "The exponential phase of a growth curve is also called", o: ["Lag phase", "Log phase", "Stationary phase", "Senescence"], a: 1},
+    {q: "A long day plant flowers when the day length is", o: ["Below critical period", "Above critical period", "Exactly 12 hours", "None"], a: 1},
+    {q: "Which hormone is a derivative of carotenoids?", o: ["Auxin", "ABA", "Ethylene", "Cytokinin"], a: 1},
+    {q: "Synthesis of ATP by the chemiosmotic mechanism requires", o: ["Proton gradient", "Proton pump", "ATP synthase", "All of the above"], a: 3}
+  ],
+
+"Human Physiology": [
+    {q: "The process of conversion of complex food substances to simple absorbable forms is called", o: ["Absorption", "Digestion", "Assimilation", "Excretion"], a: 1},
+    {q: "Which cells in the gastric glands secrete HCl and intrinsic factor?", o: ["Peptic cells", "Oxyntic cells", "Goblet cells", "Chief cells"], a: 1},
+    {q: "The enzyme enterokinase helps in the conversion of", o: ["Proteins into polypeptides", "Trypsinogen into trypsin", "Caseinogen into casein", "Pepsinogen into pepsin"], a: 1},
+    {q: "Anxiety and eating spicy food together in an otherwise normal human may lead to", o: ["Indigestion", "Jaundice", "Diarrhoea", "Vomiting"], a: 0},
+    {q: "Tidal Volume (TV) in a healthy human is approximately", o: ["500 mL", "1000 mL", "1200 mL", "2500 mL"], a: 0},
+    {q: "The volume of air left in the lungs after a forceful expiration is", o: ["Tidal Volume", "Residual Volume", "Vital Capacity", "Inspiratory Capacity"], a: 1},
+    {q: "Which of the following is the primary site of exchange of gases?", o: ["Bronchi", "Alveoli", "Trachea", "Larynx"], a: 1},
+    {q: "Approximately what percentage of CO2 is transported by RBCs?", o: ["7%", "20-25%", "70%", "97%"], a: 1},
+    {q: "Emphysema is a chronic disorder which is mainly caused by", o: ["Pollution", "Smoking", "Bacterial infection", "Viral infection"], a: 1},
+    {q: "The pH of human blood is approximately", o: ["7.0", "7.4", "6.8", "8.0"], a: 1},
+    {q: "Erythroblastosis fetalis occurs when", o: ["Mother Rh+, Fetus Rh-", "Mother Rh-, Fetus Rh+", "Both Rh-", "Both Rh+"], a: 1},
+    {q: "The 'P-wave' in a standard ECG represents", o: ["Atrial depolarisation", "Ventricular depolarisation", "Atrial repolarisation", "Ventricular repolarisation"], a: 0},
+    {q: "Serum differs from blood in lacking", o: ["Antibodies", "Clotting factors", "Albumins", "Globulins"], a: 1},
+    {q: "Which valve prevents the backflow of blood into the left atrium?", o: ["Tricuspid", "Bicuspid", "Semilunar", "Eustachian"], a: 1},
+    {q: "The structural and functional unit of the kidney is", o: ["Neuron", "Nephron", "Henle's loop", "Glomerulus"], a: 1},
+    {q: "The part of the nephron least permeable to water is", o: ["PCT", "Descending limb of Henle", "Ascending limb of Henle", "DCT"], a: 2},
+    {q: "An increase in blood pressure would trigger the release of", o: ["Renin", "ADH", "ANF", "Aldosterone"], a: 2},
+    {q: "The condition of accumulation of urea in the blood is termed as", o: ["Renal calculi", "Glomerulonephritis", "Uremia", "Ketonuria"], a: 2},
+    {q: "The presence of glucose and ketone bodies in urine are indicative of", o: ["Diabetes insipidus", "Diabetes mellitus", "Bright's disease", "Renal failure"], a: 1},
+    {q: "Which ion is essential for muscle contraction?", o: ["Na+", "K+", "Ca++", "Mg++"], a: 2},
+    {q: "The functional unit of contraction is the", o: ["Sarcomere", "Myofibril", "Fascicle", "Z-band"], a: 0},
+    {q: "Number of floating ribs in humans is", o: ["2 pairs", "3 pairs", "5 pairs", "7 pairs"], a: 0},
+    {q: "An autoimmune disorder affecting neuromuscular junction is", o: ["Muscular dystrophy", "Myasthenia gravis", "Tetany", "Arthritis"], a: 1},
+    {q: "The pivot joint between atlas and axis is a type of", o: ["Fibrous joint", "Cartilaginous joint", "Synovial joint", "Saddle joint"], a: 2},
+    {q: "Myelin sheath is produced by", o: ["Astrocytes", "Schwann cells and Oligodendrocytes", "Osteoclasts", "Microglia"], a: 1},
+    {q: "Which part of the brain is responsible for thermoregulation?", o: ["Cerebrum", "Cerebellum", "Hypothalamus", "Medulla"], a: 2},
+    {q: "The gap between two neurons is called", o: ["Axon", "Synapse", "Dendrite", "Node of Ranvier"], a: 1},
+    {q: "Photosensitive compound in human eye is made up of", o: ["Guanosine and Retinol", "Opsin and Retinal", "Opsin and Retinol", "Transducin"], a: 1},
+    {q: "Which hormone is known as the emergency hormone?", o: ["Thyroxine", "Adrenaline", "Insulin", "Glucagon"], a: 1},
+    {q: "Diabetes insipidus is caused by the deficiency of", o: ["Insulin", "Glucagon", "ADH", "ACTH"], a: 2},
+    {q: "Which gland secretes melatonin?", o: ["Pituitary", "Pineal", "Thyroid", "Thymus"], a: 1},
+    {q: "The 'master gland' of the endocrine system is", o: ["Thyroid", "Adrenal", "Pituitary", "Pancreas"], a: 2},
+    {q: "Glucagon is secreted by which cells of the Pancreas?", o: ["Alpha cells", "Beta cells", "Delta cells", "F cells"], a: 0},
+    {q: "Graves' disease is caused due to", o: ["Hypothyroidism", "Hyperthyroidism", "Hypoadrenalism", "Hyperadrenalism"], a: 1},
+    {q: "Which hormone stimulates the production of RBCs?", o: ["Cortisol", "Erythropoietin", "Adrenaline", "Thyroxine"], a: 1},
+    {q: "The joint found between the carpals is", o: ["Gliding joint", "Hinge joint", "Pivot joint", "Saddle joint"], a: 0},
+    {q: "Vomiting center is located in the", o: ["Medulla", "Pons", "Cerebrum", "Hypothalamus"], a: 0},
+    {q: "Succus entericus is the name given to", o: ["Gastric juice", "Intestinal juice", "Pancreatic juice", "Bile"], a: 1},
+    {q: "Standard blood pressure of a healthy adult is", o: ["100/80 mm Hg", "120/80 mm Hg", "140/90 mm Hg", "80/120 mm Hg"], a: 1},
+    {q: "Which of the following is a multinucleated muscle?", o: ["Smooth muscle", "Skeletal muscle", "Cardiac muscle", "Involuntary muscle"], a: 1},
+    {q: "The 'Lub' sound of the heart is produced during", o: ["Closure of semilunar valves", "Closure of AV valves", "Opening of semilunar valves", "Opening of AV valves"], a: 1},
+    {q: "Vital capacity is", o: ["IRV + ERV", "IRV + ERV + TV", "IRV + ERV + TV + RV", "IRV + RV"], a: 1},
+    {q: "Kupffer cells are found in", o: ["Pancreas", "Liver", "Small Intestine", "Spleen"], a: 1},
+    {q: "The hormone that maintains diurnal rhythm is", o: ["Thymosin", "Melatonin", "Adrenaline", "Glucagon"], a: 1},
+    {q: "Reabsorption of Na+ and water under Aldosterone occurs in", o: ["PCT", "Loop of Henle", "DCT", "Bowman's Capsule"], a: 2},
+    {q: "Corpus callosum connects", o: ["Two cerebral hemispheres", "Two optic lobes", "Cerebrum and cerebellum", "Pons and Medulla"], a: 0},
+    {q: "Which vitamin is synthesized by bacteria in the large intestine?", o: ["Vitamin A", "Vitamin C", "Vitamin K", "Vitamin D"], a: 2},
+    {q: "A person with 'O' blood group has", o: ["No antigens", "No antibodies", "Both A and B antigens", "Anti-O antibodies"], a: 0},
+    {q: "Pneumotaxic center is present in", o: ["Cerebrum", "Cerebellum", "Pons", "Medulla"], a: 2},
+    {q: "The dark bands in muscle fibers are called", o: ["I-bands", "A-bands", "H-zone", "Z-line"], a: 1}
+  ],
+
+
+"reproducton": [
+    {q: "Which of the following is a non-motile spore found in Fungi?", o: ["Zoospore", "Conidia", "Gemmule", "Bud"], a: 1},
+    {q: "In which of the following plants does vegetative propagation occur via offsets?", o: ["Onion", "Water Hyacinth", "Ginger", "Banana"], a: 1},
+    {q: "Strobilanthes kunthiana (Neelakuranji) flowers once in every", o: ["5 years", "12 years", "20 years", "50 years"], a: 1},
+    {q: "The ploidy level of the cells of the nucellus is", o: ["n", "2n", "3n", "4n"], a: 1},
+    {q: "The microsporangium is surrounded by four wall layers; the innermost is", o: ["Epidermis", "Endothecium", "Middle layers", "Tapetum"], a: 3},
+    {q: "Which of the following is the most resistant organic material known in the pollen exine?", o: ["Cellulose", "Pectin", "Sporopollenin", "Lignin"], a: 2},
+    {q: "Transfer of pollen grains from the anther to the stigma of another flower of the same plant is", o: ["Autogamy", "Geitonogamy", "Xenogamy", "Cleistogamy"], a: 1},
+    {q: "The filiform apparatus is a characteristic feature of", o: ["Egg", "Synergids", "Antipodals", "Zygote"], a: 1},
+    {q: "A typical angiosperm embryo sac at maturity is", o: ["8-nucleate, 8-celled", "7-nucleate, 8-celled", "8-nucleate, 7-celled", "7-nucleate, 7-celled"], a: 2},
+    {q: "The phenomenon of double fertilization was discovered by", o: ["Strasburger", "Nawaschin", "Maheshwari", "Hofmeister"], a: 1},
+    {q: "Endosperm in angiosperms is generally", o: ["Haploid", "Diploid", "Triploid", "Tetraploid"], a: 2},
+    {q: "In a cereal grain (like maize), the single cotyledon is called", o: ["Coleoptile", "Coleorhiza", "Scutellum", "Epiblast"], a: 2},
+    {q: "Formation of seeds without fertilization is called", o: ["Parthenocarpy", "Apomixis", "Polyembryony", "Emasculation"], a: 1},
+    {q: "The lead-like structure that covers the glans penis is called", o: ["Epididymis", "Prepuce", "Scrotum", "Hymen"], a: 1},
+    {q: "Sertoli cells are found in the testes and provide", o: ["Testosterone", "Nutrition to germ cells", "Mucus", "Estrogen"], a: 1},
+    {q: "The correct sequence of spermatogenesis is", o: ["Spermatogonia -> Spermatocyte -> Spermatid -> Spermatozoa", "Spermatid -> Spermatocyte -> Spermatogonia -> Spermatozoa", "Spermatocyte -> Spermatid -> Spermatogonia -> Spermatozoa", "Spermatogonia -> Spermatid -> Spermatocyte -> Spermatozoa"], a: 0},
+    {q: "The middle piece of the mammalian sperm contains", o: ["Nucleus", "Centriole", "Mitochondria", "Vacuole"], a: 2},
+    {q: "The process of release of a mature ovum from the Graafian follicle is", o: ["Gestation", "Ovulation", "Menstruation", "Implantation"], a: 1},
+    {q: "The first milk produced after child birth is called", o: ["Serum", "Colostrum", "Plasma", "Casein"], a: 1},
+    {q: "Cleavage in the human zygote is", o: ["Holoblastic and unequal", "Holoblastic and equal", "Meroblastic", "Diploblastic"], a: 1},
+    {q: "The finger-like projections that appear on the trophoblast after implantation are", o: ["Chorionic villi", "Amnion", "Placenta", "Yolk sac"], a: 0},
+    {q: "The hormone detected in the urine of a pregnant woman for testing is", o: ["Estrogen", "Progesterone", "hCG", "Relaxin"], a: 2},
+    {q: "The structural and functional unit between the developing embryo and maternal body is", o: ["Umbilical cord", "Placenta", "Amnion", "Allantois"], a: 1},
+    {q: "Which hormone is mainly responsible for the 'milk ejection reflex'?", o: ["Prolactin", "Oxytocin", "Estrogen", "Progesterone"], a: 1},
+    {q: "Signals for parturition originate from", o: ["Placenta only", "Fully developed fetus only", "Both placenta and fully developed fetus", "Oxytocin from maternal pituitary"], a: 2},
+    {q: "Saheli, a new oral contraceptive for females, was developed at", o: ["AIIMS", "CDRI, Lucknow", "IISC", "ICMR"], a: 1},
+    {q: "The statutory ban on amniocentesis is to check", o: ["Genetic disorders", "Female foeticide", "Metabolic disorders", "Congenital defects"], a: 1},
+    {q: "What is the expansion of RCH program?", o: ["Routine Child Health", "Reproductive and Child Health care", "Research in Child Health", "Reproduction and Care of Health"], a: 1},
+    {q: "Copper ions released from Cu-T", o: ["Make uterus unsuitable for implantation", "Increase phagocytosis of sperms", "Suppress sperm motility", "Prevent ovulation"], a: 2},
+    {q: "Lippes loop is an example of", o: ["Hormone releasing IUD", "Copper releasing IUD", "Non-medicated IUD", "Barrier method"], a: 2},
+    {q: "Which of the following is a permanent method of contraception?", o: ["IUD", "Tubectomy", "Condoms", "Pills"], a: 1},
+    {q: "The 'Emergency Contraceptives' are effective if used within", o: ["72 hrs of coitus", "48 hrs of coitus", "24 hrs of coitus", "12 hrs of coitus"], a: 0},
+    {q: "Medical Termination of Pregnancy (MTP) is considered safe up to", o: ["12 weeks", "18 weeks", "20 weeks", "24 weeks"], a: 0},
+    {q: "Which of the following is a sexually transmitted disease caused by a virus?", o: ["Gonorrhoea", "Syphilis", "Genital Herpes", "Chlamydiasis"], a: 2},
+    {q: "The technique called Gamete Intra Fallopian Transfer (GIFT) is recommended for those females", o: ["Who cannot produce an ovum", "Who cannot retain the fetus", "Who have blocked cervical canal", "Who cannot provide suitable environment for fertilization"], a: 0},
+    {q: "In vitro fertilization (IVF) is a technique that involves transfer of which one of the following into the fallopian tube?", o: ["Zygote only", "Embryo only", "Zygote or early embryo up to 8 blastomeres", "Embryo of 32 cell stage"], a: 2},
+    {q: "Hysterectomy is the surgical removal of", o: ["Vas deferens", "Mammary glands", "Uterus", "Prostate gland"], a: 2},
+    {q: "The function of the corpus luteum is to produce", o: ["Relaxin", "HCG", "Progesterone", "LH"], a: 2},
+    {q: "Menstrual flow occurs due to the lack of", o: ["FSH", "Oxytocin", "Vasopressin", "Progesterone"], a: 3},
+    {q: "Which part of the ovary in mammals acts as an endocrine gland after ovulation?", o: ["Stroma", "Germinal epithelium", "Graafian follicle", "Vitelline membrane"], a: 2},
+    {q: "A person who is taking 'Saheli' should take the pill", o: ["Daily", "Weekly", "Monthly", "Once in 15 days"], a: 1},
+    {q: "Artificial insemination means", o: ["Transfer of sperms of husband to a test tube containing ova", "Artificial introduction of sperms of a healthy donor into the vagina", "Introduction of sperms of a healthy donor directly into the ovary", "Transfer of sperms of a healthy donor to a test tube"], a: 1},
+    {q: "The fluid-filled cavity of the follicle is called", o: ["Antrum", "Blastocoel", "Archenteron", "Vitreous humor"], a: 0},
+    {q: "Which layer of the uterus undergoes cyclical changes during the menstrual cycle?", o: ["Perimetrium", "Myometrium", "Endometrium", "Mesometrium"], a: 2},
+    {q: "Primary spermatocytes are", o: ["Haploid", "Diploid", "Triploid", "Aneuploid"], a: 1},
+    {q: "The number of autosomes in a human primary spermatocyte is", o: ["46", "44", "23", "22"], a: 1},
+    {q: "Persistent nucellus in the seed is known as", o: ["Perisperm", "Chalaza", "Tegmen", "Hilum"], a: 0},
+    {q: "The coconut water from tender coconut represents", o: ["Free nuclear endosperm", "Cellular endosperm", "Endocarp", "Mesocarp"], a: 0},
+    {q: "Attractants and rewards are required for", o: ["Anemophily", "Entomophily", "Hydrophily", "Cleistogamy"], a: 1},
+    {q: "Which of the following is not a male accessory gland?", o: ["Seminal vesicle", "Ampulla", "Prostate", "Bulbourethral gland"], a: 1}
+  ],
+
+  "Genetics and Evolution": [
+    {q: "The term 'Genetics' was proposed by", o: ["Mendel", "Morgan", "Bateson", "Punnett"], a: 2},
+    {q: "The F2 phenotypic ratio of a dihybrid cross is", o: ["3:1", "1:2:1", "9:3:3:1", "1:1:1:1"], a: 2},
+    {q: "Test cross is used to determine", o: ["Genotype of F2 plant", "Phenotype of F2 plant", "Number of alleles", "Dominance of trait"], a: 0},
+    {q: "ABO blood grouping in humans is an example of", o: ["Incomplete dominance", "Co-dominance and multiple allelism", "Pleiotropy", "Polygenic inheritance"], a: 1},
+    {q: "The distance between genes and percentage of recombination shows", o: ["Direct relationship", "Inverse relationship", "Parallel relationship", "No relationship"], a: 0},
+    {q: "Which of the following is a sex-linked recessive disorder?", o: ["Sickle cell anemia", "Haemophilia", "Phenylketonuria", "Cystic fibrosis"], a: 1},
+    {q: "The chromosomal mechanism of sex determination in grasshoppers is", o: ["XO type", "XY type", "ZW type", "ZZ type"], a: 0},
+    {q: "Turner's syndrome is characterized by which chromosomal constitution?", o: ["44+XXY", "44+XO", "44+XYY", "45+XX"], a: 1},
+    {q: "The nitrogenous base absent in DNA is", o: ["Adenine", "Guanine", "Cytosine", "Uracil"], a: 3},
+    {q: "The double helix model of DNA was proposed by", o: ["Griffith", "Watson and Crick", "Hershey and Chase", "Meselson and Stahl"], a: 1},
+    {q: "One turn of the DNA helix contains how many base pairs?", o: ["5", "10", "12", "20"], a: 1},
+    {q: "The semi-conservative nature of DNA replication was first shown in", o: ["Drosophila", "Escherichia coli", "Vicia faba", "Streptococcus"], a: 1},
+    {q: "The enzyme that joins the Okazaki fragments is", o: ["DNA Polymerase", "DNA Ligase", "Helicase", "Primase"], a: 1},
+    {q: "The process of copying genetic information from DNA to RNA is", o: ["Replication", "Translation", "Transcription", "Reverse transcription"], a: 2},
+    {q: "In the Lac Operon, the 'i' gene codes for", o: ["Inducer", "Repressor", "Beta-galactosidase", "Permease"], a: 1},
+    {q: "The initiator codon in most organisms is", o: ["UAA", "UGA", "AUG", "UAG"], a: 2},
+    {q: "How many codons code for amino acids out of 64?", o: ["61", "64", "20", "3"], a: 0},
+    {q: "DNA fingerprinting involves identifying differences in specific regions called", o: ["Satellite DNA", "Coding DNA", "Exons", "Promoters"], a: 0},
+    {q: "The theory of Spontaneous Generation was dismissed by", o: ["Oparin", "Louis Pasteur", "Haldane", "Miller"], a: 1},
+    {q: "Analogous organs arise due to", o: ["Divergent evolution", "Convergent evolution", "Genetic drift", "Artificial selection"], a: 1},
+    {q: "The wings of a butterfly and the wings of a bird are", o: ["Homologous organs", "Analogous organs", "Vestigial organs", "Atavistic organs"], a: 1},
+    {q: "Industrial melanism in England is an example of", o: ["Natural selection", "Mutation", "Genetic drift", "Gene flow"], a: 0},
+    {q: "The Hardy-Weinberg equation is", o: ["p + q = 1", "p² + 2pq + q² = 1", "p² + q² = 1", "p + 2pq + q = 1"], a: 1},
+    {q: "The concept of 'Survival of the Fittest' was given by", o: ["Lamarck", "Darwin", "Hugo de Vries", "Wallace"], a: 1},
+    {q: "Hugo de Vries based his 'Mutation Theory' on his work with", o: ["Pisum sativum", "Oenothera lamarckiana", "Drosophila", "Althea rosea"], a: 1},
+    {q: "The first human-like hominid was", o: ["Homo habilis", "Homo erectus", "Australopithecus", "Neanderthal man"], a: 0},
+    {q: "Genetic drift operates only in", o: ["Large populations", "Small populations", "Island populations", "Mendelian populations"], a: 1},
+    {q: "Which gas was absent in the primitive atmosphere of Earth?", o: ["Methane", "Ammonia", "Oxygen", "Water vapour"], a: 2},
+    {q: "The most recent ancestor of modern humans is", o: ["Cro-Magnon man", "Neanderthal man", "Homo erectus", "Ramapithecus"], a: 0},
+    {q: "Evolution is a", o: ["Discontinuous process", "Fast process", "Stochastic process", "Predictable process"], a: 2},
+    {q: "A true breeding plant is one that", o: ["Produced by cross-pollination", "Shows stable trait inheritance", "Is always homozygous", "Both 1 and 2"], a: 1},
+    {q: "Sickle cell anemia is caused by a change in which amino acid?", o: ["Valine to Glutamic acid", "Glutamic acid to Valine", "Glycine to Valine", "Leucine to Valine"], a: 1},
+    {q: "The centromere is required for", o: ["DNA replication", "Transcription", "Crossing over", "Poleward movement of chromosomes"], a: 3},
+    {q: "A unit of eight histones with DNA wrapped around it is", o: ["Nucleosome", "Chromatid", "Centromere", "Genophore"], a: 0},
+    {q: "RNA polymerase II is responsible for transcription of", o: ["rRNA", "tRNA", "hnRNA", "snRNA"], a: 2},
+    {q: "Splicing is the process where", o: ["Exons are removed", "Introns are removed", "Promoters are added", "Poly-A tail is added"], a: 1},
+    {q: "Chargaff's rule states that in a DNA molecule", o: ["A=C", "A+T = G+C", "A+G = T+C", "A=U"], a: 2},
+    {q: "The 'Central Dogma' of molecular biology was proposed by", o: ["Watson", "Crick", "Mendel", "Morgan"], a: 1},
+    {q: "The experiment that proved DNA is the genetic material was by", o: ["Griffith", "Hershey and Chase", "Avery et al.", "Meselson"], a: 1},
+    {q: "The process of translation occurs in the", o: ["Nucleus", "Cytoplasm", "Nucleolus", "Lysosomes"], a: 1},
+    {q: "Which of the following is a start codon?", o: ["UAG", "UGA", "AUG", "UAA"], a: 2},
+    {q: "Thorns of Bougainvillea and tendrils of Cucurbita are", o: ["Analogous", "Homologous", "Vestigial", "Rudimentary"], a: 1},
+    {q: "The 'Founder Effect' is related to", o: ["Natural selection", "Genetic drift", "Mutation", "Gene migration"], a: 1},
+    {q: "Darwin's Finches are an excellent example of", o: ["Adaptive radiation", "Seasonal migration", "Brood parasitism", "Industrial melanism"], a: 0},
+    {q: "Life appeared on earth approximately how many billion years ago?", o: ["500 million", "4 billion", "2 billion", "3 billion"], a: 1},
+    {q: "The Brain capacity of Homo erectus was about", o: ["650cc", "900cc", "1400cc", "1600cc"], a: 1},
+    {q: "Down's syndrome is due to", o: ["Monosomy", "Nullisomy", "Trisomy of 21st chromosome", "Trisomy of 18th chromosome"], a: 2},
+    {q: "A person having XXY genotype suffers from", o: ["Turner's syndrome", "Klinefelter's syndrome", "Edward's syndrome", "Patau's syndrome"], a: 1},
+    {q: "Who proposed that 'Life comes only from pre-existing life'?", o: ["Aristotle", "Louis Pasteur", "Oparin", "Miller"], a: 1},
+    {q: "The presence of gill slits in the embryos of all vertebrates supports", o: ["Biogenetic Law", "Natural selection", "Mutation theory", "Spontaneous generation"], a: 0}
+  ],
+
+
+  "Biology and Human Welfare": [
+    {q: "Which of the following is a bacterial disease?", o: ["Measles", "Small pox", "Tuberculosis", "Influenza"], a: 2},
+    {q: "The substance produced by a cell in viral infection that can protect other cells from further infection is", o: ["Serotonin", "Interferon", "Colostrum", "Histamine"], a: 1},
+    {q: "Antibodies present in colostrum which protect the new born from certain diseases is of", o: ["IgG type", "IgA type", "IgD type", "IgE type"], a: 1},
+    {q: "Malignant malaria is caused by", o: ["Plasmodium vivax", "Plasmodium malariae", "Plasmodium falciparum", "Plasmodium ovale"], a: 2},
+    {q: "Widal test is used for the diagnosis of", o: ["Malaria", "Typhoid", "Pneumonia", "Tuberculosis"], a: 1},
+    {q: "The infectious stage of Plasmodium that enters the human body is", o: ["Sporozoites", "Trophozoites", "Gametocytes", "Merozoites"], a: 0},
+    {q: "The chemical test used to diagnose AIDS is", o: ["Widal test", "ELISA", "PCR", "MRI"], a: 1},
+    {q: "Which of the following is an autoimmune disease?", o: ["Asthma", "Rheumatoid arthritis", "Cirrhosis", "AIDS"], a: 1},
+    {q: "Heroin is commonly called as", o: ["Coke", "Crack", "Smack", "Charas"], a: 2},
+    {q: "Transplantation of tissues/organs to save certain patients often fails due to rejection of such tissues/organs by the patient. Which type of immune response is responsible for such rejections?", o: ["Auto-immune response", "Humoral immune response", "Physiological immune response", "Cell-mediated immune response"], a: 3},
+    {q: "The use of antihistamines, adrenalin and steroids quickly reduce the symptoms of", o: ["Allergy", "Nausea", "Cough", "Headache"], a: 0},
+    {q: "MALT constitutes about percent of the lymphoid tissue in human body", o: ["20%", "70%", "10%", "50%"], a: 3},
+    {q: "Cyclosporin-A, an immunosuppressive agent, is produced by", o: ["Aspergillus niger", "Trichoderma polysporum", "Saccharomyces cerevisiae", "Monascus purpureus"], a: 1},
+    {q: "Statins, a blood-cholesterol lowering agent, is derived from", o: ["Monascus purpureus", "Acetobacter aceti", "Clostridium butylicum", "Streptococcus"], a: 0},
+    {q: "The first antibiotic to be discovered was", o: ["Streptomycin", "Penicillin", "Neomycin", "Bacitracin"], a: 1},
+    {q: "Big holes in 'Swiss cheese' are made by a", o: ["Bacterium producing methane gas", "Machine", "Fungus that releases a lot of CO2", "Bacterium producing a large amount of CO2"], a: 3},
+    {q: "The primary treatment of sewage involves", o: ["Bacterial action", "Filtration and sedimentation", "Biological oxygen demand", "Chlorination"], a: 1},
+    {q: "BOD of waste water is estimated by measuring the amount of", o: ["Total organic matter", "Biodegradable organic matter", "Oxygen consumption", "Oxygen evolution"], a: 2},
+    {q: "Baculoviruses are excellent candidates for", o: ["Species-specific narrow spectrum insecticidal applications", "Broad spectrum applications", "Killing all useful insects", "Increasing pollution"], a: 0},
+    {q: "Which of the following is a nitrogen-fixing symbiotic bacterium?", o: ["Rhizobium", "Azotobacter", "Azospirillum", "Nitrosomonas"], a: 0},
+    {q: "The puffed-up appearance of dough is due to fermentation by bacteria and production of", o: ["O2", "CO2", "SO2", "NO2"], a: 1},
+    {q: "An enzyme used to dissolve blood clots in patients with heart attack is", o: ["Protease", "Lipase", "Streptokinase", "Amylase"], a: 2},
+    {q: "Methanogens grow anaerobically on cellulosic material and produce", o: ["Methane", "Methane and CO2", "Methane, CO2 and H2", "Methane and H2"], a: 2},
+    {q: "An organism used as a biofertilizer for raising soybean crop is", o: ["Azotobacter", "Azospirillum", "Rhizobium", "Nostoc"], a: 2},
+    {q: "The technology of biogas production was developed in India mainly due to the efforts of", o: ["KVIC and IARI", "ICAR", "CSIR", "WHO"], a: 0},
+    {q: "Ladybird and Dragonflies are used to get rid of", o: ["Aphids and Mosquitoes", "Locusts", "Bacteria", "Fungi"], a: 0},
+    {q: "Somaclones are obtained by", o: ["Plant breeding", "Irradiation", "Genetic engineering", "Tissue culture"], a: 3},
+    {q: "The entire plant could be regenerated from any part of the plant, this capacity is called", o: ["Pluripotency", "Totipotency", "Multipotency", "Unipotency"], a: 1},
+    {q: "Which part of the plant is best suited for making virus-free plants?", o: ["Node", "Meristem", "Bark", "Vascular tissue"], a: 1},
+    {q: "Hissardale is a new breed of sheep developed in Punjab by crossing", o: ["Bikaneri ewes and Merino rams", "Dolly and Molly", "Sahiwal and Red Sindhi", "Jersey and Holstein"], a: 0},
+    {q: "In MOET, the cow is administered hormones with", o: ["LH like activity", "FSH like activity", "Progesterone like activity", "Estrogen like activity"], a: 1},
+    {q: "Inbreeding depression is caused by", o: ["Cross breeding", "Out-crossing", "Continuous close inbreeding", "Interspecific hybridization"], a: 2},
+    {q: "Which of the following is a semi-dwarf variety of wheat developed in India?", o: ["Sonalika", "Jaya", "Ratna", "IR-8"], a: 0},
+    {q: "Atlas 66 is a variety of wheat known for high content of", o: ["Vitamin C", "Protein", "Iron", "Calcium"], a: 1},
+    {q: "Parbhani kranti, a variety of bhindi, is resistant to", o: ["Bacterial blight", "Yellow mosaic virus", "Shoot and fruit borer", "Aphids"], a: 1},
+    {q: "A collection of all the alleles of all the genes of a crop is called", o: ["Germplasm collection", "Gene bank", "Herbarium", "Genome"], a: 0},
+    {q: "The best breeding method for animals that are below average in productivity is", o: ["Inbreeding", "Out-crossing", "Cross-breeding", "Interspecific hybridization"], a: 1},
+    {q: "Honeybees also produce which of the following used in medicine?", o: ["Nectar", "Pollen", "Beeswax", "Royal jelly"], a: 2},
+    {q: "The most common species of honeybee in India is", o: ["Apis mellifera", "Apis dorsata", "Apis indica", "Apis florea"], a: 2},
+    {q: "Pusa Swarnim is a variety of Brassica resistant to", o: ["White rust", "Leaf curl", "Black rot", "Downy mildew"], a: 0},
+    {q: "The major component of biogas is", o: ["Butane", "Methane", "Propane", "Ethane"], a: 1},
+    {q: "Protoplast fusion is aided by", o: ["PEG and Sodium nitrate", "IAA and Kinetin", "Gibberellin", "ABA"], a: 0},
+    {q: "Elephantiasis is caused by", o: ["Wuchereria bancrofti", "Ascaris lumbricoides", "Entamoeba histolytica", "Microsporum"], a: 0},
+    {q: "A person with 'X' disease shows internal bleeding, muscular pain, fever, anemia and blockage of the intestinal passage. 'X' is", o: ["Typhoid", "Filariasis", "Ascariasis", "Amoebiasis"], a: 2},
+    {q: "Ringworm in humans is caused by", o: ["Bacteria", "Fungi", "Nematodes", "Viruses"], a: 1},
+    {q: "Tobacco consumption is known to stimulate secretion of adrenaline and nor-adrenaline. The component causing this is", o: ["Nicotine", "Tannic acid", "Curcumin", "Catechin"], a: 0},
+    {q: "Morphine is extracted from the", o: ["Leaves of Cannabis sativa", "Flowers of Datura", "Fruits of Erythroxylum coca", "Latex of Papaver somniferum"], a: 3},
+    {q: "The yellowish fluid colostrum has abundant antibodies to provide", o: ["Active immunity", "Passive immunity", "Innate immunity", "Cellular immunity"], a: 1},
+    {q: "Which of the following is not a lymphoid organ?", o: ["Thymus", "Spleen", "Kidney", "Appendix"], a: 2},
+    {q: "At which stage of HIV infection does one usually show symptoms of AIDS?", o: ["Within 15 days of sexual contact", "When the viral DNA is produced by reverse transcriptase", "When HIV replicates rapidly in helper T-lymphocytes and damages them", "When the infecting retrovirus enters host cells"], a: 2}
+  ],
+
+
+"biotechnology and it's applications": [
+    {q: "Which of the following is known as 'molecular scissors'?", o: ["DNA Ligase", "Restriction Enzymes", "Polymerase", "Helicase"], a: 1},
+    {q: "The first restriction endonuclease discovered was", o: ["EcoRI", "HindII", "BamHI", "SalI"], a: 1},
+    {q: "In pBR322, 'p' stands for", o: ["Protein", "Plastid", "Plasmid", "Plant"], a: 2},
+    {q: "DNA fragments are negatively charged, so they move towards", o: ["Anode", "Cathode", "Center", "Nowhere"], a: 0},
+    {q: "The process of separation and purification of expressed protein is", o: ["Upstream processing", "Downstream processing", "Bioprocessing", "Post-production"], a: 1},
+    {q: "Stirred-tank bioreactors have been designed for", o: ["Purification of product", "Addition of preservatives", "Availability of oxygen throughout the process", "Ensuring anaerobic conditions"], a: 2},
+    {q: "T-DNA is found in", o: ["Saccharomyces", "Agrobacterium", "Bacillus thuringiensis", "E. coli"], a: 1},
+    {q: "The linking of antibiotic resistance gene with the plasmid vector became possible with", o: ["DNA polymerase", "Exonucleases", "DNA ligase", "Endonucleases"], a: 2},
+    {q: "Gel electrophoresis is used for", o: ["Construction of recombinant DNA", "Isolation of DNA", "Cutting of DNA", "Separation of DNA fragments according to size"], a: 3},
+    {q: "A selectable marker is used to", o: ["Help in isolating the DNA", "Mark the gene of interest", "Help in identifying and eliminating non-transformants", "None of the above"], a: 2},
+    {q: "The correct sequence of steps in PCR is", o: ["Extension, Denaturation, Annealing", "Annealing, Extension, Denaturation", "Denaturation, Extension, Annealing", "Denaturation, Annealing, Extension"], a: 3},
+    {q: "Which enzyme is used in PCR?", o: ["DNA Polymerase I", "Taq Polymerase", "Ribonuclease", "RNA Polymerase"], a: 1},
+    {q: "Biolistics (gene-gun) is suitable for", o: ["Disarming pathogen vectors", "Transformation of plant cells", "Constructing recombinant DNA", "DNA fingerprinting"], a: 1},
+    {q: "The enzyme used to dissolve fungal cell wall is", o: ["Lysozyme", "Cellulase", "Chitinase", "Protease"], a: 2},
+    {q: "What is the function of 'ori' in a vector?", o: ["Origin of replication", "Site for antibiotic resistance", "Site for restriction enzyme", "Coding for proteins"], a: 0},
+    {q: "BT cotton is resistant to", o: ["Fungal diseases", "Insect pests", "Salt stress", "Drought"], a: 1},
+    {q: "The toxin produced by Bacillus thuringiensis is activated by", o: ["Acidic pH of stomach", "High temperature", "Alkaline pH of gut", "Mechanical action"], a: 2},
+    {q: "RNA interference (RNAi) is used to produce plants resistant to", o: ["Fungi", "Viruses", "Insects", "Nematodes"], a: 3},
+    {q: "The first human hormone produced by recombinant DNA technology is", o: ["Estrogen", "Thyroxine", "Insulin", "Progesterone"], a: 2},
+    {q: "In 'Humulin', the A and B chains are linked by", o: ["Hydrogen bonds", "Phosphodiester bonds", "Disulphide bridges", "Glycosidic bonds"], a: 2},
+    {q: "The first clinical gene therapy was given in 1990 to a 4-year-old girl with", o: ["Adenosine deaminase deficiency", "Cystic fibrosis", "Diabetes mellitus", "Sickle cell anemia"], a: 0},
+    {q: "Golden rice is a transgenic crop of the future with which improved trait?", o: ["High lysine content", "High methionine content", "High Vitamin A content", "High protein content"], a: 2},
+    {q: "Which organization in India makes decisions regarding the validity of GM research?", o: ["NCERT", "GEAC", "CSIR", "ICMR"], a: 1},
+    {q: "The use of bio-resources by multinational companies without proper authorization is", o: ["Biopiracy", "Bio-exploitation", "Bio-infringement", "Bio-ethics"], a: 0},
+    {q: "Which of the following is a transgenic cow?", o: ["Dolly", "Rosie", "Tracy", "Andi"], a: 1},
+    {q: "Rosie, the first transgenic cow, produced milk enriched with", o: ["Alpha-lactalbumin", "Beta-carotene", "Vitamin B12", "Iron"], a: 0},
+    {q: "Elution is the process of", o: ["Cutting DNA", "Separating DNA fragments", "Extracting DNA from agarose gel", "Staining DNA"], a: 2},
+    {q: "DNA stained with ethidium bromide is visible under", o: ["Visible light", "Infrared light", "UV radiation", "X-rays"], a: 2},
+    {q: "Palindromic sequences in DNA are read the same on both strands when", o: ["Read in any direction", "Orientation of reading is kept same", "Read in 3' to 5' only", "None of the above"], a: 1},
+    {q: "The thermostable Taq polymerase is isolated from", o: ["Agrobacterium tumefaciens", "Thermus aquaticus", "Bacillus thuringiensis", "Escherichia coli"], a: 1},
+    {q: "Which of the following is used as a vector for cloning genes into higher organisms?", o: ["Baculovirus", "Salmonella typhimurium", "Rhizopus nigricans", "Retrovirus"], a: 3},
+    {q: "To make a host cell 'competent', it is treated with a specific concentration of", o: ["Monovalent cation", "Divalent cation like Calcium", "Divalent anion", "Heat shock only"], a: 1},
+    {q: "A chimaeric DNA is", o: ["Circular DNA", "Single stranded DNA", "Recombinant DNA", "Viral DNA"], a: 2},
+    {q: "The most commonly used bioreactor is", o: ["Simple stirred-tank", "Sparged stirred-tank", "Anaerobic digester", "Static bioreactor"], a: 0},
+    {q: "The primer used in PCR is", o: ["Single stranded DNA", "Double stranded DNA", "Single stranded RNA", "Protein"], a: 0},
+    {q: "The site of production of ADA in the body is", o: ["Bone marrow", "Lymphocytes", "Blood plasma", "Liver"], a: 1},
+    {q: "Transgenic animals are those which have", o: ["Foreign DNA in some of its cells", "Foreign DNA in all of its cells", "Foreign RNA in all of its cells", "Both 1 and 2"], a: 1},
+    {q: "Alpha-1-antitrypsin is used to treat", o: ["Asthma", "Emphysema", "Bronchitis", "Cancer"], a: 1},
+    {q: "The 'Cry' genes code for", o: ["Crystal proteins", "Cytoplasmic proteins", "Cryogenic proteins", "Cellular proteins"], a: 0},
+    {q: "The nematode that infects the roots of tobacco plants is", o: ["Meloidegyne incognita", "Ascaris lumbricoides", "Wuchereria bancrofti", "Ancylostoma"], a: 0},
+    {q: "Pro-insulin contains an extra stretch called", o: ["A-peptide", "B-peptide", "C-peptide", "D-peptide"], a: 2},
+    {q: "Which trigger activates the Bt toxin in the insect?", o: ["Acidic pH", "High pressure", "Alkaline pH", "Specific enzyme"], a: 2},
+    {q: "How many varieties of rice are estimated to be in India?", o: ["2,000", "20,000", "200,000", "2,000,000"], a: 2},
+    {q: "In 1997, which company got patent rights on Basmati rice?", o: ["A French company", "An Indian company", "A US company", "A Japanese company"], a: 2},
+    {q: "PCR is used for", o: ["Detecting HIV", "Detecting mutations in genes", "Amplifying DNA", "All of the above"], a: 3},
+    {q: "The technique used to check the progression of restriction enzyme digestion is", o: ["PCR", "Agarose gel electrophoresis", "Downstream processing", "Transformation"], a: 1},
+    {q: "EcoRI cuts DNA at the sequence", o: ["GGATCC", "GAATTC", "AGCT", "GATATC"], a: 1},
+    {q: "The DNA polymerase used in PCR is stable at", o: ["Low temperature", "High temperature", "Neutral pH", "High pressure"], a: 1},
+    {q: "The term used for the movement of DNA from one organism to another via a vector is", o: ["Translation", "Transduction", "Transcription", "Transversion"], a: 1},
+    {q: "Which was the first transgenic animal?", o: ["Sheep", "Mice", "Cow", "Rabbit"], a: 1}
+  ],
+
+  "ecology and enviroment": [
+    {q: "The term 'Ecology' was coined by", o: ["Aristotle", "Reiter", "Ernst Haeckel", "Humboldt"], a: 2},
+    {q: "Niche is", o: ["All the biological factors in the organism's environment", "The physical space where an organism lives", "The functional role played by the organism where it lives", "The range of temperature that the organism needs to live"], a: 2},
+    {q: "Which of the following are most suitable indicators of SO2 pollution in the environment?", o: ["Algae", "Fungi", "Lichens", "Conifers"], a: 2},
+    {q: "Amensalism is an association between two species where", o: ["One species is harmed and other is unaffected", "One species is benefitted and other is unharmed", "Both species are harmed", "Both species are benefitted"], a: 0},
+    {q: "Lichens are the associations of", o: ["Bacteria and fungus", "Algae and bacterium", "Fungus and algae", "Fungus and virus"], a: 2},
+    {q: "The salt concentration of the sea measured in parts per thousand is", o: ["10-15", "30-35", "0-5", "70-100"], a: 1},
+    {q: "Organisms that can tolerate and thrive in a wide range of temperatures are called", o: ["Stenothermal", "Eurythermal", "Homeotherms", "Poikilotherms"], a: 1},
+    {q: "In a growing population of a country", o: ["Pre-reproductive individuals are more than reproductive", "Reproductive individuals are less than post-reproductive", "Pre-reproductive individuals are less than reproductive", "Reproductive and pre-reproductive are equal"], a: 0},
+    {q: "The formula for exponential population growth is", o: ["dN/dt = rN", "dt/dN = rN", "dN/rn = dt", "rN/dN = dt"], a: 0},
+    {q: "Cuscuta is an example of", o: ["Ectoparasitism", "Endoparasitism", "Brood parasitism", "Predation"], a: 0},
+    {q: "Secondary succession takes place on/in", o: ["Newly cooled lava", "Bare rock", "Degraded forests", "Newly created pond"], a: 2},
+    {q: "The rate of formation of new organic matter by consumers is", o: ["Net primary productivity", "Gross primary productivity", "Secondary productivity", "Net community productivity"], a: 2},
+    {q: "Which of the following is a primary consumer in a water body?", o: ["Phytoplankton", "Zooplankton", "Small fish", "Whale"], a: 1},
+    {q: "The pyramid of energy is always", o: ["Inverted", "Upright", "Spindle shaped", "Urn shaped"], a: 1},
+    {q: "In an ecosystem, the cycling of nutrients is known as", o: ["Geological cycle", "Chemical cycle", "Biogeochemical cycle", "Biological cycle"], a: 2},
+    {q: "Which of the following ecosystem has the maximum biomass?", o: ["Grassland ecosystem", "Pond ecosystem", "Lake ecosystem", "Forest ecosystem"], a: 3},
+    {q: "The pioneer species in a xerarch succession are", o: ["Mosses", "Lichens", "Ferns", "Grasses"], a: 1},
+    {q: "Which one of the following is not a gaseous biogeochemical cycle in ecosystem?", o: ["Sulfur cycle", "Phosphorus cycle", "Nitrogen cycle", "Carbon cycle"], a: 1},
+    {q: "Vertical distribution of different species occupying different levels in a biotic community is known as", o: ["Zonation", "Stratification", "Pyramid", "Divergence"], a: 1},
+    {q: "The mass of living material at a trophic level at a particular time is called", o: ["Net primary productivity", "Standing crop", "Gross primary productivity", "Standing state"], a: 1},
+    {q: "The Earth Summit held in Rio de Janeiro in 1992 was called", o: ["For reduction in CO2 emissions and global warming", "For conservation of biodiversity and sustainable utilization of its benefits", "To assess threat posed to native species by invasive species", "For immediate steps to discontinue use of CFCs"], a: 1},
+    {q: "Which of the following is an ex-situ conservation method?", o: ["National Park", "Wildlife Sanctuary", "Seed Bank", "Biosphere Reserve"], a: 2},
+    {q: "Alexander von Humboldt described for the first time", o: ["Laws of limiting factors", "Species area relationships", "Population Growth equation", "Ecological Pyramids"], a: 1},
+    {q: "The 'Evil Quartet' refers to", o: ["Four most major causes of biodiversity loss", "Four different types of ecosystems", "Four gases causing global warming", "Four levels of biological organization"], a: 0},
+    {q: "Which one of the following is related to Ex-situ conservation of threatened animals and plants?", o: ["Biodiversity hotspots", "Amazon rainforest", "Himalayan region", "Wildlife safari parks"], a: 3},
+    {q: "How many hot spots of biodiversity in the world have been identified till date?", o: ["17", "25", "34", "43"], a: 2},
+    {q: "The species confined to a particular region and not found anywhere else is termed as", o: ["Endemic", "Exotic", "Keystone", "Alien"], a: 0},
+    {q: "Which of the following is the most important cause of animals and plants being driven to extinction?", o: ["Over-exploitation", "Alien species invasion", "Habitat loss and fragmentation", "Co-extinctions"], a: 2},
+    {q: "What is the global species diversity according to Robert May?", o: ["1.5 million", "20 to 50 million", "7 million", "1.7 million"], a: 2},
+    {q: "The Red List of Threantened species is published by", o: ["WWF", "IUCN", "UNEP", "WHC"], a: 1},
+    {q: "Gause's principle of competitive exclusion states that", o: ["More abundant species will exclude the less abundant species through competition", "Competition for the same resources excludes species having different food preferences", "No two species can occupy the same niche indefinitely for the same limiting resources", "Larger organisms exclude smaller ones through competition"], a: 2},
+    {q: "Just as a person moving from Delhi to Shimla to escape the heat for the duration of hot summer, thousands of migratory birds from Siberia and other extremely cold northern regions move to", o: ["Western Ghat", "Keoladeo National Park", "Corbett National Park", "Kaziranga National Park"], a: 1},
+    {q: "Mac Arthur showed that five closely related species of warblers living on the same tree were able to avoid competition by", o: ["Migrating to different areas", "Resource partitioning", "Changing their mating time", "Developing different morphology"], a: 1},
+    {q: "Plants which produce characteristic pneumatophores and show vivipary belong to", o: ["Mesophytes", "Halophytes", "Psammophytes", "Hydrophytes"], a: 1},
+    {q: "Decomposition rate is slower if detritus is rich in", o: ["Nitrogen", "Water soluble substances like sugar", "Lignin and chitin", "Humus"], a: 2},
+    {q: "The amount of nutrients, such as carbon, nitrogen, phosphorus, and calcium present in the soil at any given time, is referred to as", o: ["Standing crop", "Climax community", "Standing state", "Standing stock"], a: 2},
+    {q: "Which of the following is not a producer?", o: ["Spirogyra", "Agaricus", "Volvox", "Nostoc"], a: 1},
+    {q: "During the process of ecological succession, the changes that take place in communities are", o: ["Orderly and sequential", "Random", "Very quick", "Not influenced by the physical environment"], a: 0},
+    {q: "Which of the following is the most ecologically relevant environmental factor?", o: ["Water", "Light", "Temperature", "Soil"], a: 2},
+    {q: "Small animals like shrews and hummingbirds are rarely found in polar regions because", o: ["They have a large surface area relative to their volume", "They are cold blooded", "They cannot run fast on snow", "They lack fur"], a: 0},
+    {q: "Kangaroo rat in North American deserts meets its water requirements by", o: ["Storing water in its hump", "Drinking salt water", "Internal fat oxidation", "Reducing sweat glands"], a: 2},
+    {q: "In the V-t graph of a logistic growth curve, the asymptote is reached when", o: ["r approaches zero", "K = N", "K > N", "K < N"], a: 1},
+    {q: "Verhulst-Pearl Logistic Growth is described by the equation", o: ["dN/dt = rN(K-N/K)", "dN/dt = rN", "Nt = N0 e^rt", "dN/dt = rN(K/K-N)"], a: 0},
+    {q: "Which of the following is a 'Lungs of the planet'?", o: ["Taiga forest", "Amazon rainforest", "Western Ghats", "Lake Victoria"], a: 1},
+    {q: "An example of a historical convention on biological diversity is", o: ["Montreal Protocol", "The Earth Summit", "Kyoto Protocol", "Helsinki Declaration"], a: 1},
+    {q: "Sacred groves are specially useful in", o: ["Generating environmental awareness", "Preventing soil erosion", "Year-round flow of water in rivers", "Conserving rare and threatened species"], a: 3},
+    {q: "The relation between species richness and area for a wide variety of taxa turns out to be a", o: ["Rectangular hyperbola", "Straight line", "Sigmoid curve", "S-shaped curve"], a: 0},
+    {q: "The value of Z (regression coefficient) for frugivorous birds and mammals in tropical forests of different continents is", o: ["0.1 to 0.2", "1.15", "0.6 to 1.2", "0.01"], a: 1},
+    {q: "Secondary productivity is the rate of formation of new organic matter by", o: ["Producer", "Parasite", "Consumer", "Decomposer"], a: 2},
+    {q: "Most animals are tree dwellers in a", o: ["Temperate deciduous forest", "Tropical rainforest", "Coniferous forest", "Thorn woodland"], a: 1}
+  ],
+
+
+};
+
+/* ---------------- UI LOGIC ---------------- */
+const app = document.getElementById("app");
+
+chapters.forEach(ch=>{
+  const div=document.createElement("div");
+  div.className="chapter";
+  div.innerHTML=`<h3>${ch}</h3>`;
+  div.onclick=()=>startTest(ch);
+  chapterList.appendChild(div);
+});
+
+let idx=0,score=0,currentQ=[],chapterName="";
+
+function startTest(ch){
+  chapterName=ch;
+  currentQ=[...questionBank[ch]];
+  idx=0;score=0;
+  loadQuestion();
+}
+
+function loadQuestion(){
+  const q=currentQ[idx];
+  app.innerHTML=`
+  <div class="test-box">
+    <div class="test-header">
+      <h2>${chapterName}</h2>
+      <div class="progress">Question ${idx+1} / 50</div>
+    </div>
+
+    <div class="question">${q.q}</div>
+    <div class="options">
+      ${q.o.map((o,i)=>`<div class="option" onclick="select(${i})">${o}</div>`).join("")}
+    </div>
+
+    <button class="hidden" id="nextBtn" onclick="next()">Next</button>
+  </div>`;
+}
+
+function select(i){
+  const q=currentQ[idx];
+  const opts=document.querySelectorAll(".option");
+  if(i===q.a){
+    opts[i].classList.add("correct");
+    correctSound.play();
+    score++;
+  }else{
+    opts[i].classList.add("wrong");
+    opts[q.a].classList.add("correct");
+    wrongSound.play();
+  }
+  document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function next(){
+  idx++;
+  if(idx<currentQ.length) loadQuestion();
+  else showResult();
+}
+
+function showResult(){
+  app.innerHTML=`
+  <div class="test-box">
+    <h2 style="text-align:center;color:#38bdf8">Test Completed</h2>
+    <p style="text-align:center;margin-top:12px">Score: ${score} / ${currentQ.length}</p>
+    <button onclick="location.reload()">Back to Chapters</button>
+  </div>`;
+}
+</script>
+
+</body>
+</html>

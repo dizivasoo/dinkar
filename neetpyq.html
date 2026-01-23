@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEET PYQs | Dinkar</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",system-ui,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:
+    linear-gradient(180deg,#f0fdf4,#ecfeff);
+  color:#052e16;
+}
+
+.page{
+  max-width:560px;
+  margin:auto;
+  padding:18px;
+}
+
+/* HEADER */
+.header{
+  padding:20px;
+  text-align:center;
+  border-radius:22px;
+  background:#ffffff;
+  box-shadow:0 18px 40px rgba(20,83,45,0.10);
+}
+
+.header h1{
+  font-size:24px;
+  font-weight:900;
+}
+
+.header p{
+  margin-top:6px;
+  font-size:13px;
+  color:#166534;
+}
+
+/* MODEL PAPER CARD */
+.hero{
+  margin:26px 0;
+  padding:34px 28px;
+  border-radius:26px;
+  background:linear-gradient(135deg,#14532d,#166534);
+  color:#ffffff;
+  box-shadow:0 28px 55px rgba(22,101,52,0.35);
+  cursor:pointer;
+  transition:.3s;
+}
+
+.hero:hover{
+  transform:translateY(-4px);
+}
+
+.hero h2{
+  font-size:22px;
+  font-weight:900;
+}
+
+.hero p{
+  margin-top:8px;
+  font-size:14px;
+  opacity:.9;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+/* YEAR CARD – DINKAR NEET STYLE */
+.card{
+  padding:28px 20px;
+  border-radius:22px;
+  background:#ffffff;
+  text-align:center;
+  cursor:pointer;
+  transition:.25s ease;
+  box-shadow:
+    0 16px 30px rgba(20,83,45,0.10);
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:
+    0 26px 55px rgba(20,83,45,0.16);
+}
+
+.card h3{
+  font-size:22px;
+  font-weight:900;
+}
+
+.card span{
+  display:block;
+  margin-top:6px;
+  font-size:12px;
+  color:#166534;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>NEET Previous Year Questions</h1>
+    <p>Dinkar • Year-wise PYQs</p>
+  </div>
+
+  <!-- MODEL PAPER -->
+  <div class="hero" onclick="openPDF('neet_model_paper.pdf')">
+    <h2>NEET Model Paper</h2>
+    <p>Biology • Physics • Chemistry</p>
+  </div>
+
+  <!-- YEAR CARDS -->
+  <div class="grid" id="grid"></div>
+
+</div>
+
+<script>
+const yearFiles = {
+  2025:"neet2025pyq.pdf",
+  2024:"neet2024pyq.pdf",
+  2023:"neet2023pyq.pdf",
+  2022:"neet2022pyq.pdf",
+  2021:"neet2021pyq.pdf",
+  2020:"neet2020pyq.pdf"
+};
+
+const grid = document.getElementById("grid");
+
+Object.keys(yearFiles)
+  .sort((a,b)=>b-a)
+  .forEach(y=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <h3>${y}</h3>
+      <span>Complete Question Paper</span>
+    `;
+    card.onclick=()=>openPDF(yearFiles[y]);
+    grid.appendChild(card);
+  });
+
+function openPDF(file){
+  window.location.href=file;
+}
+</script>
+
+</body>
+</html>

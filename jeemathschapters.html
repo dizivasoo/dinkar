@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE Maths – Dinkar</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,system-ui,sans-serif}
+
+body{
+  background:linear-gradient(135deg,#020617,#020617);
+  color:#fff;
+  min-height:100vh;
+}
+
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:16px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:18px;
+  font-size:22px;
+  font-weight:900;
+  color:#38bdf8;
+}
+
+/* CHAPTER LIST */
+.chapter{
+  padding:18px;
+  margin-bottom:14px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  border:1px solid #1e293b;
+  cursor:pointer;
+  transition:.2s;
+}
+.chapter:hover{transform:scale(1.02)}
+.chapter h3{font-size:16px;font-weight:700}
+
+/* TEST BOX */
+.test-box{
+  background:#020617;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid #1e293b;
+}
+
+.test-header{
+  text-align:center;
+  margin-bottom:12px;
+}
+.test-header h2{
+  font-size:18px;
+  color:#38bdf8;
+}
+.progress{
+  font-size:13px;
+  opacity:.8;
+  margin-top:4px;
+}
+
+.question{
+  margin:20px 0;
+  font-size:17px;
+  font-weight:600;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.option{
+  padding:14px;
+  border-radius:14px;
+  background:#020617;
+  border:1px solid #334155;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.option.correct{
+  background:#052e16;
+  border-color:#22c55e;
+  color:#22c55e;
+}
+
+.option.wrong{
+  background:#450a0a;
+  border-color:#ef4444;
+  color:#ef4444;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:16px;
+  border:none;
+  border-radius:14px;
+  background:#38bdf8;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+
+  <div class="header">JEE Maths – Dinkar</div>
+
+  <div id="chapterList"></div>
+
+</div>
+
+<!-- Sounds -->
+<audio id="correctSound" src="successed-295058.mp3"></audio>
+<audio id="wrongSound" src="error-010-206498.mp3"></audio>
+
+<script>
+/* ---------------- CHAPTERS ---------------- */
+const chapters = [
+ "Sets",
+"Relations and Functions",
+"Complex Numbers",
+"Quadratic Equations",
+"Matrices and Determinants",
+"Permutations and Combinations",
+"Binomial Theorem and Its Simple Applications",
+"Sequence and Series",
+"Limit and Continuity",
+"Differentiability",
+"Integral Calculus",
+"Differential Equations",
+"Coordinate Geometry",
+"Three-Dimensional Geometry",
+"Vector Algebra",
+"Statistics and Probability",
+"Trigonometry",
+
+];
+
+/* --------- SAMPLE VERY HARD QUESTIONS (PER CHAPTER) ---------
+You can add up to 20 per chapter (structure stays same) */
+
+const questionBank = {
+  "Sets": [
+    {q: "The set of all prime numbers is a/an", o: ["Finite set", "Infinite set", "Singleton set", "Empty set"], a: 1},
+    {q: "If A = {1, 2, 3} and B = {3, 4, 5}, then A ∩ B is", o: ["{1, 2, 3, 4, 5}", "{3}", "{1, 2}", "{4, 5}"], a: 1},
+    {q: "The number of subsets of a set containing n elements is", o: ["n²", "2n", "2ⁿ", "n!"], a: 2},
+    {q: "A set containing no elements is called", o: ["Universal set", "Subset", "Null set", "Power set"], a: 2},
+    {q: "The set of all possible subsets of A is called the", o: ["Universal set", "Power set", "Complementary set", "Union set"], a: 1},
+    {q: "Two sets A and B are said to be disjoint if", o: ["A ∪ B = Φ", "A ∩ B = Φ", "A ⊂ B", "A = B"], a: 1},
+    {q: "If n(A) = 15, n(B) = 20, and n(A ∩ B) = 5, then n(A ∪ B) is", o: ["35", "40", "30", "25"], a: 2},
+    {q: "The complement of the universal set (U') is", o: ["U", "Φ", "A", "A'"], a: 1},
+    {q: "For any two sets A and B, A - B is equal to", o: ["A ∩ B", "A ∩ B'", "A' ∩ B", "A ∪ B'"], a: 1},
+    {q: "De Morgan's Law states that (A ∪ B)' is equal to", o: ["A' ∪ B'", "A' ∩ B'", "A ∩ B", "A ∪ B"], a: 1},
+    {q: "The shaded region in a Venn diagram representing A ∩ B' is", o: ["Only A", "Only B", "Both A and B", "Neither A nor B"], a: 0},
+    {q: "If A = {x : x is a letter in the word 'APPLE'}, then n(A) is", o: ["5", "4", "3", "2"], a: 1},
+    {q: "The Cartesian product A × B for A = {1, 2} and B = {3, 4} has how many elements?", o: ["2", "4", "6", "8"], a: 1},
+    {q: "A set is called a singleton set if it has", o: ["Zero elements", "One element", "Two elements", "Infinite elements"], a: 1},
+    {q: "If A ⊂ B, then A ∪ B is equal to", o: ["A", "B", "Φ", "U"], a: 1},
+    {q: "Which of the following is the interval representation for {x : -2 < x ≤ 5}?", o: ["[-2, 5]", "(-2, 5)", "(-2, 5]", "[-2, 5)"], a: 2},
+    {q: "In a group of 50 people, 30 like tea and 25 like coffee. If everyone likes at least one, how many like both?", o: ["5", "10", "15", "20"], a: 0},
+    {q: "The symmetric difference of A and B, denoted by A Δ B, is", o: ["(A - B) ∪ (B - A)", "(A ∩ B) - (A ∪ B)", "A ∪ B", "A ∩ B"], a: 0},
+    {q: "If n(P(A)) = 32, then the number of elements in A is", o: ["4", "5", "6", "16"], a: 1},
+    {q: "Which of the following sets is equivalent to {x : x² - 1 = 0, x ∈ R}?", o: ["{1}", "{-1}", "{1, -1}", "{0}"], a: 2}
+  ],
+
+"Relations and Functions": [
+    {q: "A relation R on set A is called an equivalence relation if it is", o: ["Reflexive only", "Symmetric and Transitive only", "Reflexive, Symmetric and Transitive", "Inverse"], a: 2},
+    {q: "The number of reflexive relations on a set with n elements is", o: ["2^n", "2^(n²-n)", "n²", "2^(n²)"], a: 1},
+    {q: "A function f: A → B is called 'One-One' (Injective) if", o: ["f(x₁) = f(x₂) implies x₁ = x₂", "Every element in B has a pre-image", "f(x) = c", "The range is a subset of B"], a: 0},
+    {q: "A function f: A → B is 'Onto' (Surjective) if", o: ["Domain = Range", "Range = Codomain", "f is constant", "f is one-one"], a: 1},
+    {q: "The domain of the function f(x) = 1/√(x² - 1) is", o: ["(-∞, -1) ∪ (1, ∞)", "[-1, 1]", "R", "(-1, 1)"], a: 0},
+    {q: "If f(x) = x + 2 and g(x) = x², then (g ∘ f)(x) is", o: ["x² + 2", "x² + 4", "(x + 2)²", "2x²"], a: 2},
+    {q: "The inverse of a function exists if and only if the function is", o: ["One-one", "Onto", "Bijective", "Identity"], a: 2},
+    {q: "The range of the function f(x) = sin(x) is", o: ["[0, 1]", "(-1, 1)", "[-1, 1]", "(-∞, ∞)"], a: 2},
+    {q: "A function f(x) is even if", o: ["f(-x) = f(x)", "f(-x) = -f(x)", "f(x) = 0", "f'(x) = 0"], a: 0},
+    {q: "The period of the function f(x) = tan(x) is", o: ["2π", "π", "π/2", "4π"], a: 1},
+    {q: "If n(A) = m and n(B) = n, the total number of functions from A to B is", o: ["mⁿ", "nᵐ", "m*n", "2^(mn)"], a: 1},
+    {q: "The function f(x) = |x| is", o: ["One-one", "Onto", "Neither one-one nor onto (on R)", "Bijective"], a: 2},
+    {q: "The greatest integer function f(x) = [x] is", o: ["Continuous", "Step function", "One-one", "Differentiable"], a: 1},
+    {q: "If f: R → R is defined by f(x) = 3x - 4, then f⁻¹(x) is", o: ["(x + 4)/3", "x/3 - 4", "3x + 4", "1/(3x - 4)"], a: 0},
+    {q: "The relation R = {(1,2), (2,1)} on set {1,2,3} is", o: ["Reflexive", "Symmetric", "Transitive", "Equivalence"], a: 1},
+    {q: "The range of f(x) = x² / (1 + x²) is", o: ["[0, 1]", "[0, 1)", "(0, 1)", "R"], a: 1},
+    {q: "If f(x) = log(x), then its domain is", o: ["R", "(-∞, 0)", "(0, ∞)", "[0, ∞)"], a: 2},
+    {q: "The composition of two bijective functions is always", o: ["One-one only", "Onto only", "Bijective", "Into"], a: 2},
+    {q: "A relation R on R defined by xRy if x ≤ y is", o: ["Equivalence", "Partial Order", "Symmetric", "Not Reflexive"], a: 1},
+    {q: "The number of onto functions from {1,2} to {a,b,c} is", o: ["0", "6", "2", "9"], a: 0}
+  ],
+
+
+  "Complex Numbers": [
+    {q: "The value of i¹ + i² + i³ + i⁴ is", o: ["1", "0", "-1", "i"], a: 1},
+    {q: "The modulus of the complex number z = 3 + 4i is", o: ["5", "7", "25", "1"], a: 0},
+    {q: "The argument of the complex number z = 1 + i is", o: ["π/6", "π/4", "π/3", "π/2"], a: 1},
+    {q: "The polar form of z = r(cos θ + i sin θ) is also represented in Euler's form as", o: ["re^(iθ)", "re^(-iθ)", "e^(irθ)", "r log(iθ)"], a: 0},
+    {q: "If z = x + iy, then its conjugate z̄ is", o: ["x - iy", "-x + iy", "-x - iy", "y + ix"], a: 0},
+    {q: "The square root of -i is", o: ["(1-i)/√2", "(1+i)/√2", "±(1-i)/√2", "i"], a: 2},
+    {q: "The value of the cube root of unity ω satisfies the relation", o: ["1 + ω + ω² = 0", "1 + ω = ω²", "ω³ = 0", "1 - ω + ω² = 0"], a: 0},
+    {q: "The multiplicative inverse of z = 1 + i is", o: ["1 - i", "(1 - i)/2", "1/2", "i - 1"], a: 1},
+    {q: "If |z - 1| = |z + 1|, then the locus of z is", o: ["A circle", "The x-axis", "The y-axis", "A parabola"], a: 2},
+    {q: "The distance between complex numbers z₁ and z₂ is given by", o: ["|z₁ + z₂|", "|z₁ - z₂|", "|z₁| - |z₂|", "z₁z₂"], a: 1},
+    {q: "The principal argument of a complex number lies in the interval", o: ["[0, 2π]", "(-π, π]", "[0, π]", "(-π/2, π/2)"], a: 1},
+    {q: "The value of ω¹⁰ + ω²⁰ + 1 (where ω is a cube root of unity) is", o: ["0", "1", "3", "ω"], a: 0},
+    {q: "The area of a triangle whose vertices are represented by complex numbers z, iz, and z+iz is", o: ["|z|²", "1/2 |z|²", "1/4 |z|²", "2|z|²"], a: 1},
+    {q: "If |z| = 1, then (1+z)/(1+z̄) is equal to", o: ["z", "z̄", "1", "0"], a: 0},
+    {q: "De Moivre's Theorem states that (cos θ + i sin θ)ⁿ is equal to", o: ["cos(nθ) + i sin(nθ)", "cosⁿθ + i sinⁿθ", "n(cos θ + i sin θ)", "cos(θ/n) + i sin(θ/n)"], a: 0},
+    {q: "The imaginary part of a purely real number is", o: ["1", "0", "-1", "Infinity"], a: 1},
+    {q: "If z lies on the unit circle, then |z| is", o: ["0", "1", "2", "Undefined"], a: 1},
+    {q: "The complex number z for which z = z̄ is", o: ["Purely imaginary", "Purely real", "Zero", "None"], a: 1},
+    {q: "The product of the cube roots of unity is", o: ["1", "0", "-1", "ω"], a: 0},
+    {q: "The locus represented by |z - i| = 2 is a", o: ["Square", "Circle", "Straight line", "Ellipse"], a: 1}
+  ],
+
+  "Quadratic Equations": [
+    {q: "The roots of the equation ax² + bx + c = 0 are reciprocal to each other if", o: ["a = b", "a = c", "b = c", "a = 0"], a: 1},
+    {q: "If the roots of x² - px + q = 0 are α and β, then the value of α² + β² is", o: ["p² - 2q", "p² + 2q", "q² - 2p", "p² - q"], a: 0},
+    {q: "The discriminant (D) of the quadratic equation 2x² - 4x + 3 = 0 is", o: ["-8", "8", "4", "-4"], a: 0},
+    {q: "If D > 0 and D is a perfect square, the roots of the equation are", o: ["Real and equal", "Rational and unequal", "Irrational", "Imaginary"], a: 1},
+    {q: "The minimum value of the expression f(x) = x² - 5x + 6 is", o: ["1/4", "-1/4", "6", "0"], a: 1},
+    {q: "The quadratic equation whose roots are 2 + √3 and 2 - √3 is", o: ["x² - 4x + 1 = 0", "x² + 4x + 1 = 0", "x² - 4x - 1 = 0", "x² - √3x + 1 = 0"], a: 0},
+    {q: "If one root of the equation x² + kx + 12 = 0 is 4, the value of k is", o: ["-7", "7", "-3", "4"], a: 0},
+    {q: "The condition for the equation ax² + bx + c = 0 to have exactly one root at zero is", o: ["c = 0, b ≠ 0", "c = 0, b = 0", "a = 0", "b² - 4ac = 0"], a: 0},
+    {q: "If α, β are roots of x² + x + 1 = 0, then α³ + β³ is", o: ["1", "2", "-2", "0"], a: 1},
+    {q: "The number of real roots of the equation |x|² - 3|x| + 2 = 0 is", o: ["1", "2", "3", "4"], a: 3},
+    {q: "The maximum value of the expression -x² + 4x + 5 is", o: ["9", "5", "4", "0"], a: 0},
+    {q: "If the roots of ax² + bx + c = 0 are sin θ and cos θ, then", o: ["a² + b² = 2ac", "a² - b² = 2ac", "b² - a² = 2ac", "b² + a² = 2ac"], a: 2},
+    {q: "If both roots of x² - mx + 1 = 0 are less than 1, then the range of m is", o: ["m < 2", "m > 2", "m < -2", "No such m exists"], a: 2},
+    {q: "The equation x² + px + q = 0 has equal roots if p² is equal to", o: ["q", "2q", "4q", "q/4"], a: 2},
+    {q: "If the product of the roots of x² - 3kx + 2e^(2log k) - 1 = 0 is 7, then k is", o: ["2", "-2", "±2", "4"], a: 0},
+    {q: "The roots of the equation (a-b)x² + (b-c)x + (c-a) = 0 are", o: ["1, (c-a)/(a-b)", "1, (b-c)/(a-b)", "1, 1", "0, 1"], a: 0},
+    {q: "If α and β are roots of ax² + bx + c = 0, then the equation with roots 1/α and 1/β is", o: ["cx² + bx + a = 0", "ax² - bx + c = 0", "cx² - bx + a = 0", "bx² + ax + c = 0"], a: 0},
+    {q: "The condition for a quadratic equation to have purely imaginary roots is", o: ["b = 0, ac > 0", "b = 0, ac < 0", "D < 0", "a = c"], a: 0},
+    {q: "If x is real, the expression x² + 2x + 1 is always", o: ["Positive", "Negative", "Non-negative", "Zero"], a: 2},
+    {q: "The sum of the roots of the equation 3x² - 9x + 5 = 0 is", o: ["3", "-3", "5/3", "9"], a: 0}
+  ],
+
+
+  "Matrices and Determinants": [
+    {q: "If A is a square matrix such that A² = A, then (I + A)³ - 7A is equal to", o: ["A", "I - A", "I", "3A"], a: 2},
+    {q: "The value of a determinant remains unchanged if", o: ["Two rows are interchanged", "Rows are changed into columns", "All elements of a row are zero", "A row is multiplied by k"], a: 1},
+    {q: "If A is a matrix of order 3x3 and |A| = 5, then the value of |adj A| is", o: ["5", "25", "125", "0"], a: 1},
+    {q: "A system of linear equations AX = B has a unique solution if", o: ["|A| = 0", "|A| ≠ 0", "A is a singular matrix", "adj A = 0"], a: 1},
+    {q: "If the determinant of a 3x3 matrix is zero, the matrix is said to be", o: ["Identity", "Singular", "Non-singular", "Orthogonal"], a: 1},
+    {q: "For any square matrix A, A + Aᵀ is always", o: ["Symmetric", "Skew-symmetric", "Diagonal", "Identity"], a: 0},
+    {q: "The inverse of a matrix A exists if and only if", o: ["A is symmetric", "A is singular", "A is non-singular", "A is a null matrix"], a: 2},
+    {q: "In a skew-symmetric matrix, all the diagonal elements are", o: ["1", "-1", "0", "Any real number"], a: 2},
+    {q: "If A and B are square matrices of the same order, then (AB)⁻¹ is", o: ["A⁻¹B⁻¹", "B⁻¹A⁻¹", "AB", "BA"], a: 1},
+    {q: "The value of the determinant of an identity matrix of any order is", o: ["0", "n", "1", "n²"], a: 2},
+    {q: "If A is a 3x3 matrix and |A| = 2, then |2A| is equal to", o: ["4", "8", "16", "6"], a: 2},
+    {q: "A square matrix A is called orthogonal if", o: ["AAᵀ = I", "A = Aᵀ", "A = -Aᵀ", "A² = I"], a: 0},
+    {q: "The sum of the diagonal elements of a square matrix is called its", o: ["Determinant", "Rank", "Trace", "Adjoint"], a: 2},
+    {q: "If Δ is the determinant of a matrix, and two rows are identical, then Δ is", o: ["1", "Infinite", "0", "Dependent on elements"], a: 2},
+    {q: "Cramer's Rule is used to solve", o: ["Matrix addition", "System of linear equations", "Matrix multiplication", "Eigenvalues"], a: 1},
+    {q: "If A is skew-symmetric of odd order, its determinant is always", o: ["1", "0", "-1", "Perfect square"], a: 1},
+    {q: "The product of a matrix and its adjoint (A ⋅ adj A) is equal to", o: ["|A|", "|A|I", "I", "adj A ⋅ A"], a: 1},
+    {q: "If A and B are symmetric matrices, then AB - BA is", o: ["Symmetric", "Skew-symmetric", "Diagonal", "Null"], a: 1},
+    {q: "A square matrix A is involutory if", o: ["A² = I", "A² = A", "Aⁿ = 0", "Aᵀ = A"], a: 0},
+    {q: "The minor of an element a_ij is obtained by deleting", o: ["i-th row only", "j-th column only", "i-th row and j-th column", "All rows"], a: 2}
+  ],
+
+  "Permutations and Combinations": [
+    {q: "The number of ways in which n distinct objects can be arranged in a row is", o: ["n", "n!", "2ⁿ", "n²"], a: 1},
+    {q: "The value of ⁿCᵣ is equal to", o: ["n! / r!", "n! / (n-r)!", "n! / [r!(n-r)!]", "(n-r)!"], a: 2},
+    {q: "The number of ways to arrange the letters of the word 'APPLE' is", o: ["120", "60", "24", "10"], a: 1},
+    {q: "If ⁿC₈ = ⁿC₂, then the value of n is", o: ["6", "10", "16", "20"], a: 1},
+    {q: "The number of ways in which 5 people can be seated around a circular table is", o: ["120", "24", "60", "12"], a: 1},
+    {q: "The number of diagonals in a polygon of n sides is", o: ["n(n-3)/2", "ⁿC₂", "n(n-1)/2", "n²-n"], a: 0},
+    {q: "How many 3-digit numbers can be formed using digits 1, 2, 3, 4, 5 without repetition?", o: ["125", "60", "15", "20"], a: 1},
+    {q: "The value of ⁿCᵣ + ⁿCᵣ₋₁ is", o: ["ⁿCᵣ₊₁", "ⁿ⁺¹Cᵣ", "ⁿ⁺¹Cᵣ₊₁", "2ⁿCᵣ"], a: 1},
+    {q: "The number of ways of selecting no objects from n objects is", o: ["0", "1", "n", "n!"], a: 1},
+    {q: "In a group of 10 people, every person shakes hands with every other person. Total handshakes are", o: ["100", "90", "45", "20"], a: 2},
+    {q: "The number of permutations of n objects where p objects are of one kind and q are of another is", o: ["n! / (p!q!)", "n! / (p+q)!", "(n-p-q)!", "n!p!q!"], a: 0},
+    {q: "The total number of ways of selecting at least one object from n distinct objects is", o: ["2ⁿ", "2ⁿ - 1", "2ⁿ⁺¹", "n²"], a: 1},
+    {q: "The number of ways to form a committee of 3 men and 2 women from 5 men and 4 women is", o: ["60", "120", "30", "40"], a: 0},
+    {q: "Circular permutations of n different beads in a necklace is", o: ["(n-1)!", "(n-1)! / 2", "n!", "n! / 2"], a: 1},
+    {q: "The value of ⁰! (Zero Factorial) is", o: ["0", "1", "Undefined", "Infinity"], a: 1},
+    {q: "How many ways can the letters of 'BANANA' be arranged?", o: ["720", "120", "60", "20"], a: 2},
+    {q: "The number of ways to distribute 10 identical mangoes among 3 students is calculated using", o: ["ⁿCᵣ", "ⁿ⁺ʳ⁻¹Cᵣ₋₁", "nPr", "n!"], a: 1},
+    {q: "If ⁿPᵣ = 720 and ⁿCᵣ = 120, then r is", o: ["3", "4", "5", "6"], a: 0},
+    {q: "The rank of a word in a dictionary is found using", o: ["Combinations", "Permutations", "Circular arrangements", "Derangements"], a: 1},
+    {q: "The number of ways to arrange n objects such that no object occupies its original place is called", o: ["Arrangement", "Selection", "Derangement", "Distribution"], a: 2}
+  ],
+
+"Binomial Theorem and Its Simple Applications": [
+    {q: "The number of terms in the expansion of (x + y)ⁿ is", o: ["n", "n - 1", "n + 1", "2n"], a: 2},
+    {q: "The general term (Tᵣ₊₁) in the expansion of (a + b)ⁿ is", o: ["ⁿCᵣ aⁿ⁻ᵣ bᵣ", "ⁿCᵣ aᵣ bⁿ⁻ᵣ", "ⁿCᵣ₋₁ aⁿ⁻ᵣ bᵣ", "n! aⁿ bᵣ"], a: 0},
+    {q: "The sum of the binomial coefficients in the expansion of (1 + x)ⁿ is", o: ["n²", "2ⁿ", "2ⁿ⁻¹", "n!"], a: 1},
+    {q: "The middle term in the expansion of (x + y)¹⁰ is", o: ["T₅", "T₆", "T₄", "T₇"], a: 1},
+    {q: "If n is even, the number of middle terms in (x + y)ⁿ is", o: ["1", "2", "n/2", "3"], a: 0},
+    {q: "The coefficient of x⁰ in an expansion is also called the", o: ["Leading coefficient", "Term independent of x", "Middle term", "Constant of integration"], a: 1},
+    {q: "The value of ⁿC₀ + ⁿC₁ + ⁿC₂ + ... + ⁿCₙ is", o: ["2ⁿ", "2ⁿ⁻¹", "0", "1"], a: 0},
+    {q: "The value of ⁿC₀ - ⁿC₁ + ⁿC₂ - ⁿC₃ + ... is", o: ["2ⁿ", "2ⁿ⁻¹", "0", "(-1)ⁿ"], a: 2},
+    {q: "In the expansion of (1 + x)ⁿ, the coefficients of terms equidistant from the beginning and the end are", o: ["Reciprocals", "Equal", "Opposites", "Zero"], a: 1},
+    {q: "The remainder when 7¹⁰³ is divided by 25 is found using", o: ["Logarithms", "Binomial Theorem", "Complex numbers", "Integration"], a: 1},
+    {q: "The sum of odd binomial coefficients (ⁿC₁ + ⁿC₃ + ⁿC₅...) is", o: ["2ⁿ", "2ⁿ⁻¹", "2ⁿ⁻²", "n"], a: 1},
+    {q: "The coefficient of xⁿ in the expansion of (1 + x)²ⁿ is", o: ["²ⁿCₙ", "ⁿCₙ", "²ⁿCₙ₋₁", "2n!"], a: 0},
+    {q: "If the number of terms in (x + y + z)ⁿ is 45, then n is", o: ["8", "9", "10", "7"], a: 0},
+    {q: "The greatest coefficient in the expansion of (1 + x)ⁿ is", o: ["ⁿCₙ/₂ (if n is even)", "ⁿCₙ", "ⁿC₀", "n!"], a: 0},
+    {q: "The ratio of ⁿCᵣ to ⁿCᵣ₋₁ is", o: ["(n-r+1)/r", "r/(n-r+1)", "(n-r)/r", "n/r"], a: 0},
+    {q: "The binomial theorem for any index n is valid only if |x| is", o: ["> 1", "< 1", "= 1", "0"], a: 1},
+    {q: "The number of terms in (1 + 2x + x²)ⁿ is", o: ["2n + 1", "n + 1", "n²", "3n"], a: 0},
+    {q: "The sum of the coefficients of (x + y)ⁿ is found by setting x and y to", o: ["0", "1", "-1", "n"], a: 1},
+    {q: "The general term of (1 - x)⁻¹ is", o: ["xᵣ", "(-1)ᵣ xᵣ", "ⁿCᵣ xᵣ", "r xᵣ"], a: 0},
+    {q: "Which property is used to prove ⁿCᵣ = ⁿCₙ₋ᵣ?", o: ["Symmetry", "Multiplication", "Addition", "Distinction"], a: 0}
+  ],
+
+
+  "Sequence and Series": [
+    {q: "The n-th term of an Arithmetic Progression (AP) with first term 'a' and common difference 'd' is", o: ["a + nd", "a + (n-1)d", "arⁿ⁻¹", "n/2(2a + (n-1)d)"], a: 1},
+    {q: "The sum of the first n natural numbers is given by", o: ["n(n+1)/2", "n²/2", "n(n-1)/2", "n(n+1)(2n+1)/6"], a: 0},
+    {q: "If a, b, c are in Geometric Progression (GP), then", o: ["b = (a+c)/2", "b² = ac", "2/b = 1/a + 1/c", "b = a + c"], a: 1},
+    {q: "The sum to infinity of a GP with |r| < 1 is", o: ["a / (1-r)", "a(1-rⁿ) / (1-r)", "arⁿ⁻¹", "0"], a: 0},
+    {q: "The Arithmetic Mean (AM) of two numbers a and b is", o: ["√(ab)", "(a+b)/2", "2ab/(a+b)", "a-b"], a: 1},
+    {q: "Which inequality correctly relates AM, GM, and HM for positive numbers?", o: ["AM ≥ GM ≥ HM", "HM ≥ GM ≥ AM", "GM ≥ AM ≥ HM", "AM = GM = HM"], a: 0},
+    {q: "If the n-th term of a sequence is 3n + 1, the sequence is an", o: ["AP", "GP", "HP", "AGP"], a: 0},
+    {q: "The sum of the squares of the first n natural numbers is", o: ["[n(n+1)/2]²", "n(n+1)(2n+1)/6", "n(n+1)(n+2)/3", "n³"], a: 1},
+    {q: "The Geometric Mean (GM) of 4 and 16 is", o: ["10", "8", "64", "12"], a: 1},
+    {q: "In an HP, the reciprocals of the terms form an", o: ["AP", "GP", "AGP", "Logarithmic series"], a: 0},
+    {q: "The common ratio of the GP 1/2, 1/4, 1/8, ... is", o: ["2", "1/2", "-1/2", "1/4"], a: 1},
+    {q: "If sum of n terms of an AP is 3n² + n, then its common difference is", o: ["3", "6", "2", "1"], a: 1},
+    {q: "The sum of the first n odd natural numbers is", o: ["n(n+1)", "n²", "2n-1", "n²/2"], a: 1},
+    {q: "The Harmonical Mean (HM) of a and b is", o: ["(a+b)/2", "√(ab)", "2ab/(a+b)", "ab/2"], a: 2},
+    {q: "The series 1 + 2x + 3x² + 4x³ + ... is an example of an", o: ["Arithmetic Progression", "Geometric Progression", "Arithmetico-Geometric Progression", "Power series"], a: 2},
+    {q: "The value of 0.333... expressed as a fraction using infinite GP is", o: ["1/3", "3/10", "33/100", "1/9"], a: 0},
+    {q: "If AM = 5 and GM = 4 for two numbers, then the numbers are", o: ["2, 8", "4, 6", "1, 9", "5, 5"], a: 0},
+    {q: "The sum of the cubes of the first n natural numbers is", o: ["n(n+1)/2", "[n(n+1)/2]²", "n²(n+1)²/2", "n(n+1)(2n+1)/6"], a: 1},
+    {q: "If a, b, c are in AP, then eᵃ, eᵇ, eᶜ are in", o: ["AP", "GP", "HP", "None"], a: 1},
+    {q: "The third term of a GP is 4. The product of its first five terms is", o: ["4³", "4⁵", "4⁴", "5⁴"], a: 1}
+  ],
+
+  "Limit and Continuity": [
+    {q: "The value of lim (x→0) [sin(x) / x] is", o: ["0", "1", "Infinity", "Undefined"], a: 1},
+    {q: "The limit lim (x→0) [(eˣ - 1) / x] is equal to", o: ["0", "1", "e", "log x"], a: 1},
+    {q: "If a function f(x) is continuous at x = a, then", o: ["LHL = RHL", "f(a) exists", "LHL = RHL = f(a)", "f'(a) exists"], a: 2},
+    {q: "Which rule is used to evaluate limits of the form 0/0 or ∞/∞?", o: ["Product Rule", "Chain Rule", "L'Hôpital's Rule", "Simpson's Rule"], a: 2},
+    {q: "The value of lim (x→∞) [1/x] is", o: ["1", "0", "Infinity", "-1"], a: 1},
+    {q: "The limit lim (x→0) [(1 + x)^(1/x)] is equal to", o: ["1", "0", "e", "1/e"], a: 2},
+    {q: "A function f(x) = |x| is", o: ["Discontinuous at x=0", "Continuous but not differentiable at x=0", "Differentiable at x=0", "Constant"], a: 1},
+    {q: "The value of lim (x→0) [(1 - cos x) / x²] is", o: ["1", "1/2", "0", "2"], a: 1},
+    {q: "If lim (x→a) f(x) exists but is not equal to f(a), the discontinuity is called", o: ["Jump discontinuity", "Removable discontinuity", "Infinite discontinuity", "Essential discontinuity"], a: 1},
+    {q: "The limit lim (x→∞) [(sin x) / x] is", o: ["1", "0", "Undefined", "-1"], a: 1},
+    {q: "The function f(x) = [x] (Greatest Integer Function) is discontinuous at", o: ["x = 0.5", "All integers", "No point", "x = π"], a: 1},
+    {q: "The limit lim (x→0) [tan x / x] is", o: ["0", "1", "π", "Infinity"], a: 1},
+    {q: "What is the value of lim (x→1) [(xⁿ - 1) / (x - 1)]?", o: ["1", "0", "n", "n-1"], a: 2},
+    {q: "A function is said to be continuous in an interval [a, b] if it is continuous at", o: ["x = a only", "x = b only", "Every point in (a, b)", "Every point in [a, b]"], a: 3},
+    {q: "The value of lim (x→0) [log(1 + x) / x] is", o: ["0", "1", "e", "1/10"], a: 1},
+    {q: "Sandwich Theorem (Squeeze Theorem) is used to find", o: ["Derivatives", "Integrals", "Limits", "Roots"], a: 2},
+    {q: "The limit lim (x→0⁺) [1/x] results in", o: ["0", "∞", "-∞", "1"], a: 1},
+    {q: "If f(x) = x² sin(1/x) for x≠0 and f(0)=0, then f(x) is", o: ["Continuous at x=0", "Discontinuous at x=0", "Differentiable at x=0", "Both A and C"], a: 3},
+    {q: "The value of lim (x→∞) [(ax + b) / (cx + d)] is", o: ["0", "b/d", "a/c", "Infinity"], a: 2},
+    {q: "Which of the following functions is continuous everywhere?", o: ["tan x", "1/x", "sin x", "log x"], a: 2}
+  ],
+
+  "Differentiability": [
+    {q: "A function f(x) is differentiable at x = a if", o: ["LHD = RHD and both are finite", "f(a) is defined", "f(x) is continuous at x = a", "f'(x) is a constant"], a: 0},
+    {q: "The relationship between continuity and differentiability is", o: ["Differentiability implies continuity", "Continuity implies differentiability", "They are independent", "Neither implies the other"], a: 0},
+    {q: "The function f(x) = |x| is not differentiable at", o: ["x = 1", "x = -1", "x = 0", "All real numbers"], a: 2},
+    {q: "The derivative of f(x) at x = a is defined as the limit of", o: ["[f(a+h) - f(a)] / h as h→0", "[f(a+h) + f(a)] / h as h→0", "f(a+h) / h", "f'(a) + h"], a: 0},
+    {q: "If LHD ≠ RHD at a point, the graph of the function at that point has a", o: ["Smooth curve", "Sharp corner (Cusp)", "Vertical tangent", "Discontinuity"], a: 1},
+    {q: "The function f(x) = [x] (Greatest Integer Function) is non-differentiable at", o: ["x = 0.5", "Every integer", "x = π", "Only x = 0"], a: 1},
+    {q: "Which of the following functions is differentiable for all x ∈ R?", o: ["|x|", "x^(1/3)", "sin x", "tan x"], a: 2},
+    {q: "If f(x) is differentiable at x = a, then the graph of f(x) has a", o: ["Unique tangent at x = a", "Vertical asymptote", "Break", "Two tangents"], a: 0},
+    {q: "The derivative of a constant function is", o: ["1", "x", "0", "Undefined"], a: 2},
+    {q: "If f(x) = x|x|, then f'(0) is", o: ["1", "-1", "0", "Does not exist"], a: 2},
+    {q: "A function is said to be differentiable in (a, b) if it is differentiable at", o: ["x = a and x = b", "Every point in (a, b)", "At least one point", "The midpoint"], a: 1},
+    {q: "The function f(x) = x^(2/3) has a ________ at x = 0.", o: ["Smooth tangent", "Vertical tangent", "Discontinuity", "Horizontal tangent"], a: 1},
+    {q: "According to the Mean Value Theorem, there exists a point c such that f'(c) is", o: ["0", "[f(b) - f(a)] / (b - a)", "f(a) + f(b)", "1"], a: 1},
+    {q: "Rolle's Theorem requires the function to be continuous on [a, b] and differentiable on", o: ["[a, b]", "(a, b)", "(a, b]", "[a, b)"], a: 1},
+    {q: "If f(x) = |sin x|, then it is not differentiable at x =", o: ["π/2", "0", "π/4", "3π/2"], a: 1},
+    {q: "The derivative of f(x) = sin⁻¹(x) is defined only when", o: ["x > 1", "|x| < 1", "x = 0", "x ∈ R"], a: 1},
+    {q: "Which of the following is a necessary condition for f(x) to be differentiable at x = a?", o: ["f(a) = 0", "f(x) must be continuous at x = a", "f'(a) > 0", "f(x) must be a polynomial"], a: 1},
+    {q: "A function that is continuous but nowhere differentiable is", o: ["|x|", "Weierstrass function", "sin x", "Step function"], a: 1},
+    {q: "The sum of two differentiable functions is always", o: ["Continuous but not differentiable", "Differentiable", "Non-differentiable", "A constant"], a: 1},
+    {q: "If a function has a vertical tangent at x = a, the derivative at that point is", o: ["0", "1", "Infinite", "-1"], a: 2}
+  ],
+
+
+  "Integral Calculus": [
+    {q: "The integral of 1/x dx is", o: ["x²", "log|x| + C", "eˣ", "1"], a: 1},
+    {q: "The value of ∫ sin(x) dx is", o: ["cos(x) + C", "-cos(x) + C", "sin(x) + C", "tan(x) + C"], a: 1},
+    {q: "Which method is used to integrate the product of two functions?", o: ["Substitution", "Partial Fractions", "Integration by Parts", "Chain Rule"], a: 2},
+    {q: "The integral ∫ eˣ dx is", o: ["eˣ + C", "xeˣ", "eˣ/x", "log(eˣ)"], a: 0},
+    {q: "The value of the definite integral ∫₀¹ x² dx is", o: ["1", "1/2", "1/3", "1/4"], a: 2},
+    {q: "According to the fundamental theorem of calculus, ∫ₐᵇ f(x) dx is", o: ["f(b) - f(a)", "F(b) - F(a)", "F'(b) - F'(a)", "f'(b) - f'(a)"], a: 1},
+    {q: "The integral of sec²(x) dx is", o: ["tan(x) + C", "sec(x) + C", "log|sec x|", "cot(x)"], a: 0},
+    {q: "The property ∫₀ᵃ f(x) dx = ∫₀ᵃ f(a - x) dx is commonly known as", o: ["King's Property", "Queen's Property", "Leibniz Rule", "Power Rule"], a: 0},
+    {q: "The value of ∫₋ₐᵃ f(x) dx is 0 if f(x) is an", o: ["Even function", "Odd function", "Periodic function", "Continuous function"], a: 1},
+    {q: "The integral ∫ dx / (1 + x²) is", o: ["sin⁻¹(x) + C", "tan⁻¹(x) + C", "log(1+x²)", "cos⁻¹(x)"], a: 1},
+    {q: "Integration by parts is based on the formula ∫ u dv =", o: ["uv - ∫ v du", "uv + ∫ v du", "u/v - ∫ v du", "v du - uv"], a: 0},
+    {q: "The area under the curve y = f(x) from x=a to x=b is given by", o: ["∫ₐᵇ f(x) dx", "f(b) - f(a)", "f'(x)", "∫ₐᵇ f'(x) dx"], a: 0},
+    {q: "The integral ∫ tan(x) dx is", o: ["sec²(x)", "log|sec x| + C", "log|sin x| + C", "-sec²(x)"], a: 1},
+    {q: "If n ≠ -1, then ∫ xⁿ dx is", o: ["nxⁿ⁻¹", "xⁿ⁺¹ / (n+1) + C", "xⁿ / n", "log xⁿ"], a: 1},
+    {q: "The value of ∫₀^(π/2) sin(x) dx is", o: ["0", "1", "-1", "π/2"], a: 1},
+    {q: "Which substitution is best for ∫ dx / √(a² - x²)?", o: ["x = a tan θ", "x = a sin θ", "x = a sec θ", "x = a²"], a: 1},
+    {q: "Leibniz Rule is used for", o: ["Integrating parts", "Differentiating under the integral sign", "Finding area", "Partial fractions"], a: 1},
+    {q: "The integral ∫ dx / √(x² + a²) is", o: ["sin⁻¹(x/a)", "log|x + √(x² + a²)| + C", "tan⁻¹(x/a)", "1/a tan⁻¹(x/a)"], a: 1},
+    {q: "The definite integral of an even function from -a to a is", o: ["0", "2 ∫₀ᵃ f(x) dx", "∫₀ᵃ f(x) dx", "f(a)"], a: 1},
+    {q: "The value of ∫ eˣ (f(x) + f'(x)) dx is", o: ["eˣ f'(x) + C", "eˣ f(x) + C", "f(x) + C", "eˣ + f(x)"], a: 1}
+  ],
+
+  "Differential Equations": [
+    {q: "The order of the differential equation (d²y/dx²)³ + (dy/dx)² + y = 0 is", o: ["1", "2", "3", "0"], a: 1},
+    {q: "The degree of the differential equation d²y/dx² + sin(dy/dx) = 0 is", o: ["1", "2", "Undefined", "0"], a: 2},
+    {q: "The general solution of dy/dx = y/x is", o: ["y = kx", "y = x + k", "y = k/x", "x² + y² = k"], a: 0},
+    {q: "A differential equation is said to be linear if the dependent variable and its derivatives occur in", o: ["First degree only", "Second degree", "Any degree", "Product with each other"], a: 0},
+    {q: "The integrating factor (I.F.) for the linear equation dy/dx + Py = Q is", o: ["∫P dx", "e^(∫P dx)", "e^(∫Q dx)", "log(P)"], a: 1},
+    {q: "The solution of dy/dx = e^(x-y) is", o: ["eˣ + eʸ = C", "eʸ = eˣ + C", "eˣ⁻ʸ = C", "y = x + C"], a: 1},
+    {q: "The order of a differential equation representing a family of circles with center at origin is", o: ["1", "2", "3", "0"], a: 0},
+    {q: "Which method is used to solve dy/dx = f(y/x)?", o: ["Variable Separable", "Homogeneous method", "Linear method", "Partial fractions"], a: 1},
+    {q: "The degree of a differential equation is the power of the", o: ["Lowest order derivative", "Highest order derivative", "Dependent variable", "Independent variable"], a: 1},
+    {q: "The number of arbitrary constants in the general solution of a differential equation of order n is", o: ["n-1", "n", "n+1", "2n"], a: 1},
+    {q: "In the homogeneous equation dy/dx = (x+y)/x, the substitution used is", o: ["x = vy", "y = vx", "y = v+x", "x = v"], a: 1},
+    {q: "The Integrating Factor of dy/dx + y/x = x² is", o: ["x", "1/x", "eˣ", "log x"], a: 0},
+    {q: "A differential equation of the form dy/dx + Py = Qyⁿ is called", o: ["Bernoulli's Equation", "Laplace Equation", "Euler Equation", "Exact Equation"], a: 0},
+    {q: "The number of arbitrary constants in a particular solution of order 3 is", o: ["3", "2", "1", "0"], a: 3},
+    {q: "The differential equation of all non-vertical lines in a plane is", o: ["d²y/dx² = 0", "dy/dx = 0", "d²y/dx² = k", "dy/dx = m"], a: 0},
+    {q: "The solution of dy/dx = 1 + y² is", o: ["y = tan(x+C)", "y = sin(x+C)", "tan⁻¹y = x+C", "log(1+y²) = x+C"], a: 2},
+    {q: "If dy/dx = f(x)g(y), the method used to solve it is", o: ["Linear", "Variable Separable", "Homogeneous", "None"], a: 1},
+    {q: "The order and degree of dy/dx = √(1 + d²y/dx²) are", o: ["2, 1", "2, 2", "1, 2", "1, 1"], a: 1},
+    {q: "The differential equation y' + y tan x = sec x is a", o: ["First order linear DE", "Second order linear DE", "Homogeneous DE", "Variable separable DE"], a: 0},
+    {q: "The orthogonal trajectory of a family of curves is found by replacing dy/dx with", o: ["-dx/dy", "dx/dy", "1/(dy/dx)", "-(dy/dx)"], a: 0}
+  ],
+
+  "Coordinate Geometry": [
+    {q: "The distance of the point (3, 4) from the origin is", o: ["3", "4", "5", "7"], a: 2},
+    {q: "The slope of a line perpendicular to the line ax + by + c = 0 is", o: ["-a/b", "b/a", "a/b", "-b/a"], a: 1},
+    {q: "The equation x² + y² + 2gx + 2fy + c = 0 represents a circle with center", o: ["(g, f)", "(-g, -f)", "(f, g)", "(-f, -g)"], a: 1},
+    {q: "The length of the latus rectum of the parabola y² = 4ax is", o: ["a", "2a", "4a", "a/2"], a: 2},
+    {q: "The eccentricity (e) of a rectangular hyperbola is", o: ["1", "√2", "1/√2", "0"], a: 1},
+    {q: "The condition for the line y = mx + c to be a tangent to the circle x² + y² = a² is", o: ["c² = a²(1 + m²)", "c = am", "c² = a²/m²", "c = a√(1-m²)"], a: 0},
+    {q: "If the eccentricity of a conic is e < 1, the conic is an", o: ["Parabola", "Ellipse", "Hyperbola", "Circle"], a: 1},
+    {q: "The point of intersection of the medians of a triangle is called the", o: ["Incenter", "Orthocenter", "Centroid", "Circumcenter"], a: 2},
+    {q: "The equation of the tangent to the parabola y² = 4ax at (x₁, y₁) is", o: ["yy₁ = 2a(x + x₁)", "xx₁ = 2a(y + y₁)", "y = mx + a/m", "yy₁ = ax + x₁"], a: 0},
+    {q: "The distance between the foci of the ellipse x²/a² + y²/b² = 1 (a > b) is", o: ["2a", "2b", "2ae", "ae"], a: 2},
+    {q: "Two lines a₁x + b₁y + c₁ = 0 and a₂x + b₂y + c₂ = 0 are parallel if", o: ["a₁a₂ + b₁b₂ = 0", "a₁/a₂ = b₁/b₂", "a₁b₂ + a₂b₁ = 0", "a₁ = a₂"], a: 1},
+    {q: "The radius of the circle x² + y² - 4x - 6y - 12 = 0 is", o: ["5", "25", "√13", "7"], a: 0},
+    {q: "The sum of the focal distances of any point on an ellipse is equal to the", o: ["Minor axis", "Major axis", "Latus rectum", "Eccentricity"], a: 1},
+    {q: "The coordinates of the focus of the parabola x² = -4ay are", o: ["(a, 0)", "(0, a)", "(0, -a)", "(-a, 0)"], a: 2},
+    {q: "The angle between the asymptotes of the hyperbola x²/a² - y²/b² = 1 is", o: ["2 tan⁻¹(b/a)", "tan⁻¹(b/a)", "π/2", "2 sin⁻¹(b/a)"], a: 0},
+    {q: "The area of a triangle with vertices (x₁, y₁), (x₂, y₂), and (x₃, y₃) is zero if the points are", o: ["Equidistant", "Collinear", "Forming a right triangle", "In different quadrants"], a: 1},
+    {q: "The equation of a line passing through (x₁, y₁) with slope m is", o: ["y - y₁ = m(x - x₁)", "y = mx + c", "x/a + y/b = 1", "y₁ = mx₁"], a: 0},
+    {q: "The product of the slopes of two perpendicular lines is", o: ["1", "0", "-1", "Infinity"], a: 2},
+    {q: "The parametric coordinates of the ellipse x²/a² + y²/b² = 1 are", o: ["(a cos θ, b sin θ)", "(a sec θ, b tan θ)", "(at², 2at)", "(a cos θ, a sin θ)"], a: 0},
+    {q: "The locus of the point of intersection of perpendicular tangents to a circle is called the", o: ["Auxiliary circle", "Director circle", "Incircle", "Evolute"], a: 1}
+  ],
+
+
+  "Three-Dimensional Geometry": [
+    {q: "The distance of the point (x, y, z) from the origin is", o: ["x + y + z", "√(x² + y² + z²)", "x² + y² + z²", "√(x + y + z)"], a: 1},
+    {q: "If l, m, n are the direction cosines of a line, then l² + m² + n² is", o: ["0", "1", "-1", "2"], a: 1},
+    {q: "The shortest distance between two parallel lines is zero if the lines are", o: ["Skew", "Intersecting", "Coincident", "Perpendicular"], a: 2},
+    {q: "The equation of a plane passing through (x₁, y₁, z₁) with normal ratios a, b, c is", o: ["ax + by + cz = 0", "a(x-x₁) + b(y-y₁) + c(z-z₁) = 0", "x/a + y/b + z/c = 1", "ax₁ + by₁ + cz₁ = d"], a: 1},
+    {q: "The angle θ between two lines with direction ratios (a₁, b₁, c₁) and (a₂, b₂, c₂) satisfies cos θ =", o: ["(a₁a₂ + b₁b₂ + c₁c₂) / [√(Σa₁²)√(Σa₂²)]", "a₁a₂ + b₁b₂ + c₁c₂", "0", "1"], a: 0},
+    {q: "Two planes are perpendicular if the product of their normal direction ratios sums to", o: ["1", "0", "-1", "Infinity"], a: 1},
+    {q: "The distance of the point (x₁, y₁, z₁) from the plane ax + by + cz + d = 0 is", o: ["|ax₁ + by₁ + cz₁ + d| / √(a² + b² + c²)", "ax₁ + by₁ + cz₁", "d / √(a² + b² + c²)", "0"], a: 0},
+    {q: "The intersection of two non-parallel planes is a", o: ["Point", "Line", "Plane", "Circle"], a: 1},
+    {q: "Direction cosines of the x-axis are", o: ["(1, 0, 0)", "(0, 1, 0)", "(0, 0, 1)", "(1, 1, 1)"], a: 0},
+    {q: "The equation x/a + y/b + z/c = 1 is called the", o: ["Normal form", "Intercept form", "Vector form", "General form"], a: 1},
+    {q: "Two lines are skew if they are", o: ["Parallel", "Intersecting", "Neither parallel nor intersecting", "In the same plane"], a: 2},
+    {q: "The image of the point (x, y, z) in the xy-plane is", o: ["(x, y, -z)", "(-x, -y, z)", "(x, -y, z)", "(0, 0, z)"], a: 0},
+    {q: "The vector equation of a line passing through point 'a' and parallel to vector 'b' is", o: ["r = a + λb", "r = a - λb", "r = b + λa", "r · b = a"], a: 0},
+    {q: "If a line makes angles α, β, γ with the axes, then cos²α + cos²β + cos²γ is", o: ["0", "1", "2", "3"], a: 1},
+    {q: "The foot of the perpendicular from origin to the plane lx + my + nz = p is", o: ["(lp, mp, np)", "(l, m, n)", "(p, p, p)", "(0, 0, 0)"], a: 0},
+    {q: "The condition for a line to be parallel to a plane is", o: ["al + bm + cn = 0", "a/l = b/m = c/n", "al + bm + cn = 1", "l² + m² + n² = 1"], a: 0},
+    {q: "The equation of the z-axis in 3D is", o: ["x = 0, y = 0", "z = 0", "x = y", "x = 1, y = 1"], a: 0},
+    {q: "Shortest distance between two skew lines is measured along a line", o: ["Parallel to one", "Perpendicular to both", "Intersecting origin", "In xy-plane"], a: 1},
+    {q: "The number of arbitrary constants in the equation of a plane is", o: ["1", "2", "3", "4"], a: 2},
+    {q: "If two planes a₁x+b₁y+c₁z+d₁=0 and a₂x+b₂y+c₂z+d₂=0 are parallel, then", o: ["a₁/a₂ = b₁/b₂ = c₁/c₂", "a₁a₂ + b₁b₂ + c₁c₂ = 0", "d₁ = d₂", "a₁ = a₂"], a: 0}
+  ],
+
+  "Vector Algebra": [
+    {q: "A vector whose magnitude is 1 is called a", o: ["Null vector", "Unit vector", "Equal vector", "Position vector"], a: 1},
+    {q: "The dot product of two perpendicular vectors is", o: ["1", "0", "-1", "Magnitude of their product"], a: 1},
+    {q: "The magnitude of the vector 2i + j - 2k is", o: ["3", "5", "9", "√5"], a: 0},
+    {q: "The cross product of two parallel vectors is", o: ["1", "Zero vector", "Unit vector", "Infinity"], a: 1},
+    {q: "The value of i · (j × k) is", o: ["0", "1", "-1", "i"], a: 1},
+    {q: "If θ is the angle between vectors a and b, then a · b is", o: ["|a||b| sin θ", "|a||b| cos θ", "|a||b| tan θ", "0"], a: 1},
+    {q: "The area of a parallelogram with adjacent sides a and b is", o: ["a · b", "|a × b|", "1/2 |a × b|", "|a| + |b|"], a: 1},
+    {q: "The scalar triple product [a b c] represents the volume of a", o: ["Tetrahedron", "Parallelepiped", "Sphere", "Cylinder"], a: 1},
+    {q: "If a · b = 0 and a × b = 0, then", o: ["a is perpendicular to b", "a is parallel to b", "At least one is a null vector", "θ = 45°"], a: 2},
+    {q: "The projection of vector a on vector b is given by", o: ["(a · b) / |b|", "(a · b) / |a|", "a × b", "|a| cos θ"], a: 0},
+    {q: "The value of i × i is", o: ["1", "0", "k", "-j"], a: 1},
+    {q: "The unit vector perpendicular to both a and b is", o: ["(a × b) / |a × b|", "(a · b) / |a × b|", "a + b", "a - b"], a: 0},
+    {q: "If [a b c] = 0, the three vectors are", o: ["Collinear", "Coplanar", "Perpendicular", "Unit vectors"], a: 1},
+    {q: "The vector (a × b) is always ________ to the plane containing a and b.", o: ["Parallel", "Perpendicular", "Inclined at 45°", "Coplanar"], a: 1},
+    {q: "The triangle law of addition states that a + b is the", o: ["Product of sides", "Resultant vector", "Difference of sides", "Area"], a: 1},
+    {q: "The work done by a force F in displacing an object by d is", o: ["F × d", "F · d", "|F||d|", "0"], a: 1},
+    {q: "Which of the following is a vector triple product?", o: ["a · (b × c)", "a × (b × c)", "(a · b)c", "a + b + c"], a: 1},
+    {q: "The direction cosines of a vector are the components of its", o: ["Magnitude", "Direction ratios", "Unit vector", "Cross product"], a: 2},
+    {q: "If |a + b| = |a - b|, then the angle between a and b is", o: ["0°", "45°", "90°", "180°"], a: 2},
+    {q: "The position vector of the midpoint of a line joining A(a) and B(b) is", o: ["a - b", "(a + b) / 2", "ab", "√(a² + b²)"], a: 1}
+  ],
+
+  "Statistics and Probability": [
+    {q: "The sum of the probabilities of all outcomes in a sample space is", o: ["0", "0.5", "1", "Infinity"], a: 2},
+    {q: "The mean of the first n natural numbers is", o: ["n/2", "(n+1)/2", "n(n+1)/2", "n"], a: 1},
+    {q: "The variance of a constant 'k' is", o: ["k", "k²", "0", "1"], a: 2},
+    {q: "If A and B are independent events, then P(A ∩ B) is", o: ["P(A) + P(B)", "P(A) - P(B)", "P(A) × P(B)", "P(A) / P(B)"], a: 2},
+    {q: "The standard deviation is the ________ of the variance.", o: ["Square", "Square root", "Reciprocal", "Logarithm"], a: 1},
+    {q: "In a Binomial distribution, the mean is given by", o: ["np", "npq", "√npq", "n/p"], a: 0},
+    {q: "Bayes' Theorem is used to find", o: ["Joint probability", "Conditional probability", "Posterior probability", "Mean"], a: 2},
+    {q: "The range of probability is always between", o: ["-1 and 1", "0 and 1", "0 and 100", "-∞ and ∞"], a: 1},
+    {q: "The measure of dispersion that is most affected by extreme values is", o: ["Median", "Mode", "Range", "Mean deviation"], a: 2},
+    {q: "If P(A) = 0.4, P(B) = 0.5 and A, B are mutually exclusive, P(A ∪ B) is", o: ["0.9", "0.2", "0.1", "0"], a: 0},
+    {q: "The coefficient of variation (C.V.) is calculated as", o: ["(Mean/SD) × 100", "(SD/Mean) × 100", "Mean + SD", "SD²"], a: 1},
+    {q: "In a Normal distribution, the curve is", o: ["U-shaped", "Bell-shaped", "Linear", "J-shaped"], a: 1},
+    {q: "The probability of drawing a King from a deck of 52 cards is", o: ["1/13", "1/52", "4/13", "1/4"], a: 0},
+    {q: "If the variance of a data set is 25, the standard deviation is", o: ["625", "5", "12.5", "0.5"], a: 1},
+    {q: "The median of 3, 5, 7, 9, 11 is", o: ["5", "9", "7", "35"], a: 2},
+    {q: "P(A|B) is equal to", o: ["P(A ∩ B) / P(B)", "P(A ∩ B) / P(A)", "P(A)P(B)", "P(A) + P(B)"], a: 0},
+    {q: "The algebraic sum of deviations of a set of observations from their mean is", o: ["Maximum", "Minimum", "Zero", "Positive"], a: 2},
+    {q: "If n coins are tossed, the total number of outcomes is", o: ["2n", "n²", "2ⁿ", "n!"], a: 2},
+    {q: "The relationship between Mean, Median, and Mode for moderately skewed data is", o: ["Mode = 3 Median - 2 Mean", "Mean = 3 Median - 2 Mode", "Median = 3 Mode - 2 Mean", "Mode = Mean - Median"], a: 0},
+    {q: "The variance of the first n natural numbers is", o: ["(n²-1)/12", "(n²+1)/12", "n/12", "n²/6"], a: 0}
+  ],
+
+  "Trigonometry": [
+    {q: "The value of sin²θ + cos²θ is always", o: ["0", "1", "-1", "tan²θ"], a: 1},
+    {q: "The maximum value of the expression a sin θ + b cos θ is", o: ["a + b", "√(a² + b²)", "a² + b²", "ab"], a: 1},
+    {q: "The formula for sin(2θ) is", o: ["2 sin θ cos θ", "cos²θ - sin²θ", "2 tan θ / (1 + tan²θ)", "Both A and C"], a: 3},
+    {q: "The value of cos(60°) is", o: ["1/2", "√3/2", "1/√2", "1"], a: 0},
+    {q: "The period of the function f(x) = sin(x) is", o: ["π", "2π", "π/2", "4π"], a: 1},
+    {q: "If tan θ = 1, the general solution for θ is", o: ["nπ + π/4", "nπ", "2nπ + π/4", "nπ ± π/4"], a: 0},
+    {q: "The value of sin(π - θ) is", o: ["cos θ", "-sin θ", "sin θ", "-cos θ"], a: 2},
+    {q: "Which of the following is equal to cos(2θ)?", o: ["2cos²θ - 1", "1 - 2sin²θ", "(1-tan²θ)/(1+tan²θ)", "All of the above"], a: 3},
+    {q: "The value of tan(45° + θ) is", o: ["(1 + tan θ) / (1 - tan θ)", "(1 - tan θ) / (1 + tan θ)", "tan θ", "1"], a: 0},
+    {q: "In which quadrant is the sine function negative and cosine function positive?", o: ["First", "Second", "Third", "Fourth"], a: 3},
+    {q: "The value of sin(15°) is", o: ["(√3-1)/2√2", "(√3+1)/2√2", "1/2", "√3/2"], a: 0},
+    {q: "The relation between degrees and radians is given by 180° =", o: ["π/2 radians", "π radians", "2π radians", "1 radian"], a: 1},
+    {q: "The value of cos(A + B) cos(A - B) is", o: ["cos²A - sin²B", "cos²A - cos²B", "sin²A - sin²B", "1"], a: 0},
+    {q: "If sin θ = 0, the general solution is θ =", o: ["nπ", "(2n+1)π/2", "2nπ", "nπ + π/2"], a: 0},
+    {q: "The value of 2 sin A cos B is", o: ["sin(A+B) + sin(A-B)", "sin(A+B) - sin(A-B)", "cos(A+B) + cos(A-B)", "cos(A-B) - cos(A+B)"], a: 0},
+    {q: "The value of tan(π/2) is", o: ["0", "1", "Undefined", "-1"], a: 2},
+    {q: "The range of the function f(x) = sec(x) is", o: ["R", "[-1, 1]", "(-∞, -1] ∪ [1, ∞)", "(0, ∞)"], a: 2},
+    {q: "The value of cos(π + θ) is", o: ["cos θ", "-cos θ", "sin θ", "-sin θ"], a: 1},
+    {q: "The length of an arc of a circle of radius r subtending angle θ (in radians) is", o: ["rθ", "r²θ", "θ/r", "2πr"], a: 0},
+    {q: "The expression 1 - cos(2θ) is equal to", o: ["2 sin²θ", "2 cos²θ", "sin²θ", "cos²θ"], a: 0}
+  ],
+
+};
+
+/* ---------------- UI LOGIC ---------------- */
+const app = document.getElementById("app");
+
+chapters.forEach(ch=>{
+  const div=document.createElement("div");
+  div.className="chapter";
+  div.innerHTML=`<h3>${ch}</h3>`;
+  div.onclick=()=>startTest(ch);
+  chapterList.appendChild(div);
+});
+
+let idx=0,score=0,currentQ=[],chapterName="";
+
+function startTest(ch){
+  chapterName=ch;
+  currentQ=[...questionBank[ch]];
+  idx=0;score=0;
+  loadQuestion();
+}
+
+function loadQuestion(){
+  const q=currentQ[idx];
+  app.innerHTML=`
+  <div class="test-box">
+    <div class="test-header">
+      <h2>${chapterName}</h2>
+      <div class="progress">Question ${idx+1} / 20</div>
+    </div>
+
+    <div class="question">${q.q}</div>
+    <div class="options">
+      ${q.o.map((o,i)=>`<div class="option" onclick="select(${i})">${o}</div>`).join("")}
+    </div>
+
+    <button class="hidden" id="nextBtn" onclick="next()">Next</button>
+  </div>`;
+}
+
+function select(i){
+  const q=currentQ[idx];
+  const opts=document.querySelectorAll(".option");
+  if(i===q.a){
+    opts[i].classList.add("correct");
+    correctSound.play();
+    score++;
+  }else{
+    opts[i].classList.add("wrong");
+    opts[q.a].classList.add("correct");
+    wrongSound.play();
+  }
+  document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function next(){
+  idx++;
+  if(idx<currentQ.length) loadQuestion();
+  else showResult();
+}
+
+function showResult(){
+  app.innerHTML=`
+  <div class="test-box">
+    <h2 style="text-align:center;color:#38bdf8">Test Completed</h2>
+    <p style="text-align:center;margin-top:12px">Score: ${score} / ${currentQ.length}</p>
+    <button onclick="location.reload()">Back to Chapters</button>
+  </div>`;
+}
+</script>
+
+</body>
+</html>

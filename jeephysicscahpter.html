@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE Physics – Dinkar</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,system-ui,sans-serif}
+
+body{
+  background:linear-gradient(135deg,#020617,#020617);
+  color:#fff;
+  min-height:100vh;
+}
+
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:16px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:18px;
+  font-size:22px;
+  font-weight:900;
+  color:#38bdf8;
+}
+
+/* CHAPTER LIST */
+.chapter{
+  padding:18px;
+  margin-bottom:14px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  border:1px solid #1e293b;
+  cursor:pointer;
+  transition:.2s;
+}
+.chapter:hover{transform:scale(1.02)}
+.chapter h3{font-size:16px;font-weight:700}
+
+/* TEST BOX */
+.test-box{
+  background:#020617;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid #1e293b;
+}
+
+.test-header{
+  text-align:center;
+  margin-bottom:12px;
+}
+.test-header h2{
+  font-size:18px;
+  color:#38bdf8;
+}
+.progress{
+  font-size:13px;
+  opacity:.8;
+  margin-top:4px;
+}
+
+.question{
+  margin:20px 0;
+  font-size:17px;
+  font-weight:600;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.option{
+  padding:14px;
+  border-radius:14px;
+  background:#020617;
+  border:1px solid #334155;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.option.correct{
+  background:#052e16;
+  border-color:#22c55e;
+  color:#22c55e;
+}
+
+.option.wrong{
+  background:#450a0a;
+  border-color:#ef4444;
+  color:#ef4444;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:16px;
+  border:none;
+  border-radius:14px;
+  background:#38bdf8;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+  <div class="header">JEE Physics – Dinkar</div>
+  <div id="chapterList"></div>
+</div>
+
+<audio id="correctSound" src="successed-295058.mp3"></audio>
+<audio id="wrongSound" src="error-010-206498.mp3"></audio>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+/* 1. Firebase Configuration */
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "trutle-edu.firebaseapp.com",
+    projectId: "trutle-edu",
+    storageBucket: "trutle-edu.firebasestorage.app",
+    messagingSenderId: "601475525422",
+    appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+/* 2. Chapter Data */
+const chapters = [
+  "unit and measurment", "Kinematics", "Laws of Motion", "Work Energy Power",
+  "Rotational Motion", "gravitation ", "properties of solid and liquids",
+  "Thermodynamics", "kinetic theory of gases", "osillation and waves",
+  "Electrostatics", "Current Electricity", "magnetic effect of current and Magnetism",
+  "electromagnetic inductin and alternating current", "electromagnetic waves",
+  "Optics ", "wave optics", "dual nature of matter and radiation ",
+  'atom and nuclei', "electronic devices"
+];
+
+/* 3. Question Bank */
+const questionBank = {
+"unit and measurment":[
+{q:"The density of a material in CGS system is 4 g/cm³. In a system of units where unit of length is 10 cm and unit of mass is 100 g, the value of density is:",o:["0.04","0.4","40","400"],a:2},
+{q:"The dimensional formula for the coefficient of thermal conductivity is:",o:["[MLT⁻³K⁻¹]","[MLT⁻²K⁻¹]","[ML²T⁻³K]","[MLT⁻³K]"],a:0},
+{q:"In the relation P = (a-t²)/(bx), where P is pressure, x is distance and t is time, the dimensions of a/b are:",o:["[M²LT⁻³]","[MT⁻²]","[ML³T⁻¹]","[LT⁻³]"],a:1},
+{q:"A quantity X is given by ε₀L(ΔV/Δt), where ε₀ is permittivity, L is length, ΔV is potential difference and Δt is time. X has dimensions of:",o:["Resistance","Charge","Voltage","Current"],a:3},
+{q:"The time period of oscillation of a drop is T = √(ρr³/S). If error in density ρ, radius r and surface tension S are 1%, 2% and 3%, error in T is:",o:["1.5%","2.5%","3.5%","4.5%"],a:2},
+{q:"The dimensions of 1/√(μ₀ε₀) are the same as that of:",o:["Velocity","Acceleration","Force","Energy"],a:0},
+{q:"Planck's constant (h), speed of light (c) and gravitational constant (G) form a unit of length L. Then L is proportional to:",o:["√(hG/c³)","√(hG/c⁵)","√(hc/G)","G²/h²c"],a:0},
+{q:"The resistance R = V/I where V = (100 ± 5)V and I = (10 ± 0.2)A. The total percentage error in R is:",o:["5%","2%","7%","3%"],a:2},
+{q:"Average width of a hair under a microscope (100x magnification) is 3.5 mm based on 20 obs. The estimate of thickness is:",o:["0.35 mm","0.035 mm","0.0035 mm","35 mm"],a:1},
+{q:"Which of the following pairs have the same dimensions?",o:["Torque and Work","Stress and Energy","Force and Power","Momentum and Force"],a:0},
+{q:"If momentum (P), area (A) and time (T) are fundamental units, then energy has the dimensional formula:",o:["[PA⁻¹T]","[PA¹/²T⁻¹]","[PA¹/²T]","[P²AT⁻²]"],a:1},
+{q:"Screw gauge pitch is 1mm with 100 divisions. Main scale reads 1mm and 47th division coincides. The diameter is:",o:["1.47 mm","1.047 mm","1.0047 mm","1.47 cm"],a:0},
+{q:"The dimensions of solar constant (energy falling on unit area per unit time) are:",o:["[ML²T⁻³]","[MT⁻³]","[MLT⁻²]","[MT⁻²]"],a:1},
+{q:"A physical quantity is X = M^a L^b T^c. If % errors in M, L, T are α, β, γ, the maximum numerical % error is:",o:["aα + bβ + cγ","(aα + bβ + cγ)×100","|a|α + |b|β + |c|γ","Zero"],a:2},
+{q:"The dimension of 'impulse' is the same as that of:",o:["Force","Momentum","Energy","Pressure"],a:1},
+{q:"In a new system, unit of mass is 10kg, length is 1km and time is 1 min. The value of 1 Joule is:",o:["3.6 × 10⁻⁴","0.01","10","360"],a:0},
+{q:"The dimensional formula of self-inductance is:",o:["[ML²T⁻²A⁻²]","[ML²T⁻¹A⁻²]","[MLT⁻²A⁻²]","[ML²T⁻²A⁻¹]"],a:0},
+{q:"The number of significant figures in 0.0006032 is:",o:["7","3","4","5"],a:2},
+{q:"If force (F), velocity (V) and time (T) are fundamental units, then the dimensions of mass are:",o:["[FVT⁻¹]","[FV⁻¹T⁻¹]","[FV⁻¹T]","[FVT]"],a:2},
+{q:"The dimensions of magnetic permeability μ₀ are:",o:["[MLT⁻²A⁻²]","[ML²T⁻²A⁻¹]","[MLT⁻¹A⁻²]","[ML²T⁻²A⁻²]"],a:0}
+],
+"Kinematics":[
+{q:"A stone is dropped from height h. Simultaneously, another is thrown up from the ground which reaches height 4h. The stones cross each other after time t =",o:["√(h/8g)","√(8h/g)","√(h/2g)","√(h/g)"],a:0},
+{q:"A block of mass m is on a smooth wedge of inclination θ. The system accelerates horizontally so the block doesn't slip. The force exerted by wedge on block is:",o:["mg cosθ","mg secθ","mg/cosθ","mg sinθ"],a:2},
+{q:"The work done by a force F = -kx² in displacing a particle from x = 0 to x = L is:",o:["-kL³/3","kL³/3","-kL²/2","kL²"],a:0},
+{q:"A disc (radius R, thickness R/6) has MI = I. It is melted and recast into a solid sphere. The MI of the sphere about its diameter is:",o:["I/5","I/10","I/12","2I/5"],a:1},
+{q:"If Earth's radius shrinks by 1% (mass constant), the acceleration due to gravity 'g' will:",o:["Decrease by 2%","Increase by 2%","Decrease by 1%","Increase by 1%"],a:1},
+{q:"The terminal velocity of a small sphere of radius r falling through a viscous liquid is proportional to:",o:["r","r²","1/r","1/r²"],a:1},
+{q:"Two soap bubbles of radii r1 and r2 (r1 > r2) coalesce isothermally in vacuum. The radius of the new bubble is:",o:["r1 + r2","√(r1² + r2²)","r1r2/(r1 + r₂)","√(r1² - r2²)"],a:1},
+{q:"An ideal gas expands from V1 to V2 via isothermal, adiabatic, and isobaric processes. Work done is maximum in:",o:["Isothermal","Adiabatic","Isobaric","Equal in all"],a:2},
+{q:"In SHM with amplitude A, at what displacement from mean position is Kinetic Energy equal to Potential Energy?",o:["A/2","A/√2","A/4","A/√3"],a:1},
+{q:"The rms speed of molecules at T is v. If temperature increases to 4T, the rms speed becomes:",o:["v/2","2v","4v","v/4"],a:1},
+{q:"A capacitor C is charged to potential V. The total electric flux through a closed surface enclosing the capacitor is:",o:["CV/ε₀","2CV/ε₀","CV/2ε₀","Zero"],a:3},
+{q:"Two long parallel wires carrying currents in the same direction will:",o:["Attract each other","Repel each other","Exert no force","Rotate each other"],a:0},
+{q:"Magnetic field at center of loop (Area A, Current I) is B. If Area is doubled and current is halved, new field is:",o:["B/4","B/(2√2)","B/√2","B/2"],a:1},
+{q:"A proton and alpha particle enter a magnetic field perpendicularly with same speed. Ratio of radii (rp/rα) is:",o:["1:1","1:2","2:1","1:4"],a:1},
+{q:"In YDSE, if slit distance is halved and screen distance is doubled, the fringe width becomes:",o:["Half","Double","Four times","Unchanged"],a:2},
+{q:"A convex lens (f) is immersed in water (μ=4/3). If glass μ=3/2, the new focal length is:",o:["f","2f","3f","4f"],a:3},
+{q:"The de-Broglie wavelength of an electron accelerated through potential V is proportional to:",o:["V","√V","1/V","1/√V"],a:3},
+{q:"The half-life of a substance is 10 days. Time taken for 3/4th of the substance to decay is:",o:["15 days","20 days","25 days","30 days"],a:1},
+{q:"With 2Ω resistance, cell current is 0.5A. With 5Ω, current is 0.25A. Internal resistance of cell is:",o:["0.5Ω","1.0Ω","1.5Ω","2.0Ω"],a:1},
+{q:"In CE amplifier, V_out across 2kΩ is 2V. If β=100 and R_base=1kΩ, the input signal voltage is:",o:["0.1V","0.01V","1.0V","0.001V"],a:1}
+],
+
+"Laws of Motion":[
+{q:"A mass of 10kg is suspended by a rope of length 4m from the ceiling. A force of 20N in the horizontal direction is applied at the midpoint. The angle the rope makes with the vertical in equilibrium is:",o:["tan⁻¹(0.2)","tan⁻¹(0.4)","tan⁻¹(0.5)","45°"],a:0},
+{q:"A block of mass m is placed on a surface with vertical cross-section y = x³/6. If the coefficient of friction is 0.5, the maximum height above the ground at which the block can be placed without slipping is:",o:["1/6 m","2/3 m","1/3 m","1/2 m"],a:0},
+{q:"A rocket with a lift-off mass 20,000 kg is blasted upwards with an initial acceleration of 5 m/s². The initial thrust of the blast is:",o:["2 × 10⁵ N","3 × 10⁵ N","4 × 10⁵ N","5 × 10⁵ N"],a:1},
+{q:"A bullet of mass 0.04 kg moving with a speed of 90 m/s enters a heavy wooden block and is stopped after a distance of 60 cm. The average resistive force exerted by the block is:",o:["270 N","180 N","450 N","320 N"],a:0},
+{q:"A block of mass m is connected to another block of mass M by a spring (force constant k). A constant force F pulls mass M. The maximum expansion in the spring is:",o:["2F/k","2Fm/k(m+M)","2FM/k(m+M)","F/k"],a:1},
+{q:"A body of mass 2kg is moving on a smooth horizontal surface with velocity 10 m/s. A force is applied for 5s in the direction of motion. If the force-time graph is a triangle with peak 10N at 2.5s, the final velocity is:",o:["20.5 m/s","22.5 m/s","25.0 m/s","27.5 m/s"],a:1},
+{q:"A person stands on a weighing machine in a lift. When the lift accelerates upwards at 2.2 m/s², the reading is 60kg. When it accelerates downwards at 2.2 m/s², the reading will be:",o:["30 kg","38 kg","40 kg","42 kg"],a:1},
+{q:"A machine gun fires a bullet of mass 40g with a velocity 1200 m/s. The man holding it can exert a maximum force of 144N on the gun. How many bullets can he fire per second at most?",o:["1","2","3","4"],a:2},
+{q:"Two blocks of masses 2kg and 1kg are in contact on a frictionless table. A horizontal force of 3N is applied to the 2kg block. The force of contact between the two blocks is:",o:["1 N","2 N","3 N","0.5 N"],a:0},
+{q:"A circular track of radius 300m is banked at an angle of 15°. If the coefficient of friction between wheels and road is 0.2, the optimum speed to avoid wear and tear of tires is:",o:["28.1 m/s","38.2 m/s","24.3 m/s","30.5 m/s"],a:0},
+{q:"A system consists of three blocks of masses m1, m2, m3 connected by strings over a pulley. If the system is released from rest, the acceleration of m1 (m1 > m2+m3) is:",o:["(m1-m2-m3)g/(m1+m2+m3)","(m1-m2+m3)g/(m1+m2+m3)","g","Zero"],a:0},
+{q:"A block of mass M is held against a rough vertical wall by pressing it with a horizontal force F. If μ is the coefficient of friction, the minimum force F required is:",o:["Mg/μ","μMg","Mg","Mg/(μ+1)"],a:0},
+{q:"A bead of mass m is fitted onto a rod of length L which can rotate about one end. If the rod rotates with angular velocity ω and there is no friction, the acceleration of the bead is:",o:["ω²L","ω²r","Zero","g sinθ"],a:1},
+{q:"A ball of mass 0.5 kg is dropped from a height of 10m. It bounces to a height of 7m. The impulse imparted by the floor is (approx):",o:["8.3 Ns","10.2 Ns","12.4 Ns","15.6 Ns"],a:2},
+{q:"A monkey of mass 20kg is holding a vertical rope. The rope will not break if a mass of 25kg is suspended from it. The maximum acceleration with which the monkey can climb up is:",o:["2.5 m/s²","5 m/s²","10 m/s²","1.2 m/s²"],a:0},
+{q:"A block of mass m is on an inclined plane of angle θ. The coefficient of friction is μ < tanθ. The net force on the block is:",o:["mg sinθ","mg(sinθ - μ cosθ)","mg(sinθ + μ cosθ)","Zero"],a:1},
+{q:"A frame of reference moving with an acceleration 'a' with respect to an inertial frame is:",o:["Inertial","Non-inertial","Rotating","Absolute"],a:1},
+{q:"Two masses M and m (M > m) are joined by a light string passing over a smooth pulley. If the pulley moves up with acceleration 'a', the tension in the string is:",o:["2Mmg/(M+m)","2Mm(g+a)/(M+m)","Mm(g+a)/(M+m)","2Mmg(g+a)"],a:1},
+{q:"A block of mass 1kg is pushed against a rough vertical wall with a force of 20N. If μ = 0.5, the frictional force acting on the block is:",o:["10 N","5 N","9.8 N","20 N"],a:2},
+{q:"The minimum velocity required at the lowest point of a vertical circle of radius R to complete the circle is:",o:["√(gR)","√(3gR)","√(5gR)","√(2gR)"],a:2}
+],
+
+ "Work Energy Power" : [
+{q:"A body of mass 2kg is driven by a constant power of 1W from rest. The distance travelled by the body at t=3s is:",o:["√3 m","2√3 m","1 m","1.5 m"],a:1},
+{q:"A force F = (5i + 3j + 2k)N is applied over a particle which displaces it from origin to r = (2i - j)m. The work done is:",o:["7 J","13 J","10 J","11 J"],a:0},
+{q:"A spring of force constant 800 N/m has an extension of 5cm. The work done in extending it from 5cm to 15cm is:",o:["16 J","8 J","4 J","24 J"],a:1},
+{q:"A ball is dropped from height h on a floor of coefficient of restitution e. The total distance covered by the ball before coming to rest is:",o:["h(1+e²)/(1-e²)","h(1-e²)/(1+e²)","h(1+e)/(1-e)","h(1-e)/(1+e)"],a:0},
+{q:"The potential energy of a system is U = a/x¹² - b/x⁶. The potential energy at equilibrium is:",o:["-b²/2a","-b²/4a","b²/2a","b²/4a"],a:1},
+{q:"A 10kg mass moves along x-axis with force F = 5x. Work done in moving from x=2 to x=4 is:",o:["30 J","40 J","20 J","60 J"],a:0},
+{q:"A bullet of mass m fires into a large wooden block of mass M suspended by a string of length L. The maximum height reached is:",o:["[(m+M)v/m]²/2g","[mv/(m+M)]²/2g","mv²/2g(m+M)","m²v²/2gM"],a:1},
+{q:"A vertical spring with force constant k is fixed on a table. A ball of mass m at height h is dropped on it. Max compression x is:",o:["mg/k","√(2mgh/k)","mg/k + √[(mg/k)² + 2mgh/k]","mg/k + √[2mgh/k]"],a:2},
+{q:"A body moves from rest under constant power. The velocity at time t is proportional to:",o:["t","t²","t¹/²","t³/²"],a:2},
+{q:"If kinetic energy is increased by 300%, momentum increases by:",o:["100%","200%","300%","400%"],a:0},
+{q:"A pump can lift 100kg of water to 10m height in 10s. If efficiency is 50%, the input power is:",o:["1 kW","2 kW","500 W","4 kW"],a:1},
+{q:"A particle of mass m moving with velocity v collides elastically with a mass 2m at rest. Fraction of energy lost by m is:",o:["1/9","4/9","8/9","5/9"],a:2},
+{q:"A force F = -k/x² acts on a particle. The work done in moving from x=a to x=2a is:",o:["k/2a","-k/2a","k/a","-k/a"],a:1},
+{q:"A chain of length L and mass M is held on a smooth table with 1/3 of its length hanging. Work to pull it back is:",o:["MgL/6","MgL/9","MgL/18","MgL/3"],a:2},
+{q:"Two bodies of masses m1 and m2 have same kinetic energy. The ratio of their momenta is:",o:["m1:m2","m2:m1","√m1:√m2","m1²:m2²"],a:2},
+{q:"A 0.5kg ball moving at 10m/s strikes a wall and bounces back elastically. If contact time is 0.1s, the average force is:",o:["100 N","50 N","25 N","200 N"],a:0},
+{q:"A mass m is attached to a string and swung in a vertical circle of radius R. Tension at lowest point for min velocity is:",o:["mg","3mg","6mg","5mg"],a:2},
+{q:"A block of mass m is pushed against a spring (k) by distance x. If it slides on a rough surface (μ) and stops after d, then:",o:["kx²/2 = μmgd","kx²/2 = μmg(d+x)","kx = μmgd","kx²/2 = mgd"],a:1},
+{q:"Power delivered to a particle of mass m by force F moving in a circle of radius r with velocity v and tangential acceleration a is:",o:["Fv","mav","m(v²/r)v","Zero"],a:1},
+{q:"In an inelastic collision, which is conserved?",o:["Kinetic Energy","Potential Energy","Total Linear Momentum","None"],a:2}
+],
+
+
+  "Rotational Motion"  : [
+{q:"A solid sphere and a solid cylinder of same mass and radius roll without slipping down an incline. The ratio of their accelerations is:",o:["14:15","15:14","5:7","7:5"],a:1},
+{q:"A thin rod of length L and mass M is rotating about an axis perpendicular to its length and passing through a point L/4 from one end. MI is:",o:["ML²/12","7ML²/48","ML²/9","11ML²/48"],a:1},
+{q:"A circular disc of radius R and mass M has a small hole of radius R/2 scooped out from its edge. The shift in center of mass is:",o:["R/2","R/4","R/6","R/3"],a:2},
+{q:"A dancer on ice spins with arms folded at 2 rad/s. When she extends her arms, her MI doubles. Her new angular velocity is:",o:["1 rad/s","2 rad/s","4 rad/s","0.5 rad/s"],a:0},
+{q:"A torque of 100 Nm acting on a wheel at rest for 10s produces an angular momentum of:",o:["1000 kgm²/s","500 kgm²/s","100 kgm²/s","2000 kgm²/s"],a:0},
+{q:"A force F = (2i - 3j + k) acts at point (1, 1, 1). The torque about the origin is:",o:["4i + j - 5k","i + j + k","i - j + k","2i + 3j - k"],a:0},
+{q:"A disc rolls without slipping. The ratio of its rotational kinetic energy to its total kinetic energy is:",o:["1/2","1/3","2/3","1/4"],a:1},
+{q:"A solid sphere of mass M and radius R rolls on a horizontal surface with velocity v. Its total kinetic energy is:",o:["(1/2)Mv²","(1/5)Mv²","(7/10)Mv²","(5/7)Mv²"],a:2},
+{q:"A constant torque of 1000 Nm turns a wheel of MI 200 kgm² about an axis. Angular acceleration is:",o:["2 rad/s²","5 rad/s²","10 rad/s²","1 rad/s²"],a:1},
+{q:"The radius of gyration of a uniform rod of length L about an axis through its center and perpendicular to its length is:",o:["L/2","L/√12","L/√3","L/6"],a:1},
+{q:"A ring and a disc of same mass and radius roll with same velocity. If K_ring and K_disc are their kinetic energies, then:",o:["K_ring > K_disc","K_disc > K_ring","K_ring = K_disc","Depends on friction"],a:0},
+{q:"A particle moves in a circle of radius r with constant speed v. Its angular momentum about the center is L. If radius is doubled and speed halved, new L is:",o:["L","2L","L/2","L/4"],a:0},
+{q:"The MI of a hollow cylinder of mass M and radius R about its own axis is:",o:["MR²","MR²/2","2MR²/3","5MR²/4"],a:0},
+{q:"Two discs of MI I1 and I2 rotating with ω1 and ω2 are brought into contact face to face. The final angular velocity is:",o:["(I1ω1 + I2ω2)/(I1 + I2)","(ω1 + ω2)/2","√(ω1ω2)","(I1ω1 - I2ω2)/(I1 + I2)"],a:0},
+{q:"A flywheel gains speed from 60 rpm to 360 rpm in 6 seconds. Its angular acceleration is:",o:["π rad/s²","2π rad/s²","5π rad/s²","10π rad/s²"],a:1},
+{q:"A ladder is leaning against a smooth vertical wall and a rough floor. The force of friction acts:",o:["Towards the wall","Away from the wall","Upwards","Downwards"],a:0},
+{q:"For a body in pure rolling, the velocity of the point of contact with the ground is:",o:["v","2v","Zero","v/2"],a:2},
+{q:"The ratio of MI of a ring and a disc of same mass and radius about their tangent in their plane is:",o:["3:2","2:3","3:5","5:4"],a:2},
+{q:"Angular momentum of a body is conserved if:",o:["Net Force = 0","Net Torque = 0","Linear Momentum = Constant","Work = 0"],a:1},
+{q:"A particle of mass m is at (x,y). It moves with velocity v along x-axis. Its angular momentum about origin is:",o:["mvy","mvx","mv√(x²+y²)","Zero"],a:0}
+],
+
+   "gravitation ": [
+{q:"If the mass of Earth is M and radius is R, the ratio of acceleration due to gravity at the surface to the gravitational constant G is:",o:["M/R²","R²/M","M/R","M²/R"],a:0},
+{q:"The height at which the acceleration due to gravity becomes g/9 (where g is surface gravity) is:",o:["R","2R","3R","4R"],a:1},
+{q:"Two spheres of masses m and M are situated in air and the gravitational force between them is F. If the space around them is filled with a liquid of density ρ, the force will be:",o:["F","F/ρ","Fρ","Zero"],a:0},
+{q:"The escape velocity of a body from the Earth depends on its mass m as:",o:["m⁰","m¹","m²","m⁻¹"],a:0},
+{q:"A satellite is revolving around Earth in a circular orbit with critical velocity v. If the satellite stops suddenly, the speed with which it strikes the Earth is:",o:["v","v√2","v/√2","2v"],a:1},
+{q:"The potential energy of a body of mass m is minimum at:",o:["The center of Earth","Surface of Earth","Infinity","None"],a:0},
+{q:"If the distance between Earth and Sun becomes one-fourth of the present distance, the duration of the year will become:",o:["1/4 times","1/2 times","1/8 times","1/16 times"],a:2},
+{q:"The orbital velocity of an artificial satellite in a circular orbit just above the Earth's surface is v. For a satellite orbiting at an altitude of 3R, the orbital velocity is:",o:["v/2","v/4","v/√2","v/√3"],a:0},
+{q:"The period of a satellite in a circular orbit of radius R is T. The period of another satellite in a circular orbit of radius 4R is:",o:["4T","8T","2T","16T"],a:1},
+{q:"What is the fractional decrease in the value of g at a height h from Earth's surface (h << R)?",o:["h/R","2h/R","h²/R²","R/h"],a:1},
+{q:"Weight of a body of mass m at the center of Earth is:",o:["mg","Infinite","Zero","mg/2"],a:2},
+{q:"The ratio of escape velocity at Earth to the escape velocity at a planet whose radius and mean density are twice as that of Earth is:",o:["1:2","1:2√2","1:4","1:√2"],a:1},
+{q:"If Earth stops rotating about its axis, the value of g at the equator will:",o:["Increase","Decrease","Remain same","Become zero"],a:0},
+{q:"A planet has mass 1/10 that of Earth and radius 1/3 that of Earth. The escape velocity from the planet is (v_e = escape velocity on Earth):",o:["v_e √(9/10)","v_e √(3/10)","v_e / 3","v_e / 10"],a:0},
+{q:"Energy required to move a body of mass m from an orbit of radius 2R to 3R is:",o:["GMm/12R","GMm/3R²","GMm/8R","GMm/6R"],a:3},
+{q:"The gravitational intensity at the center of a hemispherical shell of uniform mass density is:",o:["Zero","Directed towards the pole","Directed towards the base","Infinite"],a:1},
+{q:"A geostationary satellite orbits around the Earth in a direction:",o:["West to East","East to West","North to South","South to North"],a:0},
+{q:"The binding energy of a satellite of mass m revolving around Earth in an orbit of radius r is:",o:["GMm/r","GMm/2r","-GMm/2r","2GMm/r"],a:1},
+{q:"Two particles of equal mass m go round a circle of radius R under the action of their mutual gravitational attraction. The speed of each particle is:",o:["√(Gm/R)","√(Gm/2R)","√(Gm/4R)","√(2Gm/R)"],a:2},
+{q:"Acceleration due to gravity is maximum at:",o:["Equator","Poles","Center of Earth","Surface of Moon"],a:1}
+],
+
+  "properties of solid and liquids" : [
+{q:"A wire of length L and radius r is clamped at one end. On stretching with force F, extension is l. Another wire of same material, length 2L and radius 2r is stretched by force 2F. The extension is:",o:["l","2l","l/2","4l"],a:2},
+{q:"The Young's modulus of a wire of length L and radius r is Y. If length is reduced to L/2 and radius to r/2, the Young's modulus will be:",o:["Y/2","Y","2Y","4Y"],a:1},
+{q:"Two droplets of mercury of each radius r coalesce to form a single drop. The ratio of total surface energy before and after coalescing is:",o:["2^(1/3) : 1","2^(2/3) : 1","2 : 1","1 : 2^(1/3)"],a:0},
+{q:"A hydraulic lift has pistons of areas 2 cm² and 20 cm². If a force of 50N is applied to the smaller piston, the weight that can be lifted is:",o:["500 N","250 N","1000 N","50 N"],a:0},
+{q:"A spherical ball falls through a viscous liquid with terminal velocity v. If it is broken into two equal balls, the terminal velocity of each will be:",o:["v/2","v/2^(1/3)","v/2^(2/3)","v/4"],a:2},
+{q:"Water rises to a height h in a capillary tube. If the tube is tilted by an angle 60° with the vertical, the length of water in the tube will be:",o:["h/2","2h","h","h√3"],a:1},
+{q:"The work done in blowing a soap bubble of radius R is W. The work done in blowing it to a radius 2R is:",o:["W","2W","3W","4W"],a:2},
+{q:"A wire is stretched to double its length. The strain is:",o:["100%","50%","200%","Zero"],a:0},
+{q:"According to Bernoulli's theorem, p/ρ + v²/2 + gh = constant. The dimensions of the constant are same as that of:",o:["Pressure","Energy per unit mass","Force","Work"],a:1},
+{q:"A metal block is floating in a liquid. If the temperature of the system is increased, the upthrust on the block will:",o:["Increase","Decrease","Remain same","Become zero"],a:1},
+{q:"The breaking stress of a wire depends upon:",o:["Length","Radius","Material","Shape of cross-section"],a:2},
+{q:"A small hole is made at the bottom of a tank filled with water to height H. The velocity of efflux is:",o:["√(gH)","√(2gH)","2√(gH)","gH/2"],a:1},
+{q:"An iceberg floats in sea water with 10% of its volume outside. The density of ice is (density of sea water = 1030 kg/m³):",o:["927 kg/m³","103 kg/m³","900 kg/m³","1000 kg/m³"],a:0},
+{q:"The excess pressure inside a soap bubble of radius R is:",o:["2T/R","4T/R","T/R","8T/R"],a:1},
+{q:"The ratio of inertial force to viscous force is called:",o:["Reynold's number","Poiseuille's number","Stoke's number","Bernoulli's number"],a:0},
+{q:"When a load of 10kg is hung from a wire, elongation is 2mm. If the wire goes over a pulley and two 10kg weights are hung at both ends, elongation is:",o:["0.5 mm","1 mm","2 mm","4 mm"],a:2},
+{q:"The angle of contact for a liquid which perfectly wets the surface is:",o:["0°","90°","45°","180°"],a:0},
+{q:"Viscosity of gases _______ with increase in temperature, while viscosity of liquids _______ with increase in temperature.",o:["Increases, Decreases","Decreases, Increases","Increases, Increases","Decreases, Decreases"],a:0},
+{q:"A steel wire can support a maximum load W. If cut into 4 equal parts, each part can support a maximum load of:",o:["W/4","W","4W","W/2"],a:1},
+{q:"The potential energy stored in a stretched wire per unit volume is:",o:["(1/2) Stress × Strain","Stress × Strain","(1/2) Young's modulus × Strain","(1/2) Stress² / Strain"],a:0}
+],
+
+  "Thermodynamics": [
+{q:"An ideal gas heat engine operates in a Carnot cycle between 227°C and 127°C. It absorbs 6 kcal at the higher temperature. The amount of heat converted into work is:",o:["1.2 kcal","4.8 kcal","3.5 kcal","1.6 kcal"],a:0},
+{q:"In an adiabatic process, the state of a gas is changed from (P1, V1, T1) to (P2, V2, T2). Which of the following is correct?",o:["T1V1^(γ-1) = T2V2^(γ-1)","P1V1^γ = P2V2^γ","T1^γ P1^(1-γ) = T2^γ P2^(1-γ)","All of these"],a:3},
+{q:"The efficiency of a Carnot engine is 50% with sink temperature 7°C. To increase efficiency to 70%, the source temperature should be increased by:",o:["280 K","373.3 K","266.7 K","150 K"],a:1},
+{q:"During an isothermal expansion, a confined ideal gas does -150 J of work against its surroundings. This implies that:",o:["150 J of heat has been removed from the gas","150 J of heat has been added to the gas","300 J of heat has been added to the gas","No heat is exchanged"],a:1},
+{q:"Which of the following parameters does not characterize the thermodynamic state of matter?",o:["Pressure","Volume","Temperature","Work"],a:3},
+{q:"A system goes from A to B via two processes I and II. If ΔU1 and ΔU2 are the changes in internal energy, then:",o:["ΔU1 > ΔU2","ΔU1 = ΔU2","ΔU1 < ΔU2","Relation depends on path"],a:1},
+{q:"The work done in an adiabatic change in a gas from (P1, V1, T1) to (P2, V2, T2) is (n is number of moles):",o:["nR(T1-T2)/(γ-1)","nR(T2-T1)/(γ-1)","nRT ln(V2/V1)","P1V1 - P2V2"],a:0},
+{q:"The molar specific heat at constant pressure of an ideal gas is 7R/2. The ratio of specific heats (γ) is:",o:["1.67","1.4","1.33","1.2"],a:1},
+{q:"A diatomic gas (γ = 1.4) at 1 atm is compressed adiabatically to 1/32 of its volume. The final pressure is:",o:["32 atm","64 atm","128 atm","256 atm"],a:2},
+{q:"The first law of thermodynamics is a statement of:",o:["Conservation of momentum","Conservation of energy","Conservation of mass","Conservation of heat"],a:1},
+{q:"For an ideal gas, the value of (dU/dV) at constant temperature is:",o:["Positive","Negative","Zero","Infinite"],a:2},
+{q:"In a refrigerator, the heat is exhausted to the outer atmosphere of temperature T1 from the inside at T2. The coefficient of performance is:",o:["T2/(T1-T2)","T1/(T1-T2)","(T1-T2)/T2","(T1-T2)/T1"],a:0},
+{q:"When a gas expands cyclically, the work done by the gas is equal to:",o:["Area of the PV loop","Change in internal energy","Heat supplied","Zero"],a:0},
+{q:"In an isobaric process, the ratio of ΔQ : ΔU : ΔW for a monoatomic gas is:",o:["5:3:2","3:2:1","1:1:1","5:2:3"],a:0},
+{q:"If the temperature of the source is increased, the efficiency of a Carnot engine:",o:["Increases","Decreases","Remains same","First increases then decreases"],a:0},
+{q:"An ideal gas is compressed to half its initial volume. To get maximum work done on the gas, it should be compressed:",o:["Isothermally","Adiabatically","Isobarically","None of these"],a:1},
+{q:"The slope of an adiabatic P-V curve is 'x' times the slope of an isothermal P-V curve, where x is:",o:["1","γ","1/γ","γ-1"],a:1},
+{q:"100g of ice at 0°C is mixed with 100g of water at 80°C. The final temperature of the mixture is:",o:["0°C","40°C","20°C","50°C"],a:0},
+{q:"The internal energy of an ideal gas depends only on:",o:["Pressure","Volume","Temperature","Size of molecules"],a:2},
+{q:"A process in which no heat enters or leaves the system is called:",o:["Isothermal","Isobaric","Isochoric","Adiabatic"],a:3}
+],
+
+ "kinetic theory of gases"   : [
+{q:"The average kinetic energy of a gas molecule at temperature T is proportional to:",o:["T","T²","√T","T³"],a:0},
+{q:"At what temperature is the rms speed of hydrogen molecules equal to that of oxygen molecules at 1327°C?",o:["100 K","400 K","100°C","83 K"],a:0},
+{q:"The ratio of rms speed to the most probable speed of an ideal gas at a given temperature is:",o:["√(3/2)","√(2/3)","3/2","2/3"],a:0},
+{q:"The number of degrees of freedom for a rigid diatomic molecule is:",o:["3","5","6","7"],a:1},
+{q:"If the pressure of an ideal gas is increased by 100% keeping the temperature constant, the rms speed of molecules will:",o:["Increase by 100%","Decrease by 50%","Remain unchanged","Increase by 41%"],a:2},
+{q:"According to the law of equipartition of energy, the energy per degree of freedom per molecule is:",o:["kT","kT/2","3kT/2","RT/2"],a:1},
+{q:"The mean free path λ of a gas molecule varies with the diameter d of the molecule as:",o:["λ ∝ d","λ ∝ 1/d","λ ∝ 1/d²","λ ∝ d²"],a:2},
+{q:"The ratio of specific heats (Cp/Cv) for a monoatomic gas is:",o:["1.4","1.67","1.33","1.5"],a:1},
+{q:"A gas mixture consists of 2 moles of oxygen and 4 moles of argon at temperature T. Neglecting vibrational modes, the total internal energy of the system is:",o:["11 RT","15 RT","9 RT","4 RT"],a:0},
+{q:"Pressure of an ideal gas is P = (1/3)ρv². If the kinetic energy per unit volume is E, then pressure is:",o:["E","2E/3","3E/2","E/3"],a:1},
+{q:"The value of Universal Gas Constant R in SI units is approximately:",o:["8.31 J/mol·K","0.0821 L·atm/mol·K","1.98 cal/mol·K","8.31 erg/mol·K"],a:0},
+{q:"If the temperature of a gas is increased from 27°C to 927°C, the rms speed becomes:",o:["Double","Half","Four times","Three times"],a:0},
+{q:"Which of the following gases has the maximum rms speed at a given temperature?",o:["Oxygen","Nitrogen","Hydrogen","Carbon dioxide"],a:2},
+{q:"The rms speed of gas molecules is v. If the volume is halved isothermally, the new rms speed is:",o:["v","v/2","2v","v/4"],a:0},
+{q:"The mean free path of a gas is inversely proportional to:",o:["Temperature","Pressure","Volume","Square root of Mass"],a:1},
+{q:"A container holds a mixture of Nitrogen and Helium at 300K. The ratio of average kinetic energy of Nitrogen to Helium is:",o:["1:1","7:1","14:1","1:7"],a:0},
+{q:"The degrees of freedom for a non-linear triatomic molecule (like H2O) are:",o:["3","5","6","7"],a:2},
+{q:"At constant volume, the pressure of a gas is directly proportional to its absolute temperature. This is:",o:["Boyle's Law","Charles's Law","Gay-Lussac's Law","Avogadro's Law"],a:2},
+{q:"The root mean square speed of a gas molecule of mass m at temperature T is:",o:["√(3kT/m)","√(2kT/m)","√(8kT/πm)","3kT/m"],a:0},
+{q:"The total kinetic energy of 1 mole of an ideal monoatomic gas at 27°C is approximately:",o:["3740 J","1250 J","6230 J","4500 J"],a:0}
+],
+
+    "osillation and waves" :[
+{q:"A particle executes SHM with amplitude A. At what displacement from the mean position is its speed half of its maximum speed?",o:["A/2","A√3/2","A/√2","3A/4"],a:1},
+{q:"The time period of a simple pendulum of length L as measured in an elevator descending with acceleration g/2 is:",o:["2π√(L/g)","π√(2L/g)","2π√(2L/g)","2π√(L/2g)"],a:2},
+{q:"Two springs of force constants k1 and k2 are connected in series. The effective force constant of the combination is:",o:["k1+k2","(k1+k2)/2","k1k2/(k1+k2)","√(k1k2)"],a:2},
+{q:"A particle executes SHM with a frequency f. The frequency with which its kinetic energy oscillates is:",o:["f/2","f","2f","4f"],a:2},
+{q:"The total energy of a particle performing SHM is E. What is the kinetic energy of the particle at distance half of the amplitude from mean position?",o:["E/2","3E/4","E/4","E/√2"],a:1},
+{q:"A mass m is suspended from a spring of force constant k. If the mass is doubled, the frequency of oscillation becomes:",o:["√2 times","2 times","1/√2 times","1/2 times"],a:2},
+{q:"A wave is represented by y = 5 sin(0.01x - 2t) where x and y are in cm and t is in seconds. The velocity of the wave is:",o:["200 cm/s","100 cm/s","50 cm/s","0.02 cm/s"],a:0},
+{q:"The phase difference between two points separated by a distance of 0.1 m in a wave of frequency 500 Hz and velocity 300 m/s is:",o:["π/3","π/6","2π/3","π"],a:0},
+{q:"A string of length L is fixed at both ends. The wavelength of the third harmonic is:",o:["2L","L","2L/3","L/3"],a:2},
+{q:"The speed of sound in a gas is v. If the pressure is doubled keeping the temperature constant, the speed of sound becomes:",o:["v","2v","v/2","v√2"],a:0},
+{q:"An open pipe of length L is in resonance with a tuning fork of frequency f. If one end is closed, the new fundamental frequency is:",o:["f/2","2f","f","3f/2"],a:0},
+{q:"Two waves of intensities I and 4I superimpose. The ratio of maximum to minimum intensity in the interference pattern is:",o:["5:3","9:1","25:9","4:1"],a:1},
+{q:"A source of sound moves towards a stationary observer with speed v/10 (v = speed of sound). The ratio of apparent to real frequency is:",o:["10/9","11/10","9/10","10/11"],a:0},
+{q:"The fundamental frequency of a stretched string is 100 Hz. If the tension is increased by 21%, the new frequency is:",o:["121 Hz","110 Hz","105 Hz","144 Hz"],a:1},
+{q:"Beats are produced by two waves y1 = a sin(1000πt) and y2 = a sin(1008πt). The number of beats heard per second is:",o:["8","4","2","1"],a:1},
+{q:"The displacement of a particle is given by y = 3 sin(ωt) + 4 cos(ωt). The amplitude of the resultant motion is:",o:["7","1","5","12"],a:2},
+{q:"In a stationary wave, the distance between a node and the adjacent antinode is:",o:["λ","λ/2","λ/4","3λ/4"],a:2},
+{q:"The velocity of sound in air at NTP is 330 m/s. The velocity of sound in air at 27°C is approximately:",o:["330 m/s","346 m/s","360 m/s","315 m/s"],a:1},
+{q:"If the length of a simple pendulum is increased by 44%, the percentage increase in its time period is:",o:["44%","22%","20%","10%"],a:2},
+{q:"Which of the following properties of a wave is independent of the medium?",o:["Velocity","Wavelength","Frequency","Amplitude"],a:2}
+],
+
+  "Electrostatics": [
+{q:"Two point charges +9e and +e are kept 16 cm apart. At what distance from +9e charge should a third charge q be placed so that it is in equilibrium?",o:["12 cm","4 cm","8 cm","10 cm"],a:0},
+{q:"An electric dipole is placed at an angle of 30° with an electric field of intensity 2 × 10⁵ N/C. It experiences a torque of 4 Nm. If dipole length is 2 cm, the charge on it is:",o:["2 mC","5 mC","7 mC","8 mC"],a:0},
+{q:"A hollow metal sphere of radius R is given a charge Q. The potential at the center of the sphere is:",o:["Zero","Q/(4πε₀R)","Q/(8πε₀R)","Q/(4πε₀R²)"],a:1},
+{q:"The work done in bringing a unit positive charge from infinity to a point distance x from a charge Q is W. The electric field at that point is:",o:["W/x","dW/dx","-dW/dx","W²"],a:2},
+{q:"Three capacitors of 2μF, 3μF and 6μF are joined in series and the combination is charged by a 10V battery. The charge on each capacitor is:",o:["10 μC","5 μC","2 μC","60 μC"],a:1},
+{q:"A parallel plate capacitor is charged and then the battery is disconnected. If the plates are pulled further apart, the potential energy stored in it:",o:["Increases","Decreases","Remains same","Becomes zero"],a:0},
+{q:"The electric flux through a cube of side L due to a charge q placed at one of its corners is:",o:["q/ε₀","q/8ε₀","q/6ε₀","q/24ε₀"],a:1},
+{q:"If the electric field is given by E = 8i + 4j + 3k, the electric flux through a surface of area 100 units in the X-Y plane is:",o:["800 units","300 units","400 units","1500 units"],a:1},
+{q:"The capacitance of a parallel plate capacitor becomes 4/3 times its original value when a dielectric slab of thickness t = d/2 is inserted. The dielectric constant K is:",o:["2","3","4","1.5"],a:0},
+{q:"Two identical mercury droplets each of capacitance C merge to form a single drop. The capacitance of the new drop is:",o:["2C","2^(1/3)C","2^(2/3)C","C"],a:1},
+{q:"The electric potential V at any point (x, y, z) is given by V = 4x². The electric field at point (1m, 0, 2m) is:",o:["-8i V/m","8i V/m","-16i V/m","4i V/m"],a:0},
+{q:"A soap bubble is given a negative charge. Its radius will:",o:["Increase","Decrease","Remain same","Fluctuate"],a:0},
+{q:"The force between two charges in vacuum is F. If a brass plate is acted between them, the new force will be:",o:["2F","F/2","Zero","Infinite"],a:2},
+{q:"An electron is accelerated through a potential difference of 1V. The energy acquired by it is:",o:["1 Joule","1.6 × 10⁻¹⁹ Joules","1 eV","Both b and c"],a:3},
+{q:"The angle between the electric dipole moment and the electric field on the equatorial line of the dipole is:",o:["0°","90°","180°","45°"],a:2},
+{q:"Four charges +q, +q, -q, -q are placed at the corners of a square of side a. The electric potential at the center is:",o:["Zero","4q/(4πε₀a)","q/(πε₀a)","None of these"],a:0},
+{q:"If a charge is moved against the Coulomb force of an electric field, then:",o:["Work is done by the field","Energy is used from some outside source","Strength of field decreases","Energy of system decreases"],a:1},
+{q:"The distance between the plates of a parallel plate capacitor is d. A metal plate of thickness d/2 is placed between them. The capacitance will:",o:["Remain same","Double","Be halved","Triple"],a:1},
+{q:"Which of the following is not the unit of electric field?",o:["N/C","V/m","J/C","J/(C·m)"],a:2},
+{q:"The electric field at a point on the axis of an electric dipole at distance r is E1. At distance 2r on the equatorial line, it is E2. The ratio E1:E2 is:",o:["16:1","1:16","8:1","4:1"],a:0}
+],
+
+    "Current Electricity"   :[
+{q:"A wire of resistance 4Ω is stretched to twice its original length. The new resistance of the wire will be:",o:["8Ω","16Ω","4Ω","2Ω"],a:1},
+{q:"The color code of a carbon resistor is Blue, Black, Brown and Gold. The value of the resistance is:",o:["600Ω ± 5%","60Ω ± 10%","600Ω ± 10%","60Ω ± 5%"],a:3},
+{q:"In a potentiometer experiment, the balancing length is 250 cm for a cell of e.m.f. 1.5 V. For a cell of e.m.f. 1.2 V, the balancing length will be:",o:["200 cm","300 cm","225 cm","210 cm"],a:0},
+{q:"The drift velocity of electrons in a conductor is v_d. If the radius of the wire is doubled, keeping the current constant, the new drift velocity will be:",o:["v_d","v_d/2","v_d/4","2v_d"],a:2},
+{q:"A cell of e.m.f. E and internal resistance r is connected across an external resistance R. The condition for maximum power delivery to R is:",o:["R = r","R = 2r","R = r/2","R >> r"],a:0},
+{q:"Two resistors R1 and R2 are connected in parallel. If R1 > R2, the equivalent resistance R is:",o:["R > R1","R < R2","R2 < R < R1","R = (R1+R2)/2"],a:1},
+{q:"Ten identical cells each of e.m.f. 2V and internal resistance 1Ω are connected in series. If they are connected in parallel, the total e.m.f. and internal resistance will be:",o:["20V, 10Ω","2V, 0.1Ω","20V, 0.1Ω","2V, 10Ω"],a:1},
+{q:"In a Wheatstone bridge, the four arms have resistances 10, 10, 10 and 11 ohms. To balance the bridge, the resistance to be connected in parallel with 11 ohm resistor is:",o:["10Ω","11Ω","110Ω","1Ω"],a:2},
+{q:"The temperature coefficient of resistance of a wire is 0.00125 per °C. At 300 K, its resistance is 1Ω. At what temperature will the resistance be 2Ω?",o:["1100 K","1127 K","800°C","1100°C"],a:1},
+{q:"A heater coil is cut into two equal parts and only one part is used in the heater. The heat generated now will be:",o:["Doubled","Halved","Four times","One-fourth"],a:0},
+{q:"Kirchhoff's First Law (junction rule) is a reflection of the conservation of:",o:["Energy","Linear momentum","Angular momentum","Charge"],a:3},
+{q:"A 100W, 200V bulb is connected to a 160V supply. The power consumption is:",o:["64 W","100 W","80 W","125 W"],a:0},
+{q:"The internal resistance of a cell of e.m.f. 2V is 0.1Ω. It is connected to a resistance of 3.9Ω. The voltage across the cell will be:",o:["1.95 V","2 V","1.9 V","1.8 V"],a:0},
+{q:"Three resistances 2, 3 and 5 ohms are connected in parallel. The ratio of currents passing through them is:",o:["2:3:5","5:3:2","15:10:6","6:10:15"],a:2},
+{q:"Which material has a negative temperature coefficient of resistance?",o:["Copper","Silicon","Aluminum","Silver"],a:1},
+{q:"The sensitivity of a potentiometer can be increased by:",o:["Increasing the e.m.f. of the driver cell","Decreasing the length of the wire","Increasing the length of the wire","Increasing the resistance in the main circuit"],a:2},
+{q:"In Meter Bridge, the null point is found at 40 cm from the left end. If the resistance in the left gap is 2Ω, the resistance in the right gap is:",o:["3Ω","2Ω","4Ω","5Ω"],a:0},
+{q:"A steady current flows through a metallic conductor of non-uniform cross-section. Which quantity is constant along the conductor?",o:["Current density","Drift speed","Current","Electric field"],a:2},
+{q:"The SI unit of conductivity is:",o:["Ohm-meter","Ohm/meter","Siemens/meter","Mho-meter"],a:2},
+{q:"The relaxation time in conductors _________ with the increase of temperature.",o:["Increases","Decreases","Remains constant","First increases then decreases"],a:1}
+],
+
+  "magnetic effect of current and Magnetism" :[
+{q:"An electron moves in a circular orbit of radius R with frequency n. The magnetic field at the center of the orbit is:",o:["μ₀ne/2R","μ₀ne/R","μ₀ne/2πR","Zero"],a:0},
+{q:"A long straight wire of radius R carries a steady current I. The magnetic field B is plotted against distance r from the axis. The graph is:",o:["Linear for r<R and hyperbolic for r>R","Hyperbolic for all r","Linear for all r","Zero for r<R and hyperbolic for r>R"],a:0},
+{q:"A circular coil of radius r has n turns and carries a current I. The magnetic field at its center is B. If it is unwound and rewound into a coil of radius r/2, the new field at the center for same I is:",o:["2B","4B","B/2","B/4"],a:1},
+{q:"Two long parallel wires separated by distance d carry currents I and 2I in the same direction. The magnetic field is zero at a distance:",o:["d/3 from I","d/3 from 2I","d/2 from I","d/4 from I"],a:0},
+{q:"A proton and an alpha particle enter a uniform magnetic field with the same kinetic energy. The ratio of their radii (rp:rα) is:",o:["1:1","1:2","2:1","1:√2"],a:0},
+{q:"A galvanometer of resistance 100Ω gives full scale deflection for 1mA. To convert it into a voltmeter of range 10V, the resistance to be connected is:",o:["9900Ω in series","10000Ω in series","9900Ω in parallel","0.1Ω in parallel"],a:0},
+{q:"The magnetic moment of a current carrying loop is independent of:",o:["Current","Area","Magnetic field","Shape of loop"],a:2},
+{q:"A magnetic needle is kept in a non-uniform magnetic field. It experiences:",o:["A force and a torque","A force but no torque","A torque but no force","Neither force nor torque"],a:0},
+{q:"At a certain place, the horizontal component of Earth's magnetic field is √3 times the vertical component. The angle of dip at that place is:",o:["30°","60°","45°","0°"],a:0},
+{q:"The permeability of a paramagnetic substance is:",o:["Slightly greater than 1","Slightly less than 1","Equal to 1","Zero"],a:0},
+{q:"A charged particle moves through a magnetic field. Which of the following quantities of the particle changes?",o:["Kinetic Energy","Speed","Velocity","Mass"],a:2},
+{q:"The sensitivity of a moving coil galvanometer increases when:",o:["Number of turns decreases","Area of coil increases","Magnetic field decreases","Spring constant increases"],a:1},
+{q:"A toroid of inner radius r and outer radius R has n turns per unit length. The magnetic field inside the core is:",o:["μ₀nI","Zero","μ₀nI/2π","Depends on r"],a:0},
+{q:"The work done in rotating a magnetic dipole of moment M through 180° in a uniform field B (from 0°) is:",o:["MB","2MB","Zero","-MB"],a:1},
+{q:"The magnetic susceptibility χ is negative for:",o:["Paramagnetic","Diamagnetic","Ferromagnetic","All of these"],a:1},
+{q:"A current loop in a magnetic field is in stable equilibrium when the angle between its area vector and the field is:",o:["0°","180°","90°","45°"],a:0},
+{q:"The force between two parallel currents I1 and I2 separated by r is F. If I1 is doubled and r is tripled, the new force is:",o:["2F/3","3F/2","6F","F/6"],a:0},
+{q:"Lorentz force is given by the expression:",o:["q(v × B)","qE + q(v × B)","qE","q(B × v)"],a:1},
+{q:"Curie temperature is the temperature above which:",o:["Ferromagnetic becomes paramagnetic","Paramagnetic becomes diamagnetic","Ferromagnetic becomes diamagnetic","Paramagnetic becomes ferromagnetic"],a:0},
+{q:"A solenoid of length 0.5m has 500 turns and carries 2A. The magnetic field inside it is:",o:["2.5 mT","5.0 mT","1.25 mT","0.6 mT"],a:0}
+],
+
+   "electromagnetic inductin and alternating current" :[
+{q:"A circular coil of radius 10 cm and 500 turns is rotated in a uniform magnetic field of 0.01 T at 50 Hz. The maximum e.m.f. induced is:",o:["1.57 V","3.14 V","15.7 V","31.4 V"],a:2},
+{q:"The magnetic flux linked with a coil satisfies Φ = 5t² + 3t + 16. The induced e.m.f. in the coil at t = 4s is:",o:["43 V","40 V","20 V","10 V"],a:0},
+{q:"A metal rod of length L rotates with angular velocity ω about an axis through one end and perpendicular to its length in field B. The induced e.m.f. is:",o:["BL²ω","BL²ω/2","BLω²/2","Zero"],a:1},
+{q:"The self-inductance of a solenoid of length l, area A and total turns N is proportional to:",o:["N","N²","1/N","√N"],a:1},
+{q:"Two coils have a mutual inductance of 0.005 H. If current in the first coil changes as I = I₀ sin(ωt) where ω=100π, the max e.m.f. in second coil is:",o:["0.5π I₀","5π I₀","0.05π I₀","π I₀"],a:0},
+{q:"In an AC circuit, the peak value of voltage is 423 V. Its effective (rms) voltage is:",o:["400 V","300 V","323 V","200 V"],a:1},
+{q:"An inductor of 0.5 H and a resistor of 100Ω are connected in series to a 240V, 50Hz AC source. The impedance of the circuit is:",o:["186Ω","100Ω","257Ω","50Ω"],a:0},
+{q:"In a series LCR circuit, resonance occurs when:",o:["XL = XC","XL = R","XC = R","XL + XC = R"],a:0},
+{q:"The power factor of a pure inductor or a pure capacitor is:",o:["1","Zero","0.5","Infinity"],a:1},
+{q:"The Q-factor of an LCR circuit is given by:",o:["(1/R)√(L/C)","(1/L)√(R/C)","R√(L/C)","(1/R)√(C/L)"],a:0},
+{q:"A transformer works on the principle of:",o:["Self induction","Mutual induction","Eddy currents","Piezoelectric effect"],a:1},
+{q:"In a step-up transformer, the quantity that decreases in the secondary coil is:",o:["Voltage","Current","Power","Frequency"],a:1},
+{q:"The core of a transformer is laminated to reduce:",o:["Copper loss","Hysteresis loss","Eddy current loss","Flux leakage"],a:2},
+{q:"In an LCR series circuit, the phase difference between current and voltage at resonance is:",o:["0","π/2","π/4","π"],a:0},
+{q:"A 100Ω resistor is connected to a 220V, 50Hz AC supply. The net power consumed over a full cycle is:",o:["484 W","220 W","100 W","242 W"],a:0},
+{q:"Lenz's law is a consequence of the law of conservation of:",o:["Charge","Mass","Energy","Momentum"],a:2},
+{q:"If the number of turns in a coil is doubled without changing its length, its self-inductance becomes:",o:["Four times","Double","Half","Unchanged"],a:0},
+{q:"The capacitive reactance of a 50μF capacitor at 50Hz is approximately:",o:["63.7Ω","31.8Ω","100Ω","127.4Ω"],a:0},
+{q:"The average power dissipated in an AC circuit containing only a resistor is:",o:["V_rms * I_rms","V_peak * I_peak","Zero","V_rms * I_rms / 2"],a:0},
+{q:"The ratio of mean value over half cycle to the peak value of AC is:",o:["2/π","1/π","√2/π","π/2"],a:0}
+],
+
+    "electromagnetic waves" : [
+{q:"The dimension of 1/√(μ₀ε₀) is same as that of:",o:["Velocity","Acceleration","Force","Energy"],a:0},
+{q:"Which of the following has the shortest wavelength?",o:["X-rays","Gamma rays","Microwaves","Radio waves"],a:1},
+{q:"In an EM wave, the phase difference between electric field E and magnetic field B is:",o:["0","π/2","π","π/4"],a:0},
+{q:"The amplitude of magnetic field B₀ for an EM wave with electric field amplitude E₀ = 300 V/m is:",o:["10⁻⁶ T","10⁻⁷ T","10⁻⁸ T","10⁻⁹ T"],a:0},
+{q:"The speed of EM waves in a medium of permittivity ε and permeability μ is:",o:["1/√(με)","√(μ/ε)","√(ε/μ)","με"],a:0},
+{q:"Electromagnetic waves are produced by:",o:["Static charge","Moving charge with constant velocity","Accelerated charge","Neutral particles"],a:2},
+{q:"The ratio of amplitudes of electric field and magnetic field (E₀/B₀) in vacuum is:",o:["c","1/c","c²","1/c²"],a:0},
+{q:"Which part of the EM spectrum is used in RADAR systems?",o:["Ultraviolet","Infrared","Microwaves","X-rays"],a:2},
+{q:"The greenhouse effect is mainly due to which part of the EM spectrum?",o:["Ultraviolet","Infrared","Visible light","Radio waves"],a:1},
+{q:"Displacement current is given by the expression:",o:["ε₀(dΦ_E/dt)","μ₀(dΦ_B/dt)","ε₀(dE/dt)","Φ_E/t"],a:0},
+{q:"The direction of propagation of EM wave is given by the vector:",o:["E","B","E × B","B × E"],a:2},
+{q:"Which EM wave is used for checking the purity of gems and eggs?",o:["Infrared","X-rays","Ultraviolet","Visible"],a:2},
+{q:"In an EM wave, the average energy density of the electric field is U_E and that of the magnetic field is U_B. Then:",o:["U_E = U_B","U_E > U_B","U_E < U_B","U_E = 2U_B"],a:0},
+{q:"If an EM wave has a frequency of 30 MHz, its wavelength in vacuum is:",o:["100 m","10 m","1 m","0.1 m"],a:1},
+{q:"Ozone layer blocks the radiation of wavelength:",o:["Less than 3x10⁻⁷ m","More than 3x10⁻⁷ m","Visible light","Infrared"],a:0},
+{q:"The velocity of EM waves in a vacuum is given by:",o:["√(μ₀/ε₀)","√(ε₀/μ₀)","1/√(μ₀ε₀)","μ₀ε₀"],a:2},
+{q:"Which scientist first experimentally confirmed the existence of EM waves?",o:["Maxwell","Hertz","Marconi","Ampere"],a:1},
+{q:"The radiation pressure of an EM wave of intensity I on a perfectly reflecting surface is:",o:["I/c","2I/c","I/c²","Ic"],a:1},
+{q:"The frequency of visible light is of the order of:",o:["10¹⁵ Hz","10¹⁰ Hz","10⁸ Hz","10⁴ Hz"],a:0},
+{q:"EM waves are transverse in nature. This is evident by:",o:["Interference","Diffraction","Polarization","Reflection"],a:2}
+],
+"Optics " :  [
+{q:"A convex lens of focal length 20 cm produces a real image twice the size of the object. The distance of the object from the lens is:",o:["10 cm","30 cm","60 cm","15 cm"],a:1},
+{q:"A ray of light is incident on a glass slab (μ=1.5) at the polarizing angle. The angle of refraction is:",o:["33.7°","56.3°","90°","45°"],a:0},
+{q:"An object is placed 10 cm in front of a concave mirror of radius of curvature 15 cm. The magnification of the image is:",o:["-3","3","-1.5","1.5"],a:0},
+{q:"A tank is filled with water to a height of 12.5 cm. The apparent depth of a needle lying at the bottom is measured by a microscope to be 9.4 cm. The refractive index of water is:",o:["1.33","1.5","1.6","1.2"],a:0},
+{q:"A person cannot see objects clearly beyond 2m. The power of the lens required to correct his vision is:",o:["+0.5 D","-0.5 D","+2 D","-2 D"],a:1},
+{q:"The critical angle for a medium is 30°. The velocity of light in that medium is:",o:["3 × 10⁸ m/s","1.5 × 10⁸ m/s","2 × 10⁸ m/s","2.5 × 10⁸ m/s"],a:1},
+{q:"A glass prism of angle 60° gives a minimum deviation of 30°. The refractive index of the glass is:",o:["√2","1.5","√3","1.33"],a:0},
+{q:"Two thin lenses of power +12 D and -2 D are placed in contact. The focal length of the combination is:",o:["10 cm","12.5 cm","16.6 cm","8.33 cm"],a:0},
+{q:"A ray of light passes from vacuum into a medium of refractive index n. If the angle of incidence is twice the angle of refraction, the angle of incidence is:",o:["cos⁻¹(n/2)","sin⁻¹(n/2)","2 cos⁻¹(n/2)","2 sin⁻¹(n/2)"],a:2},
+{q:"In an astronomical telescope in normal adjustment, the length of the telescope is 105 cm and magnification is 20. The focal length of the objective is:",o:["100 cm","5 cm","95 cm","105 cm"],a:0},
+{q:"A point object is placed at the center of a glass sphere of radius 6 cm and μ=1.5. The distance of the virtual image from the surface is:",o:["6 cm","4 cm","12 cm","9 cm"],a:0},
+{q:"Total internal reflection can occur when light travels from:",o:["Air to Glass","Water to Glass","Glass to Water","Vacuum to Air"],a:2},
+{q:"The magnifying power of a compound microscope increases with:",o:["Increase in focal length of objective","Decrease in focal length of eye-piece","Increase in focal length of eye-piece","Decrease in length of tube"],a:1},
+{q:"A bubble in a glass slab (μ=1.5) appears at 5 cm when viewed from one side and at 2 cm when viewed from the opposite side. The thickness of the slab is:",o:["7 cm","10.5 cm","14 cm","3 cm"],a:1},
+{q:"When a lens of refractive index n is immersed in a liquid of same refractive index n, the focal length becomes:",o:["f","f/2","Zero","Infinite"],a:3},
+{q:"Which of the following colors of white light deviated most by a prism?",o:["Red","Yellow","Violet","Green"],a:2},
+{q:"The power of a plane glass plate is:",o:["0","Infinite","1","100"],a:0},
+{q:"For a given medium, the polarizing angle is 60°. The critical angle for this medium is:",o:["sin⁻¹(√3)","tan⁻¹(1/√3)","sin⁻¹(1/√3)","45°"],a:2},
+{q:"An object is placed at the focus of a convex lens. The image will be formed at:",o:["Focus","Center of curvature","Infinity","Between O and F"],a:2},
+{q:"If the focal length of a objective lens is increased, then magnifying power of:",o:["Microscope increases","Telescope increases","Microscope decreases","Both b and c"],a:3}
+],
+  
+   "wave optics" : [
+{q:"In YDSE, the ratio of maximum to minimum intensity is 25:9. The ratio of the amplitudes of the two waves is:",o:["5:3","4:1","16:1","9:5"],a:1},
+{q:"In Young's double slit experiment, if the distance between the slits is halved and the distance between the slits and the screen is doubled, the fringe width becomes:",o:["Half","Double","Four times","Unchanged"],a:2},
+{q:"Two coherent sources of light produce an interference pattern. If the phase difference between the two waves is π, the resultant intensity is:",o:["Maximum","Minimum","Average","Zero if amplitudes are equal"],a:3},
+{q:"In YDSE, if the entire apparatus is immersed in water (μ=4/3), the fringe width:",o:["Increases","Decreases","Remains same","Vanishes"],a:1},
+{q:"The path difference between two interfering waves at a point on the screen is λ/6. The phase difference is:",o:["π/3","π/6","π/2","π"],a:0},
+{q:"When light is incident on a thin transparent film, the colors seen are due to:",o:["Diffraction","Interference","Dispersion","Polarization"],a:1},
+{q:"In a single slit diffraction experiment, the width of the central maximum is:",o:["Proportional to λ","Inversely proportional to λ","Independent of λ","Proportional to λ²"],a:0},
+{q:"The first diffraction minimum due to a single slit of width d is at θ=30° for light of wavelength 5000Å. The width d is:",o:["1.0 μm","2.0 μm","0.5 μm","1.25 μm"],a:0},
+{q:"To observe diffraction, the size of the obstacle or aperture should be:",o:["Of the order of wavelength of light","Much larger than wavelength","Much smaller than wavelength","Exactly 1 cm"],a:0},
+{q:"Light of wavelength λ is incident on a slit of width d. The angular width of the central maximum is:",o:["λ/d","2λ/d","d/λ","2d/λ"],a:1},
+{q:"The phenomenon of polarization proves that light is:",o:["A longitudinal wave","A transverse wave","A matter wave","A stationary wave"],a:1},
+{q:"A ray of light is incident on a glass plate at an angle of 60°. If the reflected and refracted rays are mutually perpendicular, the refractive index of glass is:",o:["√3","1.5","1/√3","1.33"],a:0},
+{q:"According to Brewster's law, the polarizing angle i_p is related to refractive index μ as:",o:["μ = sin(i_p)","μ = cos(i_p)","μ = tan(i_p)","μ = cot(i_p)"],a:2},
+{q:"Unpolarized light of intensity I₀ passes through a polarizer. The intensity of transmitted light is:",o:["I₀","I₀/2","I₀/4","Zero"],a:1},
+{q:"Two polaroids are crossed to each other. When one is rotated by 45°, the transmitted intensity (as % of I₀) is:",o:["25%","50%","12.5%","100%"],a:2},
+{q:"The resolving power of a microscope can be increased by using:",o:["Red light","Oil immersion objective","Decreasing numerical aperture","Decreasing lens diameter"],a:1},
+{q:"In the interference of two light waves, the energy is:",o:["Created at maxima","Destroyed at minima","Redistributed","Lost"],a:2},
+{q:"The limit of resolution of the human eye is approximately:",o:["1' (one minute)","1° (one degree)","1'' (one second)","0.1 mm"],a:0},
+{q:"The wavefront due to a point source at a very large distance is:",o:["Spherical","Cylindrical","Plane","Circular"],a:2},
+{q:"Huygens' principle of secondary wavelets is used to:",o:["Find the velocity of light","Determine the new position of a wavefront","Explain the photoelectric effect","Calculate the frequency"],a:1}
+],
+
+   "dual nature of matter and radiation " : [
+{q:"The work function of a metal is 4.2 eV. The threshold wavelength for this metal is approximately:",o:["2955 Å","3500 Å","4200 Å","2000 Å"],a:0},
+{q:"If the momentum of a particle is doubled, its de-Broglie wavelength becomes:",o:["Half","Double","Four times","Unchanged"],a:0},
+{q:"The maximum kinetic energy of photoelectrons depends on:",o:["Intensity of incident light","Frequency of incident light","Time of irradiation","Distance of source"],a:1},
+{q:"A photon and an electron have the same wavelength. Which one has higher energy?",o:["Photon","Electron","Both have same energy","Depends on the wavelength"],a:0},
+{q:"The stopping potential for a certain metal is V₀ when frequency ν is used. If frequency is doubled, the stopping potential is:",o:["2V₀","More than 2V₀","Less than 2V₀","V₀"],a:1},
+{q:"The slope of the graph between stopping potential and frequency of incident radiation is:",o:["h","e/h","h/e","he"],a:2},
+{q:"Light of frequency 1.5 times the threshold frequency is incident on a photosensitive material. If frequency is halved and intensity is doubled, the photoelectric current is:",o:["Doubled","Halved","Zero","Unchanged"],a:2},
+{q:"The de-Broglie wavelength of an electron accelerated through a potential difference of 100V is:",o:["1.227 Å","12.27 Å","0.1227 Å","122.7 Å"],a:0},
+{q:"In Davisson-Germer experiment, the maximum intensity is observed at a scattering angle of:",o:["30°","45°","50°","60°"],a:2},
+{q:"The number of photoelectrons emitted per second is proportional to:",o:["Frequency","Intensity","Wavelength","Stopping potential"],a:1},
+{q:"Which of the following particles moving with the same velocity has the shortest de-Broglie wavelength?",o:["Proton","Alpha particle","Neutron","Electron"],a:1},
+{q:"The energy of a photon of wavelength 400 nm is approximately:",o:["2.1 eV","3.1 eV","4.1 eV","1.1 eV"],a:1},
+{q:"If the intensity of light is increased, the maximum kinetic energy of photoelectrons:",o:["Increases","Decreases","Remains constant","Becomes zero"],a:2},
+{q:"The de-Broglie wavelength associated with a gas molecule at temperature T is proportional to:",o:["T","√T","1/√T","1/T"],a:2},
+{q:"Photoelectric effect supports the:",o:["Wave nature of light","Particle nature of light","Both natures","None"],a:1},
+{q:"The work function of a surface is 2 eV. If light of 5 eV is incident, the stopping potential is:",o:["2 V","3 V","5 V","7 V"],a:1},
+{q:"The velocity of a photon is:",o:["Independent of its wavelength","Proportional to its frequency","Proportional to its energy","Always less than c"],a:0},
+{q:"The de-Broglie wavelength of a ball of mass 0.1 kg moving at 33 m/s is of the order of:",o:["10⁻²⁴ m","10⁻³⁴ m","10⁻¹⁰ m","10⁻¹⁵ m"],a:1},
+{q:"When a photon of energy E is incident on a metal, the maximum KE of emitted electron is K. The work function is:",o:["E+K","E-K","K-E","√(EK)"],a:1},
+{q:"If the frequency of incident light is less than the threshold frequency:",o:["Photoelectrons are emitted with zero velocity","No photoelectrons are emitted","Photoelectric current is max","Kinetic energy is max"],a:1}
+],
+
+  'atom and nuclei' : [
+{q:"In Rutherford's alpha-scattering experiment, the number of particles scattered at 90° is 28 per minute. The number scattered at 60° is:",o:["112 per min","56 per min","7 per min","14 per min"],a:0},
+{q:"The ratio of the speed of an electron in the ground state of hydrogen to the speed of light is:",o:["1/137","1/237","2/137","1/100"],a:0},
+{q:"When an electron jumps from n=4 to n=2, the spectral line observed belongs to:",o:["Lyman series","Balmer series","Paschen series","Brackett series"],a:1},
+{q:"The radius of the innermost electron orbit of a hydrogen atom is 5.3x10⁻¹¹ m. The radius of the n=3 orbit is:",o:["1.59x10⁻¹⁰ m","4.77x10⁻¹¹ m","4.77x10⁻¹⁰ m","2.12x10⁻¹⁰ m"],a:2},
+{q:"The ionization potential of hydrogen atom is 13.6 V. The energy required to remove an electron from the n=2 state is:",o:["13.6 eV","3.4 eV","6.8 eV","1.51 eV"],a:1},
+{q:"If the nuclear radius of ²⁷Al is 3.6 fermi, the nuclear radius of ⁶⁴Cu is approximately:",o:["2.4 fermi","1.2 fermi","4.8 fermi","3.6 fermi"],a:2},
+{q:"The binding energy per nucleon is maximum for the nucleus:",o:["⁴He","⁵⁶Fe","²³⁸U","¹⁶O"],a:1},
+{q:"A radioactive substance has a half-life of 60 days. The time taken for 7/8th of the sample to decay is:",o:["120 days","180 days","240 days","300 days"],a:1},
+{q:"In a nuclear reactor, heavy water is used as a:",o:["Fuel","Coolant","Moderator","Control rod"],a:2},
+{q:"The ratio of the volumes of two nuclei with mass numbers A and 8A is:",o:["1:8","1:2","1:4","1:1"],a:0},
+{q:"When a β⁻ particle is emitted from a nucleus, the neutron-to-proton ratio:",o:["Increases","Decreases","Remains same","First increases then decreases"],a:1},
+{q:"The energy equivalent of 1 amu is approximately:",o:["931.5 MeV","93.15 MeV","1.6x10⁻¹³ J","13.6 eV"],a:0},
+{q:"In the Bohr model of the hydrogen atom, the angular momentum of an electron in the n=2 orbit is:",o:["h/π","h/2π","2h/π","3h/2π"],a:0},
+{q:"The force that keeps nucleons together inside a nucleus is:",o:["Gravitational","Electrostatic","Short-range strong nuclear","Long-range weak nuclear"],a:2},
+{q:"If a nucleus ²³⁸₉₂U decays by emitting one α and two β⁻ particles, the final nucleus is:",o:["²³⁴₉₂U","²³⁴₉₀Th","²³⁸₉₄Pu","²³⁶₉₁Pa"],a:0},
+{q:"The activity of a radioactive sample is measured in:",o:["Curie","Becquerel","Rutherford","All of these"],a:3},
+{q:"Solar energy is mainly produced by the process of:",o:["Nuclear fission","Nuclear fusion","Chemical reaction","Radioactive decay"],a:1},
+{q:"The transition in He⁺ ion that will give the same wavelength as the n=2 to n=1 transition in Hydrogen is:",o:["n=4 to n=2","n=3 to n=2","n=2 to n=1","n=6 to n=4"],a:0},
+{q:"Density of nuclear matter is of the order of:",o:["10³ kg/m³","10¹⁰ kg/m³","10¹⁷ kg/m³","10²⁷ kg/m³"],a:2},
+{q:"Mass defect in a nuclear reaction is 0.1g. The energy released is:",o:["9x10¹³ J","9x10¹² J","3x10⁸ J","9x10¹⁰ J"],a:1}
+],
+
+    "electronic devices" :[
+{q:"In an intrinsic semiconductor, the Fermi level lies:",o:["Near the conduction band","Near the valence band","Exactly in the middle of the energy gap","Inside the conduction band"],a:2},
+{q:"The width of the depletion layer in a P-N junction diode _________ with forward bias.",o:["Increases","Decreases","Remains constant","First increases then decreases"],a:1},
+{q:"When a P-type semiconductor is heated, the number of electrons _________ and the number of holes _________.",o:["Increases, increases","Increases, decreases","Decreases, increases","Remains same"],a:0},
+{q:"The ripple factor of a full-wave rectifier is:",o:["1.21","0.482","0.812","1.11"],a:1},
+{q:"In a Zener diode used as a voltage regulator, the diode is always connected in:",o:["Forward bias","Reverse bias","Series with load","None of these"],a:1},
+{q:"The common emitter current gain β of a transistor is 100. The common base current gain α is:",o:["0.9","0.99","1.01","1.1"],a:1},
+{q:"A logic gate which gives high output only when all its inputs are low is:",o:["AND","OR","NOR","NAND"],a:2},
+{q:"Which of the following acts as a universal gate?",o:["AND","NOT","NAND","OR"],a:2},
+{q:"In a transistor amplifier, the phase difference between the input and output voltage in CE configuration is:",o:["0°","90°","180°","45°"],a:2},
+{q:"The majority charge carriers in N-type semiconductors are:",o:["Holes","Electrons","Protons","Ions"],a:1},
+{q:"A P-N junction diode can be used as:",o:["An amplifier","An oscillator","A rectifier","A modulator"],a:2},
+{q:"For a transistor, the relation between α and β is:",o:["β = α/(1-α)","α = β/(1-β)","β = α/(1+α)","α = 1+β"],a:0},
+{q:"In the Boolean algebra, A + A·B equals:",o:["B","A","A+B","1"],a:1},
+{q:"The output of a 2-input NAND gate is low only when:",o:["Both inputs are high","Both inputs are low","One input is high","Any one input is low"],a:0},
+{q:"The energy gap of Silicon at room temperature is approximately:",o:["0.7 eV","1.1 eV","5.0 eV","0.1 eV"],a:1},
+{q:"In a forward-biased P-N junction, the current is due to:",o:["Diffusion of carriers","Drift of carriers","Both a and b","None"],a:0},
+{q:"The barrier potential of a Germanium diode is approximately:",o:["0.7 V","0.3 V","1.1 V","2.0 V"],a:1},
+{q:"An LED emits light when it is:",o:["Forward biased","Reverse biased","Unbiased","None"],a:0},
+{q:"The decimal equivalent of binary 1011 is:",o:["10","11","13","9"],a:1},
+{q:"A solar cell operates on the principle of:",o:["Diffusion","Photovoltaic effect","Thermionic emission","Recombination"],a:1}
+],
+
+
+};
+
+/* 4. Core Logic */
+let idx=0, score=0, currentQ=[], chapterName="";
+const chapterList = document.getElementById('chapterList');
+const app = document.getElementById('app');
+
+// Initialize List
+chapters.forEach(ch => {
+  const div = document.createElement('div');
+  div.className = 'chapter';
+  div.innerHTML = `<h3>${ch}</h3>`;
+  div.onclick = () => startTest(ch);
+  chapterList.appendChild(div);
+});
+
+function startTest(ch){
+  chapterName = ch;
+  currentQ = [...questionBank[ch]];
+  idx = 0; score = 0;
+  loadQuestion();
+}
+
+function loadQuestion(){
+  const q = currentQ[idx];
+  app.innerHTML = `
+  <div class="test-box">
+    <div class="test-header">
+      <h2>${chapterName}</h2>
+      <div class="progress">Question ${idx+1} / ${currentQ.length}</div>
+    </div>
+    <div class="question">${q.q}</div>
+    <div class="options">
+      ${q.o.map((o,i)=>`<div class="option" onclick="select(${i})">${o}</div>`).join("")}
+    </div>
+    <button class="hidden" id="nextBtn" onclick="next()">Next</button>
+  </div>`;
+}
+
+function select(i){
+  const q = currentQ[idx];
+  const opts = document.querySelectorAll(".option");
+  const correctSound = document.getElementById('correctSound');
+  const wrongSound = document.getElementById('wrongSound');
+
+  if(i === q.a){
+    opts[i].classList.add("correct");
+    if(correctSound) correctSound.play();
+    score++;
+  } else {
+    opts[i].classList.add("wrong");
+    opts[q.a].classList.add("correct");
+    if(wrongSound) wrongSound.play();
+  }
+  document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function next(){
+  idx++;
+  if(idx < currentQ.length) {
+      loadQuestion();
+  } else {
+      saveAndFinish();
+  }
+}
+
+/* 5. Progress Tracking Logic */
+function saveAndFinish() {
+    const totalQ = currentQ.length;
+    const percentage = Math.round((score / totalQ) * 100);
+    const user = auth.currentUser;
+
+    if (user) {
+        // Clean chapter name for DB key (e.g. "Kinematics" -> "kinematics")
+        const dbKey = chapterName.toLowerCase().replace(/\s/g, '_');
+        
+        db.collection("users").doc(user.uid).set({
+            physics: {
+                [dbKey]: {
+                    correct: score,
+                    total: totalQ,
+                    percent: percentage
+                }
+            }
+        }, { merge: true }).then(() => {
+            renderFinalScreen(percentage);
+        }).catch(err => {
+            console.error("Error saving:", err);
+            renderFinalScreen(percentage); // Show score even if save fails
+        });
+    } else {
+        renderFinalScreen(percentage);
+    }
+}
+
+function renderFinalScreen(p) {
+    app.innerHTML = `
+    <div class="test-box" style="text-align:center;">
+      <h2 style="color:#38bdf8;">Test Complete!</h2>
+      <div style="font-size:48px; margin:20px 0; font-weight:900;">${p}%</div>
+      <p>You scored ${score} out of ${currentQ.length}</p>
+      <button onclick="location.reload()">Back to Chapters</button>
+      <button style="background:#1e293b; margin-top:10px;" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+    </div>`;
+}
+</script>
+</body>
+</html>

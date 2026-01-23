@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE Preparation | Dinkar</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",system-ui,sans-serif;
+}
+
+body{
+  background:#eef2ff;
+  color:#0f172a;
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar{
+  position:fixed;
+  top:0; left:-260px;
+  width:260px; height:100%;
+  background:#020617;
+  color:#e5e7eb;
+  padding:22px;
+  transition:.35s ease;
+  z-index:1001;
+}
+.sidebar.active{left:0;}
+.sidebar h2{font-size:22px;font-weight:900;margin-bottom:24px;}
+.sidebar a{
+  display:block;
+  padding:12px 0;
+  color:#c7d2fe;
+  text-decoration:none;
+  font-weight:600;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.sidebar a:hover{color:#fff;}
+
+.overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.4);
+  display:none; z-index:1000;
+}
+.overlay.active{display:block;}
+
+/* ---------- HEADER ---------- */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 18px;
+  background:#ffffff;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.menu{font-size:22px;cursor:pointer;}
+.header h1{
+  font-size:18px;
+  font-weight:900;
+  color:#1e3a8a;
+}
+
+/* ---------- HERO ---------- */
+.hero{
+  margin:18px;
+  padding:34px 28px;
+  border-radius:28px;
+  background:
+    linear-gradient(rgba(30,64,175,.85),rgba(30,64,175,.85)),
+    url("https://images.unsplash.com/photo-1581091870627-3f9f3b65b4a4");
+  background-size:cover;
+  background-position:center;
+  color:#ffffff;
+}
+
+.hero h2{font-size:22px;font-weight:900;}
+.hero p{font-size:14px;margin-top:8px;opacity:.95;}
+
+.hero button{
+  margin-top:20px;
+  padding:14px 22px;
+  border:none;
+  border-radius:16px;
+  background:#ffffff;
+  color:#1e40af;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* ---------- SECTION ---------- */
+.section{padding:12px 18px 30px;}
+.section h3{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:16px;
+}
+
+/* ---------- JEE ESSENTIALS ---------- */
+.tools{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.tool{
+  padding:24px 18px;
+  border-radius:22px;
+  color:#fff;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  box-shadow:0 14px 30px rgba(30,64,175,.25);
+  transition:.3s;
+}
+.tool::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(30,64,175,.85);
+}
+.tool *{position:relative; z-index:1;}
+
+.tool:hover{transform:translateY(-5px) scale(1.03);}
+
+.tool h4{font-size:16px;font-weight:900;}
+.tool p{font-size:13px;margin-top:6px;opacity:.95;}
+
+.tool.test{background-image:url("https://images.unsplash.com/photo-1603575448364-ecb4c8b6c3b7");}
+.tool.num{background-image:url("https://images.unsplash.com/photo-1531482615713-2afd69097998");}
+.tool.pyq{background-image:url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f");}
+.tool.analysis{background-image:url("https://images.unsplash.com/photo-1551288049-bebda4e38f71");}
+
+/* ---------- SUBJECTS (SMALL CARDS) ---------- */
+.subjects{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.subject{
+  padding:20px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#ffffff;
+  font-weight:900;
+  font-size:16px;
+  box-shadow:0 14px 26px rgba(37,99,235,.45);
+  cursor:pointer;
+  transition:.3s;
+}
+.subject:hover{transform:scale(1.05);}
+
+/* ---------- DAILY TASK ---------- */
+.tasks{
+  background:#ffffff;
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 14px 28px rgba(0,0,0,.1);
+}
+.task{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+  font-size:14px;
+  font-weight:600;
+}
+.task input{width:18px;height:18px;}
+
+/* ---------- BOTTOM NAV ---------- */
+.bottom{
+  position:fixed;
+  bottom:0; left:0;
+  width:100%;
+  background:#ffffff;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  box-shadow:0 -6px 16px rgba(0,0,0,.08);
+}
+.bottom div{
+  font-size:12px;
+  font-weight:800;
+  color:#1e3a8a;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <h2>Dinkar</h2>
+  <a href="index.html">Home</a>
+  <a href="jeelibrary.html">Mock Tests</a>
+  <a href="coming soon.html">Numericals</a>
+  <a href="coming soon.html">PYQs</a>
+  <a href="coming soon.html">Analysis</a>
+</div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="menu" onclick="toggleSidebar()">☰</div>
+  <h1>JEE Preparation</h1>
+  <div></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>Crack JEE with Precision</h2>
+  <p>Numericals • Speed • Rank-focused preparation</p>
+  <button onclick="location.href='jeelibrary.html'">Start JEE Test</button>
+</div>
+
+<!-- ESSENTIALS -->
+<div class="section">
+  <h3>JEE Essentials</h3>
+  <div class="tools">
+    <div class="tool test" onclick="location.href='coming soon.html'">
+      <h4>Full Tests</h4><p>Main + Advanced</p>
+    </div>
+    <div class="tool num" onclick="location.href='coming soon.html'">
+      <h4>Numericals</h4><p>High-level practice</p>
+    </div>
+    <div class="tool pyq" onclick="location.href='jeepyq.html'">
+      <h4>PYQs</h4><p>2020–2025</p>
+    </div>
+    <div class="tool analysis" onclick="location.href='coming soon.html'">
+      <h4>Analysis</h4><p>Accuracy & time</p>
+    </div>
+  </div>
+</div>
+
+<!-- SUBJECTS -->
+<div class="section">
+  <h3>Core Subjects</h3>
+  <div class="subjects">
+    <div class="subject" onclick="location.href='jeephysicscahpter.html'">Physics</div>
+    <div class="subject" onclick="location.href='jeechemistrychaptersu.html'">Chemistry</div>
+    <div class="subject" onclick="location.href='jeemathschapters.html'">Mathematics</div>
+    <div class="subject" onclick="location.href='coming soon.html'">Quick Revision</div>
+  </div>
+</div>
+
+<!-- DAILY TASK -->
+<div class="section">
+  <h3>Daily JEE Checklist</h3>
+  <div class="tasks">
+    <div class="task"><input type="checkbox"> 25 Physics numericals</div>
+    <div class="task"><input type="checkbox"> Maths problem set</div>
+    <div class="task"><input type="checkbox"> Chemistry reactions</div>
+    <div class="task"><input type="checkbox"> 1 timed test</div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+
+
+<script>
+function toggleSidebar(){
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+}
+</script>
+
+</body>
+</html>
