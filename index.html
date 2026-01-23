@@ -1,382 +1,831 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <button id="installBtn" style="
-  display:none;
-  padding:12px 20px;
-  border:none;
-  border-radius:12px;
-  background:#2563eb;
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-">
-  📲 Install App
-</button>
-<link rel="manifest" href="manifest.json">
-
 <meta charset="UTF-8">
-<title>Dinkar</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinkar | Learning Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
-:root{
-  --jee:#2563eb;
-  --neet:#16a34a;
+/* Base Reset */
+:root {
+  --jee: #2563eb;
+  --neet: #16a34a;
+  --primary: 	#228B22;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body{
-  background:
-    linear-gradient(135deg,#dbdbdb,#f3f3f3),
-    url("C:\Users\MY-PC\Downloads\Ocean blue - blue gradient.jfif");
-  color:#000000;
+body {
+  background: linear-gradient(135deg, #dbdbdb, #f3f3f3);
+  background-attachment: fixed;
+  color: #1a1a1a;
+  line-height: 1.5;
 }
 
-/* ===== GLASS EFFECT ===== */
-.glass{
-  background:rgba(255,255,255,0.65);
-  backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,0.4);
-  border-radius:20px;
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.05);
 }
 
-/* ===== HEADER ===== */
-header{
-  padding:16px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+/* Sidebar & Overlay */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100%;
+  background: #0b0b0d;
+  color: #fff;
+  padding: 30px 20px;
+  transition: 0.3s cubic-bezier(.4, 0, .2, 1);
+  z-index: 1000;
 }
-header h1{
-  font-size:22px;
-  font-weight:900;
+
+.sidebar.active { left: 0; }
+
+.sidebar-header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 15px;
 }
-header button{
-  padding:8px 16px;
-  border:none;
-  background:#6366f1;
-  color:#fff;
-  border-radius:8px;
+
+.sidebar-menu a {
+  display: block;
+  padding: 15px;
+  margin: 8px 0;
+  text-decoration: none;
+  color: #cbd5f5;
+  border-radius: 12px;
+  transition: 0.2s;
+}
+
+.sidebar-menu a.active {
+  background: linear-gradient(135deg, #1dd855, #25eb3c);
+  color: #fff;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 900;
+}
+
+.overlay.active { opacity: 1; pointer-events: auto; }
+
+/* Header */
+header {
+  margin: 10px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 10px;
+  z-index: 800;
+}
+
+.menu-trigger {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+header h1 { font-size: 20px; text-transform: lowercase; font-weight: 900; }
+
+.login-btn {
+  padding: 8px 18px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 600;
+}
+#me-profile {
+    transition: transform 0.2s ease;
+}
+
+#me-profile:hover {
+    transform: scale(1.05);
+}
+
+#me-profile:hover div {
+    background: #22c55e !important; /* Invert colors on hover */
+    color: #1a1a1a !important;
+}
+
+/* Mobile tweak: Hide the text name on small screens, keep only the icon */
+@media (max-width: 480px) {
+    #user-name-display {
+        display: none;
+    }
+}
+
+/* login popup */
+
+/* Background overlay */
+.modal {
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+}
+
+/* The Controlled Box */
+.modal-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;  /* Controlled Width */
+  height: 500px; /* Controlled Height */
+  background: white;
+  border-radius: 12px;
+  overflow: hidden; /* Keeps iframe corners rounded */
+}
+
+#loginFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px; right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* Hero Section */
+.hero {
+  margin: 15px;
+  padding: 30px 20px;
+  display: flex;
+ background-color: (#00A86B);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 25px;
+}
+
+.hero-img {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.floating-avatar {
+  max-width: 160px;
+  height: auto;
+  animation: float 4s ease-in-out infinite;
+}
+
+.speech-bubble {
+  position: absolute;
+  top: -1px;
+  background: rgba(255, 255, 255, 0.874);
+  padding: 6px 15px;
+  border-radius: 15px;
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.224);
+  animation: float 4s ease-in-out infinite;
+}
+
+.hero-text h2 { font-size: 26px; margin-bottom: 10px; }
+.hero-text p { color: #555; margin-bottom: 20px; font-size: 15px; }
+
+.start-btn {
+  width: 100%;
+  max-width: 280px;
+  padding: 15px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Exam Toggle */
+.exam-box {
+  margin: 20px auto;
+  width: 90%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  transition: 0.3s;
 }
 
 
+/* Grid Layouts (Subjects & Features) */
+.section-container { margin: 15px; padding: 25px 15px; }
+.section-title { text-align: center; margin-bottom: 20px; font-size: 22px; }
 
-/* ===== HERO ===== */
-.hero{
-  margin:20px;
-  padding:30px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:30px;
-  align-items:center;
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
-.hero-text{
-  flex:1;
-}
-.hero-text h2{
-  font-size:clamp(26px,6vw,40px);
-  margin-bottom:12px;
-}
-.hero-text p{
-  font-size:16px;
-  color:#555;
-  margin-bottom:20px;
-}
-.hero-text button{
-  padding:12px 24px;
-  background:#6366f1;
-  border:none;
-  color:#fff;
-  border-radius:10px;
-  font-size:16px;
-}
-.hero-img{
-  flex:1;
-  min-height:220px;
-  background:url("https://illustrations.popsy.co/indigo/student-exam.svg") center/contain no-repeat;
-}
+    /* 1. Container setup */
+    .slider-container {
+        position: relative;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 10px;
+    }
 
-/* ===== EXAM TOGGLE BOX ===== */
-.exam-box{
-  margin:30px auto;
-  width:90%;
-  height:150px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:24px;
-  cursor:pointer;
-  transition:.3s;
-}
-.exam-box span{
-  font-size:clamp(40px,10vw,70px);
-  font-weight:900;
-  color:white;
-}
-.neet{background:linear-gradient(135deg,#22c55e,#16a34a)}
-.jee{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+    /* 2. The scroll track */
+    .slider {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        /* Force snapping to one card at a time */
+        scroll-snap-type: x mandatory; 
+        gap: 20px; /* Little gap between slides */
+        scrollbar-width: none; /* Hide scrollbar for Firefox */
+    }
 
-/* ===== SUBJECTS ===== */
-.subjects{
-  margin:20px;
-  padding:30px;
-}
-.subjects h3{
-  font-size:28px;
-  text-align:center;
-  margin-bottom:25px;
-}
-.subject-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:16px;
-}
-.subject{
-  padding:20px;
-  border-radius:16px;
-  text-align:center;
-  font-weight:700;
-  background:#6366f1;
-  cursor:pointer;
-  transition:.3s;
-}
-.subject:hover{
-  transform:translateY(-4px);
-}
+    .slider::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for Chrome/Safari */
+    }
 
-/* ===== FEATURES ===== */
-.features{
-  margin:20px;
-  padding:30px;
-}
-.features h3{
-  text-align:center;
-  font-size:28px;
-  margin-bottom:30px;
-}
-.feature-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-}
-.feature{
-  padding:24px;
-  border-radius:20px;
-  text-align:center;
-}
-.feature img{
-  width:80px;
-  margin-bottom:16px;
-}
-.feature p{
-  color:#555;
-}
+    /* 3. Individual Cards */
+    .slide {
+        flex: 0 0 100%; /* Each card takes full width */
+        scroll-snap-align: start; /* Snap to the start of the card */
+        height: 400px;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+        background: #333;
+        transition: transform 0.3s ease;
+    }
 
-/* ===== HOW IT WORKS ===== */
-.steps{
-  margin:20px;
-  padding:30px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:30px;
-  align-items:center;
-}
-.steps-img{
-  flex:1;
-  min-height:220px;
-  background:url("C:\Users\MY-PC\Downloads\Exams Customizable Cartoon Illustrations _ Bro Style.jfif") center/contain no-repeat;
-}
-.steps-text{
-  flex:1;
-}
-.steps-text h3{
-  font-size:30px;
-  margin-bottom:16px;
-}
-.step{
-  font-size:16px;
-  margin-bottom:10px;
-}
+    /* Subtle hover/click animation */
+    .slide:active {
+        transform: scale(0.97);
+    }
 
-/* ===== CTA ===== */
-.cta{
-  margin:20px;
-  padding:30px;
-  text-align:center;
-  background:linear-gradient(135deg,#7c3aed,#6366f1);
-  color:white;
-}
-.cta h3{
-  font-size:32px;
-  margin-bottom:16px;
-}
-.cta button{
-  padding:14px 28px;
-  border:none;
-  border-radius:12px;
-  background:white;
-  color:#6366f1;
-  font-weight:800;
-}
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none; /* Helps with swipe performance */
+    }
+
+    .slide-content {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        color: white;
+        font-family: sans-serif;
+    }
+
+    /* 4. Navigation Arrows */
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .prev { left: -20px; }
+    .next { right: -20px; }
 
 
-/* ===== FOOTER ===== */
-footer{
-  margin:20px;
-  padding:20px;
-  text-align:center;
-  color:#666;
+    .featured-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+
+    .prep-card {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+        border-radius: 15px;
+        padding: 20px;
+        text-decoration: none;
+        color: white;
+        font-family: sans-serif;
+        box-shadow: 0 8px 15px rgba(40, 167, 69, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .prep-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(40, 167, 69, 0.3);
+    }
+
+    .prep-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #ffc107;
+        color: #000;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 3px 8px;
+        border-radius: 5px;
+        text-transform: uppercase;
+    }
+
+    .prep-info {
+        flex: 2;
+    }
+
+    .prep-info h2 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .prep-info p {
+        margin: 5px 0 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .prep-action {
+        flex: 1;
+        text-align: right;
+        font-weight: bold;
+    }
+
+    /* Logic to show/hide based on mode */
+    .hidden {
+        display: none;
+    }
+
+    .featured-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+
+    .prep-card {
+        display: flex;
+        align-items: center;
+        border-radius: 15px;
+        padding: 20px;
+        text-decoration: none;
+        color: white;
+        font-family: sans-serif;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+    /* JEE Blue Theme */
+    .jee-theme {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        box-shadow: 0 8px 15px rgba(0, 123, 255, 0.2);
+    }
+
+    /* NEET Green Theme */
+    .neet-theme {
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+        box-shadow: 0 8px 15px rgba(40, 167, 69, 0.2);
+    }
+
+    .prep-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .prep-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        color: white;
+        font-size: 9px;
+        font-weight: bold;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+    }
+
+    .prep-info h2 { margin: 0; font-size: 1.1rem; }
+    .prep-info p { margin: 5px 0 0; font-size: 0.85rem; opacity: 0.9; }
+
+    /* Utility to hide/show */
+    .hidden {
+        display: none !important;
+    }
+
+.subject-card {
+  padding: 20px 10px;
+  border-radius: 15px;
+  text-align: center;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-  .hero,.steps{
-    flex-direction:column;
-    text-align:center;
-  }
+.feature-card {
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.feature-card img { width: 60px; height: 60px; object-fit: contain; }
+
+/* How it Works */
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.steps-img-box img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+
+.step-item { margin-bottom: 12px; font-size: 15px; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 8px; }
+
+/* CTA */
+.cta {
+  margin: 15px;
+  padding: 40px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, 	#228B22, #01b03e);
+  color: rgb(255, 255, 255);
+}
+
+.cta-btn {
+  margin-top: 20px;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 12px;
+  background: rgb(0, 209, 28);
+  color: #ffffff;
+  font-weight: 800;
+  width: 100%;
+  max-width: 250px;
+}
+
+footer { margin: 15px; padding: 20px; text-align: center; font-size: 13px; opacity: 0.7; }
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Tablet/Desktop Tweaks */
+@media(min-width: 769px) {
+  .hero, .steps-container { flex-direction: row; text-align: left; }
+  .grid-auto { grid-template-columns: repeat(4, 1fr); }
+  .start-btn { width: auto; }
 }
 </style>
 </head>
 
 <body>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>Dinkar</h2>
+    <p>Learning Platform</p>
+  </div>
+  <nav class="sidebar-menu">
+    <a href="index.html" class="active">Home</a>
+    <a href="bsebpyq2.html"> BSEB</a>
+    <a href="neet preparation.html">NEET Preparation</a>
+    <a href="jeepreparation.html">JEE Preparation</a>
+    <a href="dasboard2.html">Dashboard</a>
+  </nav>
+</div>
+
 <header class="glass">
+  <div class="menu-trigger" onclick="toggleSidebar()">☰</div>
   <h1>dinkar</h1>
-  <button onclick="go('coming soon.html')">Login</button>
+ <div id="auth-container">
+    <button id="login-nav-btn" class="login-btn" onclick="go('login.html')">Login</button>
+
+    <div id="me-profile" onclick="go('dashboard.html')" style="display: none; cursor: pointer; align-items: center; gap: 10px;">
+        <span id="user-name-display" style="font-weight: 600; color: var(--dark-green); font-size: 14px;">Student</span>
+        <div style="width: 38px; height: 38px; background: #1a1a1a; color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <span id="user-initial">M</span>
+        </div>
+    </div>
+</div>
 </header>
 
+<!-- login popup-->
+ <div id="loginModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <iframe src="login.html" id="loginFrame"></iframe>
+  </div>
+</div>
+<!--end -->
+
+
 <section class="hero glass">
+ <div class="avatar-container">
+  <img src="mmmu.png" class="floating-avatar" alt="User Avatar">
+  
+  <div class="speech-bubble">
+    Hello, <span id="username-display">dinkars</span>!
+  </div>
+</div>
   <div class="hero-text">
-    <h2>India’s Smart Practice Platform</h2>
-    <p>NEET & JEE focused mock tests, analysis & rank improvement.</p>
-    <button onclick="go('subjectslisthh.html')"> start </button>
-  </div>
-  <div class="hero-img"></div>
-</section>
-
-<!-- EXAM TOGGLE -->
-<div id="examBox" class="exam-box neet">
-  <span id="examText">NEET</span>
-</div>
-
-<!-- SUBJECTS -->
-<section class="subjects glass">
-<h3>SUBJECTS</h3>
-<div class="subject-grid">
-  <div class="subject" onclick="goSubject('coming soon.html')">Physics</div>
-  <div class="subject" onclick="goSubject('chemistry')">Chemistry</div>
-  <div class="subject" onclick="goSubject('maths')">Maths</div>
-  <div class="subject" onclick="goSubject('biology')">Biology</div>
-</div>
-</section>
-
-<!-- FEATURES -->
-<section class="features glass">
-<h3>Why Dinkar?</h3>
-<div class="feature-grid">
-  <div class="feature glass">
-    <img src="C:\Users\MY-PC\Downloads\Exams Customizable Cartoon Illustrations _ Bro Style.jfif">
-    <p>Real exam-level questions</p>
-  </div>
-  <div class="feature glass">
-    <img src="C:\Users\MY-PC\Downloads\download (2).jfif">
-    <p>Instant performance analysis</p>
-  </div>
-  <div class="feature glass">
-    <img src="C:\Users\MY-PC\Downloads\illustration of man with smartphone.jfif">
-    <p>Mobile-first practice</p>
-  </div>
-</div>
-</section>
-
-<!-- STEPS -->
-<section class="steps glass">
-  <div class="steps-img">  <div class="hero-img">
-
-</div>
-  </div>      
-  <div class="steps-text">    
-    <h3>How it works</h3>
-    <div class="step">1️⃣ Select NEET or JEE</div>
-    <div class="step">2️⃣ Choose subject & practice</div>
-    <div class="step">3️⃣ Track score & improve</div>
+    <h2>Dinkar School FOR MCQ</h2>
+    <p>BSEB, NEET & JEE focused mock tests and rank improvement.</p>
+    <button class="start-btn" onclick="go('subjectslisthh.html')">GET STARTED</button>
   </div>
 </section>
 
-<!-- CTA -->
+<div class="featured-container">
+    <a href="neet preparation.html" class="prep-card" id="neet-prep-section">
+        <div class="prep-badge">New</div>
+        <div class="prep-info">
+            <h2>NEET 2026 Preparation Hub</h2>
+            <p>Access Mock Tests, NCERT Solutions, and Rank Predictors</p>
+        </div>
+        <div class="prep-action">
+            <span>Explore →</span>
+        </div>
+    </a>
+</div>
+
+
+<div class="featured-container">
+    <a href="jeepreparation.html" class="prep-card jee-theme" id="jee-prep-section">
+        <div class="prep-badge">Top Rated</div>
+        <div class="prep-info">
+            <h2>JEE Main & Advanced 2026</h2>
+            <p>Practice PYQs, Physics Galaxy, and Maths Revision Sheets</p>
+        </div>
+        <div class="prep-action">
+            <span>Start Practice →</span>
+        </div>
+    </a>
+
+
+<div class="slider-container">
+    <button class="nav-btn prev" onclick="moveSlide(-1)" aria-label="Previous slide">&#10094;</button>
+    <button class="nav-btn next" onclick="moveSlide(1)" aria-label="Next slide">&#10095;</button>
+
+    <div class="slider" id="slider">
+        <a href="bsebpyq2.html" class="slide">
+            <img src="tt.jpeg" alt="Image 1">
+            <div class="slide-content">
+                <h3>BSEB PYQ </h3>
+                <p>visit now</p>
+            </div>
+        </a>
+
+        <a href="neet preparation.html" class="slide">
+            <img src="rr.jfif" alt="Image 2">
+            <div class="slide-content">
+                <h3>NEET MOCK TEST </h3>
+                <p> vist now </p>
+            </div>
+        </a>
+
+        <a href="jeepreparation.html" target="_blank" class="slide">
+            <img src="oo.jpeg" alt="Image 3">
+            <div class="slide-content">
+                <h3>JEE MOCK TEST</h3>
+                <p> vist now</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+
+<section class="section-container glass">
+  <h3 class="section-title">Why Dinkar?</h3>
+  <div class="grid-auto">
+    <div class="feature-card glass">
+      <img src="use1.jpg" alt="Icon">
+      <p>Real exam questions</p>
+    </div>
+    <div class="feature-card glass">
+      <img src="use2.jpg" alt="Icon">
+      <p>Instant analysis</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-container glass">
+  <div class="steps-container">
+    <div class="steps-img-box">
+      <img src="use3.jpg" alt="Process Map">
+    </div>
+    <div class="steps-text">
+      <h3 class="section-title" style="text-align: left;">How it works</h3>
+      <div class="step-item">1️⃣ Select NEET or JEE</div>
+      <div class="step-item">2️⃣ Choose subject & practice</div>
+      <div class="step-item">3️⃣ Track score & improve</div>
+    </div>
+  </div>
+</section>
+
 <section class="cta glass">
   <h3>Start Your Preparation Today</h3>
-  <button onclick="go('dinkar library.html')">Join Free</button>
+  <button class="cta-btn" onclick="go('dinkar library.html')">Join Free Now</button>
 </section>
 
 <footer class="glass">
-  © 2026 Mockshala · Built for Indian students 🇮🇳
+  © 2026 dinkar · deepworks · Built for Indian students 🇮🇳
 </footer>
-
 <script>
-let exam="NEET";
-const box=document.getElementById("examBox");
-const text=document.getElementById("examText");
+let exam = "NEET";
+const box = document.getElementById("examBox");
+const text = document.getElementById("examText");
 
-box.onclick=()=>{
-  if(exam==="NEET"){
-    exam="JEE";
-    text.innerText="JEE";
-    box.className="exam-box jee";
-  }else{
-    exam="NEET";
-    text.innerText="NEET";
-    box.className="exam-box neet";
-  }
+    const slider = document.getElementById('slider');
+
+    function moveSlide(direction) {
+        // Find the width of one slide
+        const slideWidth = slider.querySelector('.slide').clientWidth;
+        
+        // Find the gap size set in CSS (converted to a number)
+        const gap = parseInt(getComputedStyle(slider).gap) || 0;
+
+        // Scroll exactly one card distance
+        slider.scrollBy({
+            left: direction * (slideWidth + gap),
+            behavior: 'smooth'
+        });
+    }
+
+    // Function to handle clicking on a slide
+    function handleCardClick(slideName) {
+        console.log("Clicked: " + slideName);
+        // You can redirect here: window.location.href = "https://example.com";
+        alert("Action for " + slideName);
+    }
+
+// Reference the elements
+const loginBtn = document.getElementById('login-nav-btn');
+const meProfile = document.getElementById('me-profile');
+const userInitial = document.getElementById('user-initial');
+const userNameDisplay = document.getElementById('user-name-display');
+
+// Firebase Auth Listener
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        // 1. Hide Login Button, Show Profile
+        loginBtn.style.display = 'none';
+        meProfile.style.display = 'flex';
+
+        // 2. Get Name or Email to show initial
+        const name = user.displayName || user.email;
+        const initial = name.charAt(0).toUpperCase();
+        const shortName = name.split(' ')[0].split('@')[0];
+
+        // 3. Update the UI with user info
+        userInitial.innerText = initial;
+        userNameDisplay.innerText = shortName;
+    } else {
+        // User is logged out: Show Login Button, Hide Profile
+        loginBtn.style.display = 'block';
+        meProfile.style.display = 'none';
+    }
+});
+    function toggleExamType() {
+        currentMode = (currentMode === 'JEE') ? 'NEET' : 'JEE';
+
+        // ... (existing toggle logic for colors and labels) ...
+
+        // NEW: Control the NEET Preparation card visibility
+        const neetPrepCard = document.getElementById('neet-prep-section');
+        
+        if (currentMode === 'NEET') {
+            neetPrepCard.parentElement.classList.remove('hidden');
+        } else {
+            neetPrepCard.parentElement.classList.add('hidden');
+        }
+        
+        // Update other elements as before
+        updateStatusUI(); 
+    }
+
+
+    function toggleExamType() {
+        // 1. Toggle the mode string
+        currentMode = (currentMode === 'JEE') ? 'NEET' : 'JEE';
+
+        // 2. Update UI Elements (Toggle Card & Status Bar)
+        const label = document.getElementById('main-toggle-label');
+        const toggleCard = document.querySelector('.toggle-card');
+        const barFill = document.getElementById('status-bar-fill');
+        const barText = document.getElementById('status-text');
+        
+        const activeColor = examData[currentMode].color;
+        
+        label.innerText = currentMode;
+        toggleCard.style.backgroundColor = activeColor;
+        barFill.style.backgroundColor = activeColor;
+        barText.style.color = activeColor;
+        barText.innerText = `Current Mode: ${currentMode}`;
+
+        // 3. SWAP THE FEATURED CARDS
+        const jeeCard = document.getElementById('jee-prep-section');
+        const neetCard = document.getElementById('neet-prep-section');
+
+        if (currentMode === 'JEE') {
+            jeeCard.classList.remove('hidden');
+            neetCard.classList.add('hidden');
+        } else {
+            jeeCard.classList.add('hidden');
+            neetCard.classList.remove('hidden');
+        }
+
+        // 4. Update the subject cards as before
+        updateSubjectCard('card-physics', examData[currentMode].physics);
+        updateSubjectCard('card-chemistry', examData[currentMode].chemistry);
+    }
+//  login pop up  
+// Function to hide modal
+function closeModal() {
+    document.getElementById("loginModal").style.display = "none";
+}
+
+window.onload = function() {
+    // 1. Check if user is already logged in
+    const userIsLoggedIn = localStorage.getItem("isLoggedIn");
+
+    if (!userIsLoggedIn) {
+        // 2. If NOT logged in, show the popup after 1 second
+        setTimeout(() => {
+            document.getElementById("loginModal").style.display = "block";
+        }, 1000);
+    }
 };
 
-function go(page){
-  window.location.href=page;
-}
+// 3. Listen for the "Close" message from the Login Page
+window.addEventListener("message", function(event) {
+    if (event.data === "login_complete") {
+        // Save login status so it doesn't pop up again
+        localStorage.setItem("isLoggedIn", "true");
+        
+        // Close the modal
+        closeModal();
+        
+        // Optional: Refresh to update the UI
+        window.location.reload();
+    }
+});
+
+
+function go(page){ window.location.href = page; }
+
 function goSubject(sub){
-  window.location.href=exam.toLowerCase()+"-"+sub+".html";
-}
-  
-let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
-
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = "block";
-});
-
-installBtn.addEventListener("click", async () => {
-  if (!deferredPrompt) return;
-
-  deferredPrompt.prompt();
-  const choiceResult = await deferredPrompt.userChoice;
-
-  if (choiceResult.outcome === "accepted") {
-    console.log("App installed");
-  }
-
-  deferredPrompt = null;
-  installBtn.style.display = "none";
-});
-self.addEventListener("install", () => {
-  console.log("Service Worker Installed");
-});
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+  window.location.href = exam.toLowerCase() + "-" + sub + ".html";
 }
 
-
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
 </script>
 
 </body>
 </html>
-
-
