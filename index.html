@@ -56,6 +56,7 @@ body {
 
 .sidebar-header {
   margin-bottom: 25px;
+  text-align: center;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   padding-bottom: 15px;
 }
@@ -104,28 +105,8 @@ header {
   cursor: pointer;
 }
 
-header h1 { font-size: 20px; text-transform: lowercase; font-weight: 900; }
+header h1 { font-size: 200px; text-transform: lowercase; font-weight: 900; }
 
-.login-btn {
-  padding: 8px 18px;
-  border: none;
-  background: var(--primary);
-  color: #fff;
-  border-radius: 10px;
-  font-weight: 600;
-}
-#me-profile {
-    transition: transform 0.2s ease;
-}
-
-#me-profile:hover {
-    transform: scale(1.05);
-}
-
-#me-profile:hover div {
-    background: #22c55e !important; /* Invert colors on hover */
-    color: #1a1a1a !important;
-}
 
 /* Mobile tweak: Hide the text name on small screens, keep only the icon */
 @media (max-width: 480px) {
@@ -535,33 +516,13 @@ footer { margin: 15px; padding: 20px; text-align: center; font-size: 13px; opaci
     <a href="bsebpyq2.html"> BSEB</a>
     <a href="neet preparation.html">NEET Preparation</a>
     <a href="jeepreparation.html">JEE Preparation</a>
-    <a href="dasboard2.html">Dashboard</a>
   </nav>
 </div>
 
-<header class="glass">
+<header class="glass" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 20px;">
   <div class="menu-trigger" onclick="toggleSidebar()">☰</div>
-  <h1>dinkar</h1>
- <div id="auth-container">
-    <button id="login-nav-btn" class="login-btn" onclick="go('login.html')">Login</button>
-
-    <div id="me-profile" onclick="go('dashboard.html')" style="display: none; cursor: pointer; align-items: center; gap: 10px;">
-        <span id="user-name-display" style="font-weight: 600; color: var(--dark-green); font-size: 14px;">Student</span>
-        <div style="width: 38px; height: 38px; background: #1a1a1a; color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #22c55e; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-            <span id="user-initial">M</span>
-        </div>
-    </div>
-</div>
+  <h1 style="margin-left: 15px; font-size: 20px;">dinkar</h1>
 </header>
-
-<!-- login popup-->
- <div id="loginModal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <iframe src="login.html" id="loginFrame"></iframe>
-  </div>
-</div>
-<!--end -->
 
 
 <section class="hero glass">
@@ -579,7 +540,40 @@ footer { margin: 15px; padding: 20px; text-align: center; font-size: 13px; opaci
   </div>
 </section>
 
+<!--english card-->
+
 <div class="featured-container">
+    <div class="section-title" style="margin-bottom: 10px; font-size: 18px; text-align: left; padding-left: 10px; font-weight: 800; color: #444;">LANGUAGE & ARTS</div>
+    <a href="englishmain.html" class="prep-card" style="background: linear-gradient(135deg, #6366f1, #4338ca); box-shadow: 0 8px 15px rgba(99, 102, 241, 0.2);">
+        <div class="prep-badge" style="background: #fbbf24; color: #000;">Core</div>
+        <div class="prep-info">
+            <h2>English Language & Lit.</h2>
+            <p>Grammar, Prose, Poetry & Writing Skills</p>
+        </div>
+        <div class="prep-action">
+            <span>Start Learning →</span>
+        </div>
+    </a>
+</div>
+
+<!--hindi card-->
+
+<div class="featured-container">
+    <a href="hindimain.html" class="prep-card" style="background: linear-gradient(135deg, #f16363, #ca3838); box-shadow: 0 8px 15px rgba(99, 102, 241, 0.2);">
+        <div class="prep-badge" style="background: #fbbf24; color: #000;">Core</div>
+        <div class="prep-info">
+            <h2> Hindi Language (हिन्दी) </h2>
+            <p>Prose, Poetry </p>
+        </div>
+        <div class="prep-action">
+            <span>Start Learning →</span>
+        </div>
+    </a>
+</div>
+
+
+<div class="featured-container">
+   <div class="section-title" style="margin-bottom: 10px; font-size: 18px; text-align: left; padding-left: 10px; font-weight: 800; color: #444;"> Domain Exams</div>
     <a href="neet preparation.html" class="prep-card" id="neet-prep-section">
         <div class="prep-badge">New</div>
         <div class="prep-info">
@@ -637,35 +631,6 @@ footer { margin: 15px; padding: 20px; text-align: center; font-size: 13px; opaci
     </div>
 </div>
 
-
-<section class="section-container glass">
-  <h3 class="section-title">Why Dinkar?</h3>
-  <div class="grid-auto">
-    <div class="feature-card glass">
-      <img src="use1.jpg" alt="Icon">
-      <p>Real exam questions</p>
-    </div>
-    <div class="feature-card glass">
-      <img src="use2.jpg" alt="Icon">
-      <p>Instant analysis</p>
-    </div>
-  </div>
-</section>
-
-<section class="section-container glass">
-  <div class="steps-container">
-    <div class="steps-img-box">
-      <img src="use3.jpg" alt="Process Map">
-    </div>
-    <div class="steps-text">
-      <h3 class="section-title" style="text-align: left;">How it works</h3>
-      <div class="step-item">1️⃣ Select NEET or JEE</div>
-      <div class="step-item">2️⃣ Choose subject & practice</div>
-      <div class="step-item">3️⃣ Track score & improve</div>
-    </div>
-  </div>
-</section>
-
 <section class="cta glass">
   <h3>Start Your Preparation Today</h3>
   <button class="cta-btn" onclick="go('dinkar library.html')">Join Free Now</button>
@@ -702,31 +667,70 @@ const text = document.getElementById("examText");
         alert("Action for " + slideName);
     }
 
-// Reference the elements
-const loginBtn = document.getElementById('login-nav-btn');
-const meProfile = document.getElementById('me-profile');
-const userInitial = document.getElementById('user-initial');
-const userNameDisplay = document.getElementById('user-name-display');
-
-// Firebase Auth Listener
 firebase.auth().onAuthStateChanged((user) => {
+    const loginBtn = document.getElementById('login-nav-btn');
+    const meProfile = document.getElementById('me-profile');
+    const headerName = document.getElementById('header-user-name');
+    const userInitial = document.getElementById('user-initial');
+    const heroNames = document.querySelectorAll('#username-display'); 
+
     if (user) {
-        // 1. Hide Login Button, Show Profile
+        // 1. UI Toggle
+        if(loginBtn) loginBtn.style.display = 'none';
+        if(meProfile) meProfile.style.display = 'flex';
+
+        // 2. Clean the name: Get only the part before the "|"
+        const rawData = user.displayName || user.email || "Student";
+        const exactName = rawData.includes('|') ? rawData.split('|')[0] : rawData;
+        
+        // 3. Display exactly as entered
+        if(headerName) headerName.innerText = exactName;
+        if(userInitial) userInitial.innerText = exactName.charAt(0).toUpperCase();
+        
+        // Update the Hero section (the bubble and welcome text)
+        heroNames.forEach(el => {
+            el.innerText = exactName;
+        });
+
+    } else {
+        // Reset if logged out
+        if(loginBtn) loginBtn.style.display = 'block';
+        if(meProfile) meProfile.style.display = 'none';
+        heroNames.forEach(el => { el.innerText = "Student"; });
+    }
+});
+
+firebase.auth().onAuthStateChanged((user) => {
+    const loginBtn = document.getElementById('login-nav-btn');
+    const meProfile = document.getElementById('me-profile');
+    const headerName = document.getElementById('header-name');
+    const headerInitial = document.getElementById('header-initial');
+    const heroNames = document.querySelectorAll('#username-display');
+
+    if (user) {
+        // 1. Swap Visibility: Remove Login button, Show Profile
         loginBtn.style.display = 'none';
         meProfile.style.display = 'flex';
 
-        // 2. Get Name or Email to show initial
-        const name = user.displayName || user.email;
-        const initial = name.charAt(0).toUpperCase();
-        const shortName = name.split(' ')[0].split('@')[0];
+        // 2. Extract clean name (removes the |ID part)
+        const rawName = user.displayName || user.email || "Student";
+        const exactName = rawName.includes('|') ? rawName.split('|')[0] : rawName;
 
-        // 3. Update the UI with user info
-        userInitial.innerText = initial;
-        userNameDisplay.innerText = shortName;
+        // 3. Update Header & Hero elements
+        headerName.innerText = exactName;
+        headerInitial.innerText = exactName.charAt(0).toUpperCase();
+        
+        heroNames.forEach(el => {
+            el.innerText = exactName;
+        });
     } else {
-        // User is logged out: Show Login Button, Hide Profile
+        // User logged out: Show Login button, Hide Profile
         loginBtn.style.display = 'block';
         meProfile.style.display = 'none';
+        
+        heroNames.forEach(el => {
+            el.innerText = "Student";
+        });
     }
 });
     function toggleExamType() {
