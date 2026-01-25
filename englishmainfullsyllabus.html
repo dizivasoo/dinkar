@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Syllabus Series | Dinkar</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Chapter-wise used green; Full Syllabus uses Indigo for a "Main Exam" feel */
+            --primary: #4f46e5; 
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --glass-border: rgba(0,0,0,0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light-bg);
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* --- SERIES SELECTION MENU --- */
+        #menu-screen { padding-top: 40px; }
+        .menu-header { text-align: center; margin-bottom: 40px; }
+        .menu-header h1 { font-size: 30px; font-weight: 800; color: var(--dark); margin: 0; }
+        .menu-header p { color: #64748b; margin-top: 10px; }
+
+        .series-list { display: grid; gap: 15px; }
+
+        .series-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .series-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+        }
+
+        .series-id {
+            width: 50px; height: 50px; background: #eef2ff; color: var(--primary);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 20px; margin-right: 20px;
+        }
+
+        .series-info h3 { margin: 0; font-size: 18px; }
+        .series-info p { margin: 5px 0 0; font-size: 13px; color: #64748b; }
+
+        /* --- TEST INTERFACE (Same as Chapter Wise) --- */
+        #test-screen, #result-screen { display: none; padding-top: 30px; }
+
+        .quiz-card {
+            background: white;
+            padding: 35px;
+            border-radius: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+        }
+
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .q-number { font-weight: 800; color: var(--primary); font-size: 14px; }
+        .back-btn { background: #f1f5f9; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+
+        .question-text { font-size: 22px; font-weight: 600; margin-bottom: 25px; line-height: 1.4; }
+
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
+        .option {
+            padding: 18px 25px;
+            border: 2px solid #f1f5f9;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .option.correct { background: #f0fdf4; border-color: #22c55e; color: #166534; }
+        .option.wrong { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+        .option.disabled { pointer-events: none; }
+
+        .next-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-weight: 800;
+            margin-top: 30px;
+            float: right;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* --- RESULT SCREEN --- */
+        .chart-box { width: 220px; margin: 0 auto 20px; }
+        .score-display { font-size: 48px; font-weight: 900; color: var(--primary); margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="menu-screen">
+        <div class="menu-header">
+            <h1>English Master Series</h1>
+            <p>Full Syllabus Practice • 100 Marks Pattern</p>
+        </div>
+        <div class="series-list">
+            <div class="series-card" onclick="startSeries(1)">
+                <div class="series-id">01</div>
+                <div class="series-info"><h3>Syllabus Series 1</h3><p>50 Important Questions from Chapters 1-10</p></div>
+            </div>
+            <div class="series-card" onclick="startSeries(2)">
+                <div class="series-id">02</div>
+                <div class="series-info"><h3>Syllabus Series 2</h3><p>Advanced set focusing on difficult areas</p></div>
+            </div>
+            <div class="series-card" onclick="startSeries(3)">
+                <div class="series-id">03</div>
+                <div class="series-info"><h3>Syllabus Series 3</h3><p>Model Paper for Final Board Exam</p></div>
+            </div>
+            <div class="series-card" onclick="startSeries(4)">
+                <div class="series-id">04</div>
+                <div class="series-info"><h3>Syllabus Series 4</h3><p>Fast Revision: Mixed objective set</p></div>
+            </div>
+            <div class="series-card" onclick="startSeries(5)">
+                <div class="series-id">05</div>
+                <div class="series-info"><h3>Syllabus Series 5</h3><p>The Ultimate Challenge Set</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="test-screen">
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <button class="back-btn" onclick="location.reload()">← Quit</button>
+                <span class="q-number" id="q-counter">Question 1/50</span>
+            </div>
+            <div class="question-text" id="q-text"></div>
+            <div class="options-grid" id="opt-container"></div>
+            <button class="next-btn" id="next-btn" onclick="nextQuestion()">NEXT →</button>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+
+    <div id="result-screen">
+        <div class="quiz-card" style="text-align: center;">
+            <h2 style="color: var(--primary);">Series Completed!</h2>
+            <div class="chart-box"><canvas id="resultChart"></canvas></div>
+            <div class="score-display" id="final-score">0 / 50</div>
+            <button class="next-btn" style="float:none; display:inline-block;" onclick="location.reload()">Back to Home</button>
+        </div>
+    </div>
+
+</div>
+
+<audio id="audio-correct" src="successed-295058.mp3"></audio>
+<audio id="audio-wrong" src="error-010-206498.mp3"></audio>
+
+<script>
+// Logic stays exactly as we discussed, now with a dedicated question set for each card
+const seriesData = {
+   1: [
+    { q: "Who wrote the essay 'Indian Civilization and Culture'?", a: "Mahatma Gandhi", options: ["Dr. Zakir Hussain", "Mahatma Gandhi", "M. Malgaonkar", "H.E. Bates"] },
+    { q: "Dr. Zakir Hussain entered the office of President in a spirit of _____ humility.", a: "Prayerful", options: ["Prayerful", "Arrogant", "Selfish", "Fearful"] },
+    { q: "Nanukaka was coming to Delhi to _____.", a: "See some ministers", options: ["Visit the Red Fort", "See some ministers", "Attend a wedding", "Meet his sister"] },
+    { q: "Martin Luther King, Jr. delivered his speech in _____.", a: "1963", options: ["1947", "1950", "1963", "1965"] },
+    { q: "Bertrand Russell was awarded the Nobel Prize in Literature in _____.", a: "1950", options: ["1948", "1950", "1952", "1954"] },
+    { q: "Seibei's hobby was collecting _____.", a: "Gourds", options: ["Stamps", "Gourds", "Coins", "Books"] },
+    { q: "In traditional societies, a pregnant woman goes to stay with her _____.", a: "Mother", options: ["Mother", "Sister", "Friend", "In-laws"] },
+    { q: "The two chief factors that control the press are Advertisers and _____.", a: "The Wealthy Owners", options: ["The Editors", "The Wealthy Owners", "The Reporters", "The Readers"] },
+    { q: "Benjy's parents put his earnings into a _____.", a: "Passbook", options: ["Locked box", "Passbook", "Business", "Friend's hand"] },
+    { q: "Pearl S. Buck won the Nobel Prize for Literature in _____.", a: "1938", options: ["1930", "1938", "1945", "1950"] },
+    { q: "The mind is a restless _____, the more it gets the more it wants.", a: "Bird", options: ["Animal", "Bird", "Human", "Spirit"] },
+    { q: "Dr. Zakir Hussain says that 'Bharat is my home and its people are my ____.'", a: "Family", options: ["Friends", "Family", "Servants", "Subjects"] },
+    { q: "Nanukaka traveled in the _____ class on a Third class ticket.", a: "Second", options: ["First", "Second", "General", "Sleeper"] },
+    { q: "King wants his children to be judged by the 'content of their ____'.", a: "Character", options: ["Skin color", "Character", "Wealth", "Education"] },
+    { q: "According to Russell, the first most important thing that helped mankind was _____.", a: "Increase in numbers", options: ["Invention of fire", "Increase in numbers", "Language", "Agriculture"] },
+    { q: "The Ethics teacher gave Seibei's confiscated gourd to the _____.", a: "Porter", options: ["Principal", "Porter", "Seibei's father", "Police"] },
+    { q: "A 'Sylheti' woman belongs to which region?", a: "Bangladesh", options: ["India", "Bangladesh", "Pakistan", "Nepal"] },
+    { q: "Newspapers are often 'shackled' by _____.", a: "Advertisers", options: ["The Government", "Advertisers", "The Police", "Common people"] },
+    { q: "At what age was Benjy handed his passbook?", a: "21", options: ["18", "21", "25", "30"] },
+    { q: "Pearl S. Buck was born in America but raised in _____.", a: "China", options: ["India", "China", "England", "Japan"] },
+    { q: "Civilization points out to man the path of _____.", a: "Duty", options: ["Pleasure", "Duty", "Sorrow", "Wealth"] },
+    { q: "Dr. Zakir Hussain was born in _____.", a: "Hyderabad", options: ["Delhi", "Hyderabad", "Aligarh", "Patna"] },
+    { q: "Nanukaka's linguistic outburst was always in his _____.", a: "Mother tongue", options: ["English", "Mother tongue", "Hindi", "Marathi"] },
+    { q: "Which state of the USA does King describe as 'sweltering with the heat of injustice'?", a: "Mississippi", options: ["California", "Mississippi", "New York", "Texas"] },
+    { q: "Birds die of hunger in large numbers during _____.", a: "Winter", options: ["Summer", "Winter", "Rainy season", "Spring"] },
+    { q: "Seibei lived in a _____.", a: "Harbor town", options: ["Village", "Harbor town", "Mountain city", "Desert"] },
+    { q: "The ceremony of 'Rupthoke' is mentioned in the context of _____.", a: "Naming and dressing the child", options: ["Marriage", "Naming and dressing the child", "Education", "Death"] },
+    { q: "When a newspaper misrepresents a speech, it is called _____.", a: "Misquotation", options: ["Education", "Misquotation", "Illustration", "Inspiration"] },
+    { q: "What business did Benjy start first?", a: "Keeping hens", options: ["Growing vegetables", "Keeping hens", "Selling milk", "Trading land"] },
+    { q: "According to Pearl S. Buck, the life span in India was only _____.", a: "Twenty-seven years", options: ["Twenty-seven years", "Fifty years", "Forty years", "Thirty-five years"] },
+    { q: "Our ancestors were satisfied with small _____.", a: "Villages", options: ["Cities", "Villages", "Towns", "Countries"] },
+    { q: "Dr. Zakir Hussain was the ____ President of India.", a: "Third", options: ["First", "Second", "Third", "Fourth"] },
+    { q: "Who was the 'Welfare Minister's' son engaged to?", a: "The Princess of Ninnore", options: ["The Princess of Ninnore", "Sohanlal's daughter", "Nanukaka's daughter", "A foreign lady"] },
+    { q: "Martin Luther King, Jr. was influenced by which Indian leader?", a: "Mahatma Gandhi", options: ["Pt. Nehru", "Mahatma Gandhi", "Subhash Chandra Bose", "Sardar Patel"] },
+    { q: "Domesticating _____ was a step towards civilization.", a: "Animals", options: ["Birds", "Animals", "Insects", "Trees"] },
+    { q: "How much did the curio-dealer pay the Porter for the gourd?", a: "Fifty yen", options: ["Five yen", "Ten yen", "Fifty yen", "Six hundred yen"] },
+    { q: "Germaine Greer is a famous _____ writer.", a: "Feminist", options: ["Educational", "Scientific", "Feminist", "Historical"] },
+    { q: "Dorothy L. Sayers was a famous _____ writer.", a: "British", options: ["American", "British", "Indian", "Japanese"] },
+    { q: "What was the name of the girl Benjy married?", a: "Florence", options: ["Mary", "Florence", "Anne", "Lucy"] },
+    { q: "Gandhi's hold on his people was through his _____.", a: "Moral character", options: ["Wealth", "Moral character", "Military power", "Political cunning"] },
+    { q: "Gujarati equivalent for civilization means _____.", a: "Good conduct", options: ["Bad conduct", "Good conduct", "Simple living", "High thinking"] },
+    { q: "Dr. Radhakrishnan never lost his faith in the essential ____ of man.", a: "Humanity", options: ["Humanity", "Greed", "Cruelty", "Poverty"] },
+    { q: "Nanukaka wore a huge _____ turban.", a: "Orange", options: ["Red", "Orange", "White", "Blue"] },
+    { q: "Emancipation Proclamation gave the Negro ____.", a: "Freedom from slavery", options: ["Money", "Freedom from slavery", "Government jobs", "Land"] },
+    { q: "In ancient times, humans sometimes practiced _____ to ensure a good harvest.", a: "Human sacrifice", options: ["Dancing", "Human sacrifice", "Singing", "Fasting"] },
+    { q: "An old man once mocked Seibei's gourd, calling it _____.", a: "Just a clumsy thing", options: ["A masterpiece", "Just a clumsy thing", "Too expensive", "Very beautiful"] },
+    { q: "Post-partum depression is more common in _____ mothers.", a: "Western", options: ["Traditional", "Western", "Rural", "Indian"] },
+    { q: "The 'Mirror of Public Opinion' is often _____.", a: "Cracked or distorted", options: ["Crystal clear", "Cracked or distorted", "Pure", "Enormous"] },
+    { q: "Benjy's eyes were _____.", a: "Blue and simple", options: ["Black and angry", "Blue and simple", "Green and sharp", "Brown and warm"] },
+    { q: "The author says the 'real' India is found in its _____.", a: "Villages", options: ["Cities", "Villages", "Factories", "Universities"] }
+],
+2: [
+    { q: "Who was the 'Welfare Minister's' son engaged to?", a: "The Princess of Ninnore", options: ["The Princess of Ninnore", "Sohanlal's daughter", "Nanukaka's daughter", "A foreign lady"] },
+    { q: "Dr. Zakir Hussain says that 'Education is the _____ instrument of national purpose.'", a: "Prime", options: ["Secondary", "Prime", "Useless", "Old"] },
+    { q: "The 'promissory note' mentioned by King refers to _____.", a: "The Constitution and Declaration of Independence", options: ["A bank check", "The Constitution and Declaration of Independence", "A personal letter", "A law book"] },
+    { q: "Bertrand Russell says that humans suffer more than animals due to their _____.", a: "Intelligence", options: ["Physical weakness", "Intelligence", "Lack of food", "Fear"] },
+    { q: "Seibei's father worked as a _____.", a: "Carpenter", options: ["Farmer", "Carpenter", "Merchant", "Doctor"] },
+    { q: "A woman's status rises in traditional societies after she becomes a _____.", a: "Mother", options: ["Wife", "Mother", "Worker", "Student"] },
+    { q: "The editorial policy of a popular daily is controlled by _____.", a: "The Chief Proprietor", options: ["The Public", "The Chief Proprietor", "The Government", "The Junior Staff"] },
+    { q: "How much did the curio-dealer eventually sell Seibei's gourd for?", a: "Six hundred yen", options: ["One hundred yen", "Six hundred yen", "Fifty yen", "Ten yen"] },
+    { q: "Benjy's father was a tenant farmer and a _____.", a: "Preacher", options: ["Teacher", "Preacher", "Carpenter", "Soldier"] },
+    { q: "Pearl S. Buck says the 'common quality' of all Indians is _____.", a: "Religiousness", options: ["Poverty", "Religiousness", "Anger", "Pride"] },
+    { q: "Modern civilization is the worship of _____.", a: "Material", options: ["Spirit", "Material", "Ethics", "Art"] },
+    { q: "Who brought a lot of erudition and wealth of knowledge to the Presidency?", a: "Dr. Radhakrishnan", options: ["Dr. Rajendra Prasad", "Dr. Radhakrishnan", "Giani Zail Singh", "V.V. Giri"] },
+    { q: "Nanukaka managed to get a _____ car for his visit to the Minister.", a: "Luxe sports car", options: ["Government jeep", "Luxe sports car", "Private taxi", "Horse carriage"] },
+    { q: "Which state did King want to see as a place where black and white children join hands?", a: "Alabama", options: ["Alabama", "Georgia", "Florida", "Virginia"] },
+    { q: "One of the earliest domestication successes for humans was the _____.", a: "Dog", options: ["Lion", "Dog", "Tiger", "Snake"] },
+    { q: "The Ethics teacher was a fan of _____.", a: "Bushido", options: ["Bushido", "Modern art", "Music", "Literature"] },
+    { q: "In the West, pregnancy is often treated as a _____ condition.", a: "Medical", options: ["Social", "Medical", "Religious", "Festive"] },
+    { q: "When a reporter adds his own 'flavor' to a story, it is called _____.", a: "Inaccurate reporting", options: ["Honest work", "Inaccurate reporting", "Scientific research", "Creative writing"] },
+    { q: "Who was the landlord of the land Johnson farmed?", a: "Sanders", options: ["Whitmore", "Sanders", "Benjy", "The Government"] },
+    { q: "Pearl S. Buck found the young Indian intellectuals to be _____.", a: "Restless and embittered", options: ["Happy and satisfied", "Restless and embittered", "Lazy", "Uneducated"] },
+    { q: "Our ancestors discouraged us from _____.", a: "Luxuries and pleasures", options: ["Politics", "Luxuries and pleasures", "Education", "Agriculture"] },
+    { q: "Dr. Zakir Hussain was the Governor of _____.", a: "Bihar", options: ["Uttar Pradesh", "Bihar", "West Bengal", "Madhya Pradesh"] },
+    { q: "Nanukaka posed as the _____ of the Maharaja of Ninnore.", a: "Hereditary Astrologer", options: ["Hereditary Astrologer", "Legal Advisor", "Chief Minister", "Old Friend"] },
+    { q: "King describes the 'bad check' as a promise of ____.", a: "Justice", options: ["Money", "Justice", "Food", "Power"] },
+    { q: "The cultivation of _____ began a settled life for humans.", a: "Grain", options: ["Flowers", "Grain", "Trees", "Grass"] },
+    { q: "How many sen did Seibei pay for the gourd he bought from the old woman?", a: "Ten sen", options: ["Five sen", "Ten sen", "Fifty sen", "One yen"] },
+    { q: "In traditional societies, childbirth is a _____ event.", a: "Family/Social", options: ["Private", "Family/Social", "Religious", "Political"] },
+    { q: "The 'first and most obvious' way the press misleads is through _____.", a: "Sensational headlines", options: ["Long articles", "Sensational headlines", "True stories", "Scientific data"] },
+    { q: "Where did Benjy leave his parents in the end?", a: "In the town on a pavement", options: ["At a relative's house", "In the town on a pavement", "In a hospital", "In a new cottage"] },
+    { q: "The house where Buck stayed served food on _____.", a: "Green banana leaves", options: ["Silver plates", "Green banana leaves", "Plastic trays", "Wooden boards"] },
+    { q: "Indian civilization is _____.", a: "Unbeatable", options: ["Weak", "Unbeatable", "Dead", "Westernized"] },
+    { q: "Work on one's self means work for _____.", a: "Individual", options: ["Society", "Individual", "State", "Family"] },
+    { q: "Sohanlal Ratiram was the _____ in Delhi.", a: "Party Boss", options: ["Party Boss", "Minister", "Ambassador", "Business tycoon"] },
+    { q: "Martin Luther King, Jr. won the Nobel Peace Prize in ____.", a: "1964", options: ["1962", "1963", "1964", "1965"] },
+    { q: "The invention of _____ was a major milestone in human history.", a: "Language", options: ["Television", "Language", "Radio", "Telephone"] },
+    { q: "What did Seibei's father do to his gourds?", a: "Smashed them with a hammer", options: ["Sold them", "Smashed them with a hammer", "Polished them", "Gave them to the teacher"] },
+    { q: "Greer argues that Western mothers often suffer from _____.", a: "Post-partum loneliness", options: ["Too much family help", "Post-partum loneliness", "Lack of medicine", "Over-eating"] },
+    { q: "What does 'Garbling' mean in terms of press freedom?", a: "Distorting the truth", options: ["Printing news", "Distorting the truth", "Helping the public", "Writing poetry"] },
+    { q: "Benjy's eyes were blue and _____.", a: "Simple", options: ["Angry", "Simple", "Sharp", "Warm"] },
+    { q: "The color of skin of Indians varies from _____.", a: "Golden to deep brown", options: ["Golden to deep brown", "White to red", "Yellow to black", "Pale to pink"] },
+    { q: "Civilization is that mode of conduct which points out to man the path of _____.", a: "Duty", options: ["Duty", "Pleasure", "Wealth", "Power"] },
+    { q: "Past is not dead and static, it is ____.", a: "Alive and dynamic", options: ["Alive and dynamic", "Forgotten", "Harmful", "Useless"] },
+    { q: "What was inside the basket Nanukaka gave the author?", a: "A kitten", options: ["Puppy", "A kitten", "Snuff", "Fruits"] },
+    { q: "King says, 'Let _____ ring'.", a: "Freedom", options: ["The bell", "Freedom", "Truth", "Peace"] },
+    { q: "The progress of mankind has been _____.", a: "Long and difficult", options: ["Short and easy", "Long and difficult", "Instant", "Accidental"] },
+    { q: "Seibei's hobby was considered _____ by his teacher.", a: "Effeminate", options: ["Noble", "Effeminate", "Useful", "Expensive"] },
+    { q: "Traditional midwives are often called _____.", a: "Dais", options: ["Dais", "Nurses", "Sisters", "Doctors"] },
+    { q: "A newspaper's first duty is to _____.", a: "Its proprietors", options: ["The truth", "Its proprietors", "The nation", "The poor"] },
+    { q: "Benjy understood the _____ of a hen better than anything else.", a: "Economy", options: ["Anatomy", "Economy", "Flying", "Colors"] },
+    { q: "The real India is found in the _____.", a: "Villages", options: ["Cities", "Villages", "Factories", "Universities"] }
+],
+3: [
+    { q: "What does Gandhi say about the 'unbridled indulgence' of passions?", a: "It makes man a slave", options: ["It makes man a slave", "It makes man happy", "It is necessary", "It is modern"] },
+    { q: "Dr. Zakir Hussain says 'Power should be used only for _____ purposes'.", a: "Moral", options: ["Political", "Moral", "Personal", "Material"] },
+    { q: "The narrator of 'A Pinch of Snuff' was an _____ on probation.", a: "Under Secretary", options: ["Under Secretary", "Officer", "Assistant", "IAS Officer"] },
+    { q: "King says that the Negro is still languishing in the corners of American society and finds himself an _____ in his own land.", a: "Exile", options: ["Enemy", "Exile", "Owner", "Guest"] },
+    { q: "In the prehistoric age, what was the biggest problem for humans?", a: "Survival and food", options: ["Education", "Survival and food", "Politics", "War"] },
+    { q: "What did Seibei use to remove the unpleasant gourd smell?", a: "Sake dregs and tea-leaves", options: ["Soap and water", "Sake dregs and tea-leaves", "Perfume", "Vinegar"] },
+    { q: "In many traditional societies, the burden of child-rearing is _____.", a: "Shared by the family", options: ["Only on the mother", "Shared by the family", "On the state", "On the doctor"] },
+    { q: "The freedom of the press is restricted during _____.", a: "War", options: ["Festivals", "War", "Elections", "Summer"] },
+    { q: "How many years had the Johnsons lived on their land?", a: "Forty years", options: ["Ten years", "Forty years", "One hundred years", "Five years"] },
+    { q: "Indians are very scrupulous about their _____.", a: "Cleanliness", options: ["Cleanliness", "Wealth", "Fashion", "Politics"] },
+    { q: "The Indian ancestors' view on 'Large Cities' was that they were _____.", a: "Snares and encumbrances", options: ["Places of progress", "Snares and encumbrances", "Centers of art", "Safe havens"] },
+    { q: "Dr. Radhakrishnan was a champion of the 'Right of all men to live in _____'.", a: "Dignity", options: ["Wealth", "Dignity", "Safety", "Silence"] },
+    { q: "Nanukaka stayed in the author's _____.", a: "Bedroom", options: ["Guest room", "Bedroom", "Drawing room", "Kitchen"] },
+    { q: "King describes the 'sweltering summer of the Negro's legitimate discontent' will not pass until there is an 'invigorating autumn of _____'.", a: "Freedom and equality", options: ["Money", "Freedom and equality", "Politics", "Rest"] },
+    { q: "According to Russell, humans are less _____ than our ancestors.", a: "Cruel", options: ["Cruel", "Smart", "Healthy", "Active"] },
+    { q: "What was Seibei doing when the Ethics teacher caught him?", a: "Polishing a gourd", options: ["Sleeping", "Polishing a gourd", "Drawing", "Talking"] },
+    { q: "The naming ceremony of a child in traditional society is usually _____.", a: "Festive and social", options: ["A quiet medical event", "Festive and social", "Held in a church", "Done by the father alone"] },
+    { q: "Which of the following is a method of press distortion?", a: "Suppression of context", options: ["True reporting", "Suppression of context", "Balanced views", "Honest interviews"] },
+    { q: "The doctor suggested Benjy keep hens to keep his _____ occupied.", a: "Mind", options: ["Hands", "Mind", "Feet", "Time"] },
+    { q: "Pearl S. Buck noticed that the Indian people were deeply _____.", a: "Religious", options: ["Atheistic", "Religious", "Secular", "Angry"] },
+    { q: "Gandhi's view on 'happiness' is that it is largely a _____.", a: "Mental condition", options: ["Physical state", "Mental condition", "Financial goal", "Social status"] },
+    { q: "Who said, 'The whole of Bharat is my home'?", a: "Dr. Zakir Hussain", options: ["Mahatma Gandhi", "Dr. Zakir Hussain", "Dr. Radhakrishnan", "Nanukaka"] },
+    { q: "Nanukaka took out his checkbook and wrote a check for _____.", a: "A thousand rupees", options: ["Five hundred rupees", "A thousand rupees", "Ten thousand rupees", "One rupee"] },
+    { q: "King warns that it would be fatal for the nation to _____ the urgency of the moment.", a: "Overlook", options: ["Recognize", "Overlook", "Study", "Celebrate"] },
+    { q: "The taming of _____ was primarily used for cooking and protection.", a: "Fire", options: ["Fire", "Horses", "Dogs", "Lions"] },
+    { q: "What happened to the gourd after the Porter sold it to the curio-dealer?", a: "It was sold for 600 yen", options: ["It was broken", "It was sold for 600 yen", "It was painted", "It was lost"] },
+    { q: "In traditional Bengali culture, a woman is given new clothes after _____.", a: "The naming ceremony", options: ["Marriage", "The naming ceremony", "Graduation", "Her birthday"] },
+    { q: "The press survives largely on the _____ of its readers.", a: "Credulity", options: ["Money", "Credulity", "Education", "Anger"] },
+    { q: "Benjy's father believed that 'God' would eventually take care of the _____.", a: "Earth", options: ["Hens", "Earth", "Money", "Taxes"] },
+    { q: "Pearl S. Buck was a citizen of _____.", a: "The USA", options: ["India", "The USA", "Britain", "China"] },
+    { q: "The Gujarati equivalent for civilization means 'Good ____'.", a: "Conduct", options: ["Thinking", "Conduct", "Living", "Health"] },
+    { q: "Dr. Zakir Hussain was the Vice President of India before becoming _____.", a: "President", options: ["Governor", "President", "Prime Minister", "Chief Justice"] },
+    { q: "Who was Sohanlal Ratiram?", a: "The Party Boss in Delhi", options: ["A Minister", "The Party Boss in Delhi", "Nanukaka's brother", "A doctor"] },
+    { q: "King's dream is that 'every valley shall be ____'.", a: "Exalted", options: ["Filled", "Exalted", "Deepened", "Destroyed"] },
+    { q: "The variety of our _____ is what makes us human, according to Russell.", a: "Enjoyments", options: ["Enjoyments", "Suffering", "Eating habits", "Running"] },
+    { q: "Seibei's father believed that Seibei should be _____.", a: "Studying", options: ["Studying", "Painting", "Working in the harbor", "Sleeping"] },
+    { q: "Greer notes that in the West, the husband's presence at birth is often _____.", a: "Awkward", options: ["Awkward", "Natural", "Forbidden", "Illegal"] },
+    { q: "A large part of a newspaper's revenue comes from _____.", a: "Advertisements", options: ["Sales", "Advertisements", "Charity", "Loans"] },
+    { q: "When Benjy married Florence, his parents felt _____.", a: "Unhappy", options: ["Happy", "Unhappy", "Excited", "Proud"] },
+    { q: "The Indian peasants were physically _____.", a: "Thin and weak", options: ["Thin and weak", "Very fat", "Tall and muscular", "Short and healthy"] },
+    { q: "The charge against India is that her people are _____.", a: "Uncivilized and ignorant", options: ["Rich and greedy", "Uncivilized and ignorant", "Very modern", "Aggressive"] },
+    { q: "The process of growth of national culture and national character is the business of _____.", a: "Education", options: ["Politics", "Education", "Religion", "Business"] },
+    { q: "Nanukaka's 'A Pinch of Snuff' is a _____ story.", a: "Humorous", options: ["Tragic", "Humorous", "Scientific", "Historical"] },
+    { q: "Let us not wallow in the valley of ____.", a: "Despair", options: ["Money", "Despair", "Happiness", "Wealth"] },
+    { q: "The word 'Forethought' distinguishes man from _____.", a: "Animals", options: ["Gods", "Animals", "Plants", "Machines"] },
+    { q: "What did Seibei's father do with the hammer?", a: "Smashed the gourds", options: ["Fixed the house", "Smashed the gourds", "Hit Seibei", "Gave it away"] },
+    { q: "The 'inter-generational' support system is strongest in _____ societies.", a: "Traditional", options: ["Western", "Traditional", "City", "Industrial"] },
+    { q: "What is 'Flat Suppression'?", a: "Not printing a story at all", options: ["Printing it clearly", "Not printing a story at all", "Printing it small", "Changing the font"] },
+    { q: "Benjy used a _____ to drive his parents away.", a: "Ford van", options: ["Cart", "Ford van", "Bicycle", "Truck"] },
+    { q: "Buck's book 'The Good Earth' is about which country?", a: "China", options: ["India", "China", "Africa", "England"] }
+],
+
+4: [
+    { q: "What was the 'unusual' thing Nanukaka did before speaking to the auto dealer?", a: "He inhaled a pinch of snuff", options: ["He took a nap", "He inhaled a pinch of snuff", "He wrote a letter", "He sang a song"] },
+    { q: "According to Gandhi, 'Plain living and high ____' should be our motto.", a: "Thinking", options: ["Earning", "Thinking", "Building", "Talking"] },
+    { q: "Dr. Zakir Hussain pledged his loyalty to the ____ of India.", a: "Constitution", options: ["People", "Constitution", "Prime Minister", "History"] },
+    { q: "Martin Luther King, Jr. says the 'whirlwinds of revolt' will continue to shake the foundations of the nation until the 'bright day of ____' emerges.", a: "Justice", options: ["Wealth", "Justice", "Peace", "Silence"] },
+    { q: "Russell believes that the use of ____ was a milestone in human technical progress.", a: "Fire", options: ["Fire", "The wheel", "Iron", "Writing"] },
+    { q: "Seibei was often seen wandering the streets looking for ____.", a: "Gourds", options: ["Friends", "Gourds", "Money", "Books"] },
+    { q: "In traditional societies, a woman is often called by the name of her ____ after childbirth.", a: "Child", options: ["Husband", "Child", "Father", "Village"] },
+    { q: "The freedom of the press is often restricted by the 'unofficial' censorship of ____.", a: "Advertisers", options: ["The Police", "Advertisers", "Teachers", "Judges"] },
+    { q: "What did Benjy do with the land he bought from Sanders?", a: "He put more hen-houses on it", options: ["He built a palace", "He put more hen-houses on it", "He sold it for profit", "He planted trees"] },
+    { q: "Pearl S. Buck describes the Indian 'Sun' as ____.", a: "A great giver of life", options: ["Hot and angry", "A great giver of life", "Weak", "Invisible"] },
+    { q: "Gandhi warns that 'we are in danger of bartering away the permanent good for a ____'.", a: "Momentary pleasure", options: ["New house", "Momentary pleasure", "Fast car", "Better job"] },
+    { q: "Dr. Radhakrishnan brought to the Presidency a ____ equipment.", a: "Mental", options: ["Physical", "Mental", "Financial", "Military"] },
+    { q: "Nanukaka's chauffeur for the visit to the Welfare Minister was ____.", a: "The author", options: ["A hired driver", "The author", "Sohanlal", "A policeman"] },
+    { q: "King says, 'I have a dream that my four little children will one day live in a nation where they will not be judged by the ____.'", a: "Color of their skin", options: ["Wealth of their father", "Color of their skin", "Size of their house", "Grades in school"] },
+    { q: "According to Russell, the 'moral and political' ideas are ____ to help mankind than technical ones.", a: "More difficult", options: ["Easier", "More difficult", "Unnecessary", "Less important"] },
+    { q: "The Porter at Seibei's school was lucky to find a ____ who bought the gourd.", a: "Curio-dealer", options: ["Teacher", "Curio-dealer", "Tourist", "Farmer"] },
+    { q: "Childbirth in the West is often a ____ experience for the mother.", a: "Lonely", options: ["Festive", "Lonely", "Crowded", "Cheap"] },
+    { q: "Dorothy L. Sayers says that 'The press can maintain a ____' about things it doesn't like.", a: "Conspiracy of silence", options: ["Loud noise", "Conspiracy of silence", "Public debate", "New law"] },
+    { q: "Benjy's parents were described as ____ people.", a: "Hardworking but simple", options: ["Lazy and rich", "Hardworking but simple", "Cruel and angry", "Very educated"] },
+    { q: "Buck says that the 'Intellectuals' in India were embittered by the ____.", a: "Lack of opportunity", options: ["Weather", "Lack of opportunity", "Food", "Religion"] },
+    { q: "The 'Golden Fleece' of the modern world, according to Gandhi, is ____.", a: "Materialism", options: ["Science", "Materialism", "Peace", "Equality"] },
+    { q: "The family is the ____ unit of the State, according to Dr. Zakir Hussain.", a: "Smallest", options: ["Biggest", "Smallest", "Most powerful", "Only"] },
+    { q: "Nanukaka's 'Snuff box' was made of ____.", a: "Silver", options: ["Gold", "Silver", "Wood", "Plastic"] },
+    { q: "Martin Luther King, Jr. was a ____ by profession.", a: "Baptist Minister", options: ["Lawyer", "Baptist Minister", "Doctor", "Politician"] },
+    { q: "Russell suggests that 'Forethought' involves the capacity to ____.", a: "Give up immediate pleasure", options: ["Run fast", "Give up immediate pleasure", "Fight well", "Sleep less"] },
+    { q: "The 'Old Woman' who sold the gourd to Seibei lived ____.", a: "Near the harbor", options: ["On a mountain", "Near the harbor", "In the city center", "Behind the school"] },
+    { q: "Traditional birth attendants (Dais) usually have ____.", a: "Great practical experience", options: ["Medical degrees", "Great practical experience", "Modern tools", "No knowledge"] },
+    { q: "A newspaper's proprietor is often a ____.", a: "Wealthy man with political interests", options: ["Poor journalist", "Wealthy man with political interests", "School teacher", "Doctor"] },
+    { q: "How did Benjy treat Florence's parents?", a: "With indifference", options: ["With great respect", "With indifference", "He gave them money", "He lived with them"] },
+    { q: "The 'Village India' is described by Buck as being full of ____.", a: "Color and life", options: ["Dullness", "Color and life", "Machines", "Wealth"] },
+    { q: "Gandhi believed that 'Mind' is a ____.", a: "Restless bird", options: ["Stable rock", "Restless bird", "Silent valley", "Wild river"] },
+    { q: "Zakir Hussain says 'The whole of Bharat is my Home and its people are my ____.'", a: "Family", options: ["Subjects", "Family", "Employees", "Students"] },
+    { q: "What was the name of the car dealership Nanukaka visited?", a: "Sikka Auto Dealers", options: ["Sikka Auto Dealers", "Maruti Motors", "Delhi Cars", "Royal Garages"] },
+    { q: "King says, 'We must forever conduct our struggle on the high plane of ____.'", a: "Dignity and discipline", options: ["Violence", "Dignity and discipline", "Hatred", "Speed"] },
+    { q: "The domestication of the ____ changed the nature of human travel.", a: "Horse", options: ["Dog", "Horse", "Cat", "Cow"] },
+    { q: "The curio-dealer sold the gourd for ____.", a: "600 yen", options: ["10 yen", "50 yen", "100 yen", "600 yen"] },
+    { q: "A Sylheti woman stays with her mother for ____ months during her first pregnancy.", a: "The last few", options: ["One", "The last few", "All nine", "Twelve"] },
+    { q: "Sayers mentions that newspapers often use 'Scare ____' to grab attention.", a: "Headlines", options: ["Headlines", "Photos", "Cartoons", "Colors"] },
+    { q: "Benjy's father spent much of his time ____.", a: "Preaching", options: ["Farming", "Preaching", "Sleeping", "Hunting"] },
+    { q: "Buck noticed that Indian men and women were often ____.", a: "Very handsome/beautiful", options: ["Ugly", "Very handsome/beautiful", "Short", "Unhappy"] },
+    { q: "The 'Western' civilization is based on the 'multiplication of ____'.", a: "Wants", options: ["Trees", "Wants", "Schools", "Friends"] },
+    { q: "Dr. Zakir Hussain emphasizes that 'Education' is a process of ____.", a: "Self-discipline", options: ["Making money", "Self-discipline", "Passing exams", "Copying others"] },
+    { q: "Who was the 'Under Secretary' mentioned in 'A Pinch of Snuff'?", a: "The narrator", options: ["Nanukaka", "Sohanlal", "The Minister", "The narrator"] },
+    { q: "The 'Marches' of King were aimed at achieving ____.", a: "Civil Rights", options: ["War", "Civil Rights", "Land", "Money"] },
+    { q: "Russell believes that the 'invention of writing' was ____.", a: "Gradual", options: ["Fast", "Gradual", "Accidental", "Unnecessary"] },
+    { q: "What did Seibei's father do for a living?", a: "Carpenter", options: ["Farmer", "Carpenter", "Baker", "Postman"] },
+    { q: "In traditional societies, children are often breastfed for ____.", a: "Longer periods", options: ["One week", "Longer periods", "A few days", "Not at all"] },
+    { q: "The press has the power to keep the public ____.", a: "In the dark", options: ["Educated", "In the dark", "Rich", "Safe"] },
+    { q: "Benjy's hen business eventually made him ____.", a: "The richest man in the area", options: ["Poorer", "The richest man in the area", "A doctor", "A pilot"] },
+    { q: "Pearl S. Buck was deeply moved by the ____ of Indian peasants.", a: "Poverty and resilience", options: ["Greed", "Poverty and resilience", "Laziness", "Education"] }
+], 
+
+
+5: [
+    { q: "Who wrote 'A Pinch of Snuff'?", a: "Manohar Malgaonkar", options: ["Shiga Naoya", "Manohar Malgaonkar", "Anton Chekhov", "H.E. Bates"] },
+    { q: "Gandhi states that 'The more we indulge our passions, the more _____ they become.'", a: "Unbridled", options: ["Controlled", "Unbridled", "Satisfied", "Quiet"] },
+    { q: "Dr. Zakir Hussain took the oath of loyalty to the _____.", a: "Constitution of India", options: ["People", "Constitution of India", "British Crown", "Political Party"] },
+    { q: "In 'I Have a Dream', King mentions the 'Dark and desolate valley of ____'.", a: "Segregation", options: ["Poverty", "Segregation", "War", "Despair"] },
+    { q: "According to Bertrand Russell, which of the following was a result of the invention of agriculture?", a: "A more secure food supply", options: ["A more secure food supply", "Increased hunting", "Lower population", "Nomadic life"] },
+    { q: "What did Seibei's father do when the teacher complained at his house?", a: "He beat Seibei and smashed his gourds", options: ["He apologized to Seibei", "He beat Seibei and smashed his gourds", "He laughed", "He bought new gourds"] },
+    { q: "In traditional societies, a woman is not accepted as a full member of the family until _____.", a: "She bears a child", options: ["She gets married", "She bears a child", "She cooks a meal", "She earns money"] },
+    { q: "The 'freedom of the press' is a _____ phrase in most democratic countries.", a: "Hollow", options: ["Sacred", "Hollow", "Meaningless", "Powerful"] },
+    { q: "What was Benjy's attitude toward his parents' religious beliefs?", a: "He was indifferent", options: ["He was very devout", "He was indifferent", "He hated them", "He studied them"] },
+    { q: "Pearl S. Buck says that 'India has to be _____ to be seen'.", a: "Loved", options: ["Studied", "Loved", "Ignored", "Feared"] },
+    { q: "The 'common quality' of the Indian people, according to Buck, is _____.", a: "Deep-seated religiousness", options: ["Laziness", "Deep-seated religiousness", "Greed", "Anger"] },
+    { q: "Nanukaka was a very _____ man.", a: "Clever", options: ["Stupid", "Clever", "Honest", "Quiet"] },
+    { q: "Dr. Zakir Hussain served as the _____ of Bihar before becoming President.", a: "Governor", options: ["Chief Minister", "Governor", "Education Minister", "High Court Judge"] },
+    { q: "Martin Luther King, Jr. was assassinated in _____.", a: "1968", options: ["1963", "1965", "1968", "1970"] },
+    { q: "Bertrand Russell was a _____ by profession.", a: "Philosopher and Mathematician", options: ["Doctor", "Philosopher and Mathematician", "Soldier", "Farmer"] },
+    { q: "Seibei was a student of _____ school.", a: "Primary", options: ["Primary", "Middle", "High", "Vocational"] },
+    { q: "The term 'technological society' is used by Greer to describe the _____.", a: "West", options: ["East", "West", "Villages", "Hospitals"] },
+    { q: "Sayers argues that newspapers are more interested in _____ than in news.", a: "Sensationalism", options: ["Truth", "Sensationalism", "Education", "Politics"] },
+    { q: "Who did Benjy eventually drive out of their own home?", a: "His parents", options: ["His wife", "His parents", "His children", "The neighbors"] },
+    { q: "Pearl S. Buck says that the British rule in India was a _____.", a: "Colonial disaster", options: ["Blessing", "Colonial disaster", "Success", "Mystery"] },
+    { q: "Our ancestors saw that happiness was largely a _____.", a: "Mental condition", options: ["Physical state", "Mental condition", "Financial goal", "Luck"] },
+    { q: "Dr. Zakir Hussain pledged to the 'Totality of India's _____'.", a: "Culture", options: ["Wealth", "Culture", "Army", "Boundaries"] },
+    { q: "Nanukaka's most important 'weapon' was his _____.", a: "Lies/Wit", options: ["Sword", "Lies/Wit", "Money", "Gun"] },
+    { q: "The 'Negro' in America, according to King, is still an _____.", a: "Exile", options: ["Owner", "Exile", "Employee", "Enemy"] },
+    { q: "Russell believes that the 'increase in population' was _____.", a: "One of the first signs of success", options: ["A disaster", "One of the first signs of success", "Irrelevant", "Accidental"] },
+    { q: "The Porter sold the confiscated gourd for _____ yen.", a: "50", options: ["10", "50", "100", "500"] },
+    { q: "In traditional societies, pregnancy is treated as a _____ process.", a: "Natural and communal", options: ["Secret", "Natural and communal", "Dangerous", "Medical"] },
+    { q: "A 'proprietor' of a newspaper is usually motivated by _____.", a: "Profit and power", options: ["Truth", "Profit and power", "Social service", "Poetry"] },
+    { q: "Benjy's hen business started with _____.", a: "Simple-mindedness", options: ["A bank loan", "Simple-mindedness", "A big factory", "A partner"] },
+    { q: "Pearl S. Buck was a _____ traveler.", a: "Keen and observant", options: ["Bored", "Keen and observant", "Wealthy and rude", "Fast"] },
+    { q: "The 'Indian' way of life, according to Gandhi, is based on _____.", a: "Self-restraint", options: ["Self-indulgence", "Self-restraint", "Copying others", "Wealth"] },
+    { q: "Dr. Zakir Hussain says 'The past is not dead and static, it is _____'.", a: "Alive and dynamic", options: ["Forgotten", "Alive and dynamic", "Buried", "Useless"] },
+    { q: "Nanukaka used a _____ to travel in a Second Class carriage.", a: "Third class ticket", options: ["First class ticket", "Third class ticket", "Platform pass", "Fake ID"] },
+    { q: "King's 'Dream' is rooted in the _____.", a: "American Dream", options: ["British Dream", "American Dream", "African Dream", "Indian Dream"] },
+    { q: "The development of _____ helped humans pass on knowledge.", a: "Language", options: ["Writing", "Language", "Tools", "Fire"] },
+    { q: "Seibei's parents lived in a _____ town.", a: "Harbor", options: ["Mountain", "Harbor", "Desert", "Forest"] },
+    { q: "Germaine Greer's essay 'A Child is Born' is an extract from her book _____.", a: "Sex and Destiny", options: ["The Female Eunuch", "Sex and Destiny", "The Change", "Daddy"] },
+    { q: "Sayers mentions that some newspapers 'invent' _____ to sell papers.", a: "Miracles", options: ["Miracles", "Facts", "Laws", "Countries"] },
+    { q: "What was Benjy's parents' biggest mistake?", a: "Trusting the doctor's advice blindly", options: ["Trusting the doctor's advice blindly", "Being too rich", "Moving to the city", "Not going to church"] },
+    { q: "The 'young intellectuals' of India, according to Buck, were _____.", a: "Profoundly embittered", options: ["Very wealthy", "Profoundly embittered", "Uneducated", "Happy"] },
+    { q: "Civilization is the mode of conduct which points out the path of _____.", a: "Duty", options: ["Success", "Duty", "Glory", "Sin"] },
+    { q: "Dr. Zakir Hussain became the President of India in _____.", a: "1967", options: ["1962", "1967", "1969", "1972"] },
+    { q: "Nanukaka's visit to Delhi was for _____ days.", a: "Two or three", options: ["Two or three", "Ten", "Fifteen", "Thirty"] },
+    { q: "King says that the 'Life of the Negro' is still sadly crippled by the _____ of segregation.", a: "Manacles", options: ["Chains", "Manacles", "Laws", "Buildings"] },
+    { q: "The most important thing Russell discusses is 'Ideas that have _____'.", a: "Helped Mankind", options: ["Hurt Mankind", "Helped Mankind", "Changed Nature", "Saved Animals"] },
+    { q: "Seibei's teacher thought his hobby was _____.", a: "A waste of time", options: ["Creative", "A waste of time", "Noble", "Profitable"] },
+    { q: "The 'naming ceremony' is a social celebration for the _____.", a: "Whole family", options: ["Father only", "Whole family", "Priest", "Doctor"] },
+    { q: "A 'Censorship' of the press usually comes from _____.", a: "The Government", options: ["The Government", "The Readers", "The Children", "The Farmers"] },
+    { q: "Benjy's father was a _____ preacher.", a: "Local", options: ["Famous", "Local", "Rich", "Foreign"] },
+    { q: "Pearl S. Buck says that 'Religion is ever-present in _____ life'.", a: "Indian", options: ["American", "Indian", "Chinese", "British"] }
+],
+
+};
+
+let currentSet = [];
+let currentIdx = 0;
+let score = 0;
+
+function startSeries(id) {
+    currentSet = seriesData[id];
+    currentIdx = 0;
+    score = 0;
+    document.getElementById('menu-screen').style.display = 'none';
+    document.getElementById('test-screen').style.display = 'block';
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const data = currentSet[currentIdx];
+    document.getElementById('q-counter').innerText = `Question ${currentIdx + 1} / ${currentSet.length}`;
+    document.getElementById('q-text').innerText = data.q;
+    document.getElementById('next-btn').style.display = 'none';
+    
+    const container = document.getElementById('opt-container');
+    container.innerHTML = "";
+    container.classList.remove('locked');
+
+    data.options.forEach(opt => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerText = opt;
+        div.onclick = () => {
+            if(container.classList.contains('locked')) return;
+            container.classList.add('locked');
+            
+            if(opt === data.a) {
+                div.classList.add('correct');
+                document.getElementById('audio-correct').play();
+                score++;
+            } else {
+                div.classList.add('wrong');
+                document.getElementById('audio-wrong').play();
+                Array.from(container.children).forEach(o => { if(o.innerText === data.a) o.classList.add('correct'); });
+            }
+            document.getElementById('next-btn').style.display = 'block';
+        };
+        container.appendChild(div);
+    });
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if(currentIdx < currentSet.length) {
+        loadQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    document.getElementById('test-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('final-score').innerText = `${score} / ${currentSet.length}`;
+
+    new Chart(document.getElementById('resultChart'), {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [score, currentSet.length - score],
+                backgroundColor: ['#4f46e5', '#f1f5f9'],
+                borderWidth: 0
+            }]
+        },
+        options: { cutout: '80%', plugins: { tooltip: { enabled: false } } }
+    });
+}
+</script>
+</body>
+</html>

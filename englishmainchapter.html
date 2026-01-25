@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Prose Center | Turtle Power</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <style>
+        :root { --primary: #22c55e; --dark: #0f172a; --light-bg: #f8fafc; --glass-border: rgba(0,0,0,0.05); }
+        body { font-family: 'Inter', sans-serif; background: var(--light-bg); margin: 0; color: var(--dark); }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        #chapter-menu { padding-top: 50px; }
+        .menu-header { text-align: center; margin-bottom: 40px; }
+        .chapter-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .chapter-card { background: white; padding: 25px; border-radius: 20px; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .chapter-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .chapter-card span { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; }
+        #test-interface, #result-screen { display: none; padding-top: 30px; }
+        .quiz-card { background: white; padding: 35px; border-radius: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .option { padding: 18px 25px; border: 2px solid #f1f5f9; border-radius: 15px; cursor: pointer; margin-bottom: 10px; transition: 0.2s; }
+        .option.correct { background: #f0fdf4; border-color: var(--primary); color: #166534; }
+        .option.wrong { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+        .option.disabled { pointer-events: none; }
+        .next-btn { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 15px; font-weight: 800; cursor: pointer; display: none; float: right; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="chapter-menu">
+        <div class="menu-header">
+            <h1>English Prose Chapters</h1>
+            <p>Select a chapter to begin your practice test.</p>
+        </div>
+        <div class="chapter-list" id="menu-grid"></div>
+    </div>
+
+    <div id="test-interface">
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <button onclick="location.reload()" style="cursor:pointer; border:none; background:#f1f5f9; padding:8px 15px; border-radius:10px;">← Back</button>
+                <span id="progress" style="font-weight:800; color:var(--primary);">Question 1/35</span>
+            </div>
+            <div id="active-chapter-title" style="opacity:0.5; margin-bottom:10px;"></div>
+            <div id="q-text" style="font-size:22px; font-weight:600; margin-bottom:25px;"></div>
+            <div id="opt-container"></div>
+            <button class="next-btn" id="btn-next" onclick="nextQuestion()">NEXT →</button>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+    <div id="result-screen">
+        <div class="quiz-card" style="text-align:center;">
+            <h2 style="color:var(--primary);">Test Completed!</h2>
+            <div style="width:200px; margin: 0 auto;"><canvas id="resultChart"></canvas></div>
+            <h1 id="score-text">0 / 35</h1>
+            <p id="sync-status" style="font-size:12px; color:gray;">Syncing with dashboard...</p>
+            <button class="next-btn" style="display:inline-block; float:none; margin-top:20px;" onclick="location.reload()">Return Home</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- FIREBASE SETUP ---
+const firebaseConfig = {
+    apiKey: "AIzaSyCAHYGpHAKahL1QVzDJhfPiP2PNNU2symE",
+    authDomain: "trutle-edu.firebaseapp.com",
+    databaseURL: "https://trutle-edu-default-rtdb.firebaseio.com", 
+    projectId: "trutle-edu",
+    storageBucket: "trutle-edu.firebasestorage.app",
+    messagingSenderId: "601475525422",
+    appId: "1:601475525422:web:6f4c5e3f4a1863e3aee8bf"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+const auth = firebase.auth();
+
+let currentUser = null;
+auth.onAuthStateChanged(user => { currentUser = user; });
+
+
+
+//data base
+const quizData = {
+    "ch1": {
+        name: "Indian Civilization and Culture",
+        questions: [
+        { q: "Who wrote the essay 'Indian Civilization and Culture'?", a: "Mahatma Gandhi", options: ["Dr. Zakir Hussain", "Mahatma Gandhi", "M. Malgaonkar", "H.E. Bates"] },
+        { q: "The mind is a restless _____, the more it gets the more it wants.", a: "Bird", options: ["Animal", "Bird", "Human", "Spirit"] },
+        { q: "The Gujarati equivalent for civilization means _____.", a: "Good conduct", options: ["Bad conduct", "Good conduct", "Simple living", "High thinking"] },
+        { q: "Our ancestors disapproved of _____ because they make us slaves.", a: "Luxuries and pleasures", options: ["Hard work", "Luxuries and pleasures", "Simple living", "Politics"] },
+        { q: "European civilization will mean _____ for India if we copy it.", a: "Ruin", options: ["Success", "Ruin", "Development", "Growth"] },
+        { q: "Civilization is that mode of conduct which points out to man the path of _____.", a: "Duty", options: ["Pleasure", "Duty", "Sorrow", "Wealth"] },
+        { q: "Who were the 'Pharaohs'?", a: "Emperors of Egypt", options: ["Rulers of Rome", "Emperors of Egypt", "Kings of Greece", "Sages of India"] },
+        { q: "Gandhi says that 'Happiness is largely a _____ condition.'", a: "Mental", options: ["Physical", "Mental", "Financial", "Social"] },
+        { q: "Our ancestors were satisfied with small _____.", a: "Villages", options: ["Cities", "Villages", "Towns", "Countries"] },
+        { q: "Western civilization has the tendency to privilege _____.", a: "Materiality", options: ["Morality", "Materiality", "Spirituality", "Simplicity"] },
+        { q: "Indian civilization elevates the _____.", a: "Moral being", options: ["Material world", "Physical power", "Moral being", "Intellect"] },
+        { q: "What did our ancestors view large cities as?", a: "Snares and useless encumbrances", options: ["Centers of progress", "Snares and useless encumbrances", "Holy places", "Safe havens"] },
+        { q: "In the words of Gandhi, 'Plain living and _____ thinking'.", a: "High", options: ["Deep", "High", "Simple", "Low"] },
+        { q: "Mahatma Gandhi used _____ as the chief weapons against the British.", a: "Truth and Non-violence", options: ["Swords", "Truth and Non-violence", "Guns", "Speeches"] },
+        { q: "The people of Europe learn their lessons from the writings of _____.", a: "Greece and Rome", options: ["India", "Britain", "Greece and Rome", "Germany"] },
+        { q: "Modern civilization is the worship of _____.", a: "The material", options: ["The material", "The spirit", "The art", "The truth"] },
+        { q: "I believe that the civilization India has evolved is not to be _____ in the world.", a: "Beaten", options: ["Copied", "Beaten", "Followed", "Destroyed"] },
+        { q: "Gandhi's autobiography is titled _____.", a: "My Experiments with Truth", options: ["Discovery of India", "My Experiments with Truth", "Hind Swaraj", "Story of My Life"] },
+        { q: "Which civilization is described as 'Immovable'?", a: "Indian", options: ["Roman", "Indian", "Greek", "Egyptian"] },
+        { q: "The more we indulge in our passions, the more _____ they become.", a: "Unbridled", options: ["Controlled", "Unbridled", "Calm", "Limited"] },
+        { q: "Western civilization is based on a belief in _____.", a: "Godlessness", options: ["God", "Godlessness", "Karma", "Rebirth"] },
+        { q: "Our ancestors saw that kings and their swords were inferior to _____.", a: "The Ethics", options: ["Wealth", "The Ethics", "Large Cities", "Machines"] },
+        { q: "Gandhi describes the common people as following their _____ occupation.", a: "Agricultural", options: ["Industrial", "Agricultural", "Trading", "Political"] },
+        { q: "Gandhi says he is no _____ of the West.", a: "Hater", options: ["Friend", "Hater", "Lover", "Follower"] },
+        { q: "Sacrifice is the sole aim of our _____.", a: "Rishis", options: ["Scientists", "Rishis", "Politicians", "Engineers"] },
+        { q: "Wealth and _____ do not make a man happy.", a: "Luxuries", options: ["Education", "Luxuries", "Poverty", "Health"] },
+        { q: "The charge against India is that her people are so _____.", a: "Uncivilized and ignorant", options: ["Uncivilized and ignorant", "Smart", "Hardworking", "Rich"] },
+        { q: "Gandhi was more a _____ leader than a politician.", a: "Spiritual", options: ["Social", "Spiritual", "Religious", "Economic"] },
+        { q: "What is the 'distinctive characteristic' of modern civilization?", a: "Indefinite multiplicity of wants", options: ["Simple living", "Indefinite multiplicity of wants", "Spiritualism", "Moral being"] },
+        { q: "The values of Indian civilization are still _____.", a: "Alive", options: ["Dead", "Alive", "Forgotten", "Changing"] },
+        { q: "Our ancestors used to enjoy 'True _____ Rule'.", a: "Home", options: ["Town", "Home", "Foreign", "City"] },
+        { q: "Civilization is the state of _____ development.", a: "People", options: ["Animal", "People", "Plant", "Bird"] },
+        { q: "Gandhi says 'I am thankful to the West for many things I have learnt from ____.'", a: "Western Literature", options: ["Western Politics", "Western Literature", "Western Food", "Western War"] },
+        { q: "The world's most famous civilizations like Rome and Greece have _____.", a: "Vanished", options: ["Prospered", "Vanished", "Remained the same", "Expanded"] },
+        { q: "Performance of duty and observance of morality are _____ terms.", a: "Convertible", options: ["Opposite", "Convertible", "Difficult", "Irrelevant"] }
+    ]
+},
+
+
+    "ch2": {
+        name: "Bharat is My Home",
+        questions: [
+        { q: "Who wrote the essay 'Indian Civilization and Culture'?", a: "Mahatma Gandhi", options: ["Dr. Zakir Hussain", "Mahatma Gandhi", "M. Malgaonkar", "H.E. Bates"] },
+        { q: "The mind is a restless _____, the more it gets the more it wants.", a: "Bird", options: ["Animal", "Bird", "Human", "Spirit"] },
+        { q: "The Gujarati equivalent for civilization means _____.", a: "Good conduct", options: ["Bad conduct", "Good conduct", "Simple living", "High thinking"] },
+        { q: "Our ancestors disapproved of _____ because they make us slaves.", a: "Luxuries and pleasures", options: ["Hard work", "Luxuries and pleasures", "Simple living", "Politics"] },
+        { q: "European civilization will mean _____ for India if we copy it.", a: "Ruin", options: ["Success", "Ruin", "Development", "Growth"] },
+        { q: "Civilization is that mode of conduct which points out to man the path of _____.", a: "Duty", options: ["Pleasure", "Duty", "Sorrow", "Wealth"] },
+        { q: "Who were the 'Pharaohs'?", a: "Emperors of Egypt", options: ["Rulers of Rome", "Emperors of Egypt", "Kings of Greece", "Sages of India"] },
+        { q: "Gandhi says that 'Happiness is largely a _____ condition.'", a: "Mental", options: ["Physical", "Mental", "Financial", "Social"] },
+        { q: "Our ancestors were satisfied with small _____.", a: "Villages", options: ["Cities", "Villages", "Towns", "Countries"] },
+        { q: "Western civilization has the tendency to privilege _____.", a: "Materiality", options: ["Morality", "Materiality", "Spirituality", "Simplicity"] },
+        { q: "Indian civilization elevates the _____.", a: "Moral being", options: ["Material world", "Physical power", "Moral being", "Intellect"] },
+        { q: "What did our ancestors view large cities as?", a: "Snares and useless encumbrances", options: ["Centers of progress", "Snares and useless encumbrances", "Holy places", "Safe havens"] },
+        { q: "In the words of Gandhi, 'Plain living and _____ thinking'.", a: "High", options: ["Deep", "High", "Simple", "Low"] },
+        { q: "Mahatma Gandhi used _____ as the chief weapons against the British.", a: "Truth and Non-violence", options: ["Swords", "Truth and Non-violence", "Guns", "Speeches"] },
+        { q: "The people of Europe learn their lessons from the writings of _____.", a: "Greece and Rome", options: ["India", "Britain", "Greece and Rome", "Germany"] },
+        { q: "Modern civilization is the worship of _____.", a: "The material", options: ["The material", "The spirit", "The art", "The truth"] },
+        { q: "I believe that the civilization India has evolved is not to be _____ in the world.", a: "Beaten", options: ["Copied", "Beaten", "Followed", "Destroyed"] },
+        { q: "Gandhi's autobiography is titled _____.", a: "My Experiments with Truth", options: ["Discovery of India", "My Experiments with Truth", "Hind Swaraj", "Story of My Life"] },
+        { q: "Which civilization is described as 'Immovable'?", a: "Indian", options: ["Roman", "Indian", "Greek", "Egyptian"] },
+        { q: "The more we indulge in our passions, the more _____ they become.", a: "Unbridled", options: ["Controlled", "Unbridled", "Calm", "Limited"] },
+        { q: "Western civilization is based on a belief in _____.", a: "Godlessness", options: ["God", "Godlessness", "Karma", "Rebirth"] },
+        { q: "Our ancestors saw that kings and their swords were inferior to _____.", a: "The Ethics", options: ["Wealth", "The Ethics", "Large Cities", "Machines"] },
+        { q: "Gandhi describes the common people as following their _____ occupation.", a: "Agricultural", options: ["Industrial", "Agricultural", "Trading", "Political"] },
+        { q: "Gandhi says he is no _____ of the West.", a: "Hater", options: ["Friend", "Hater", "Lover", "Follower"] },
+        { q: "Sacrifice is the sole aim of our _____.", a: "Rishis", options: ["Scientists", "Rishis", "Politicians", "Engineers"] },
+        { q: "Wealth and _____ do not make a man happy.", a: "Luxuries", options: ["Education", "Luxuries", "Poverty", "Health"] },
+        { q: "The charge against India is that her people are so _____.", a: "Uncivilized and ignorant", options: ["Uncivilized and ignorant", "Smart", "Hardworking", "Rich"] },
+        { q: "Gandhi was more a _____ leader than a politician.", a: "Spiritual", options: ["Social", "Spiritual", "Religious", "Economic"] },
+        { q: "What is the 'distinctive characteristic' of modern civilization?", a: "Indefinite multiplicity of wants", options: ["Simple living", "Indefinite multiplicity of wants", "Spiritualism", "Moral being"] },
+        { q: "The values of Indian civilization are still _____.", a: "Alive", options: ["Dead", "Alive", "Forgotten", "Changing"] },
+        { q: "Our ancestors used to enjoy 'True _____ Rule'.", a: "Home", options: ["Town", "Home", "Foreign", "City"] },
+        { q: "Civilization is the state of _____ development.", a: "People", options: ["Animal", "People", "Plant", "Bird"] },
+        { q: "Gandhi says 'I am thankful to the West for many things I have learnt from ____.'", a: "Western Literature", options: ["Western Politics", "Western Literature", "Western Food", "Western War"] },
+        { q: "The world's most famous civilizations like Rome and Greece have _____.", a: "Vanished", options: ["Prospered", "Vanished", "Remained the same", "Expanded"] },
+        { q: "Performance of duty and observance of morality are _____ terms.", a: "Convertible", options: ["Opposite", "Convertible", "Difficult", "Irrelevant"] }
+    ]
+},
+    
+
+  "ch3": {
+    name: "A Pinch of Snuff",
+    questions: [
+        { q: "Who is the author of 'A Pinch of Snuff'?", a: "Manohar Malgaonkar", options: ["Mahatma Gandhi", "Dr. Zakir Hussain", "Manohar Malgaonkar", "H.E. Bates"] },
+        { q: "Nanukaka was the author's _____.", a: "Maternal uncle", options: ["Paternal uncle", "Maternal uncle", "Brother", "Friend"] },
+        { q: "Nanukaka was coming to Delhi to _____.", a: "See some ministers", options: ["Visit the Red Fort", "See some ministers", "Attend a wedding", "Meet his sister"] },
+        { q: "The author was an _____ on probation.", a: "Under Secretary", options: ["Under Secretary", "Officer", "Clerk", "Minister"] },
+        { q: "Nanukaka traveled in the _____ class on a Third class ticket.", a: "Second", options: ["First", "Second", "General", "Sleeper"] },
+        { q: "What was Nanukaka's most striking feature?", a: "His white hair and mustache", options: ["His height", "His white hair and mustache", "His expensive clothes", "His loud voice"] },
+        { q: "Who was the 'Welfare Minister's' son engaged to?", a: "The Princess of Ninnore", options: ["The Princess of Ninnore", "The daughter of Sohanlal", "The author's sister", "A foreign lady"] },
+        { q: "Sohanlal Ratiram was the _____ in Delhi.", a: "Party Boss", options: ["Party Boss", "Minister", "Ambassador", "Business tycoon"] },
+        { q: "Nanukaka wore a huge _____ turban.", a: "Orange", options: ["Red", "Orange", "White", "Blue"] },
+        { q: "Nanukaka took out his _____ and took a pinch of snuff.", a: "Silver snuff-box", options: ["Gold snuff-box", "Silver snuff-box", "Wooden box", "Pocket"] },
+        { q: "To impress Sohanlal, Nanukaka pretended to know _____.", a: "Hajrat Barkat Ali", options: ["The Prime Minister", "Hajrat Barkat Ali", "The King of Nepal", "The Welfare Minister"] },
+        { q: "Who was Hajrat Barkat Ali?", a: "Ambassador", options: ["Ambassador", "Chief Minister", "Railway Official", "Doctor"] },
+        { q: "Nanukaka managed to get a _____ car for his visit to the Minister.", a: "Luxe sports car", options: ["Government jeep", "Luxe sports car", "Private taxi", "Horse carriage"] },
+        { q: "The car was provided by _____.", a: "Sikka Auto Dealers", options: ["Sikka Auto Dealers", "The Ministry", "Sohanlal", "The Author"] },
+        { q: "Nanukaka posed as the _____ of the Maharaja of Ninnore.", a: "Hereditary Astrologer", options: ["Hereditary Astrologer", "Legal Advisor", "Chief Minister", "Old Friend"] },
+        { q: "Ratiram was the son of _____.", a: "Sohanlal Ratiram", options: ["The Welfare Minister", "Sohanlal Ratiram", "Nanukaka", "The Author"] },
+        { q: "What did Nanukaka give the dhobi to reward his 'honesty'?", a: "Two-rupee note", options: ["Five-rupee note", "Two-rupee note", "One-rupee note", "A gold ring"] },
+        { q: "The author's mother was very _____ about Nanukaka's arrival.", a: "Excited", options: ["Angry", "Excited", "Worried", "Indifferent"] },
+        { q: "Nanukaka's linguistic outburst was always in his _____.", a: "Mother tongue", options: ["English", "Mother tongue", "Hindi", "Marathi"] },
+        { q: "The Welfare Minister had a _____ with Sohanlal Ratiram.", a: "Conflict", options: ["Meeting", "Conflict", "Friendship", "Business deal"] },
+        { q: "Nanukaka went to the Welfare Minister's house in the guise of an ____.", a: "Astrologer", options: ["Astrologer", "Doctor", "Wealthy Merchant", "Farmer"] },
+        { q: "Nanukaka wrote a name in the _____ at the Minister's house.", a: "Visitors' book", options: ["Visitors' book", "Diary", "Newspaper", "Secret file"] },
+        { q: "The story 'A Pinch of Snuff' is full of _____.", a: "Wit and adventure", options: ["Tragedy", "Wit and adventure", "Historical facts", "Science"] },
+        { q: "Nanukaka often used to tell _____ to get his work done.", a: "Lies", options: ["Lies", "The truth", "Stories", "Jokes"] },
+        { q: "How many days was Nanukaka supposed to stay?", a: "Two or three days", options: ["A week", "A month", "Two or three days", "One day"] },
+        { q: "Who was the 'Prince' of Ninnore?", a: "The intended groom", options: ["The intended groom", "Nanukaka's friend", "The Minister", "The Author"] },
+        { q: "Nanukaka handed over a _____ to the author at the station.", a: "Basket", options: ["Suitcase", "Basket", "Bag", "Umbrella"] },
+        { q: "What was inside the basket?", a: "A kitten", options: ["Puppy", "A kitten", "Snuff", "Fruits"] },
+        { q: "The author had a very _____ opinion of Nanukaka's schemes.", a: "Doubtful", options: ["Confident", "Doubtful", "Supportive", "Admiring"] },
+        { q: "Nanukaka’s coat was of _____ style.", a: "Jodhpur", options: ["Jodhpur", "Western", "Parsi", "Open"] },
+        { q: "Where did Nanukaka stay during his visit?", a: "At the author's room", options: ["In a hotel", "At the author's room", "At the Minister's house", "At Sohanlal's house"] },
+        { q: "The 'Sikka Auto Dealers' manager was impressed by Nanukaka's _____.", a: "Appearance of wealth", options: ["Appearance of wealth", "Identity card", "Kind words", "Driving skills"] },
+        { q: "Nanukaka's mission was to meet a _____.", a: "Minister", options: ["Minister", "King", "Priest", "Doctor"] },
+        { q: "The tone of Manohar Malgaonkar's writing in this story is _____.", a: "Humorous", options: ["Serious", "Humorous", "Sad", "Fearful"] },
+        { q: "Nanukaka's character shows that he is very _____.", a: "Resourceful", options: ["Lazy", "Resourceful", "Shy", "Honest"] }
+    ]
+},
+
+    "ch4": {
+    name: "I Have a Dream",
+    questions: [
+        { q: "Who delivered the speech 'I Have a Dream'?", a: "Martin Luther King, Jr.", options: ["Mahatma Gandhi", "Martin Luther King, Jr.", "Nelson Mandela", "Abe Lincoln"] },
+        { q: "Where was the 'I Have a Dream' speech delivered?", a: "Lincoln Memorial", options: ["White House", "Lincoln Memorial", "Red Fort", "Buckingham Palace"] },
+        { q: "In which year was the speech delivered?", a: "1963", options: ["1947", "1950", "1963", "1965"] },
+        { q: "Martin Luther King, Jr. was a great _____", a: "Orator", options: ["Scientist", "Orator", "Doctor", "Businessman"] },
+        { q: "The speech was delivered during the 'March on _____'?", a: "Washington", options: ["New York", "Washington", "Chicago", "London"] },
+        { q: "King says that 100 years later, the Negro is still not ____.", a: "Free", options: ["Rich", "Free", "Poor", "Educated"] },
+        { q: "The Emancipation Proclamation gave the Negro ____.", a: "Freedom from slavery", options: ["Money", "Freedom from slavery", "Government jobs", "Land"] },
+        { q: "How many years ago was the Emancipation Proclamation signed?", a: "100 years", options: ["50 years", "100 years", "200 years", "150 years"] },
+        { q: "The Negro lives on a lonely island of _____.", a: "Poverty", options: ["Wealth", "Poverty", "Sorrow", "Joy"] },
+        { q: "King describes the 'bad check' as a promise of ____.", a: "Justice", options: ["Money", "Justice", "Food", "Power"] },
+        { q: "What is the 'promissory note' that King mentions?", a: "The Constitution and Declaration of Independence", options: ["A bank check", "The Constitution and Declaration of Independence", "A personal letter", "A law book"] },
+        { q: "King demands the 'riches of freedom' and the 'security of ____'.", a: "Justice", options: ["Food", "Money", "Justice", "Life"] },
+        { q: "Martin Luther King, Jr. belongs to which country?", a: "USA", options: ["India", "Britain", "USA", "Africa"] },
+        { q: "King warns that there will be no rest until the Negro is granted ____.", a: "Citizenship rights", options: ["Money", "Citizenship rights", "Special status", "Free land"] },
+        { q: "We must not allow our creative protest to degenerate into ____.", a: "Physical violence", options: ["Physical violence", "Arguments", "Songs", "Silence"] },
+        { q: "King wants his children to be judged by the 'content of their ____'.", a: "Character", options: ["Skin color", "Character", "Wealth", "Education"] },
+        { q: "Which state of the USA does King describe as 'sweltering with the heat of injustice'?", a: "Mississippi", options: ["California", "Mississippi", "New York", "Texas"] },
+        { q: "King had ____ children.", a: "4", options: ["2", "3", "4", "5"] },
+        { q: "Which state did King want to see as a state where little black boys and girls will join hands with little white boys and girls?", a: "Alabama", options: ["Alabama", "Georgia", "Florida", "Virginia"] },
+        { q: "King says, 'Let _____ ring'.", a: "Freedom", options: ["The bell", "Freedom", "Truth", "Peace"] },
+        { q: "Martin Luther King, Jr. was influenced by which Indian leader?", a: "Mahatma Gandhi", options: ["Pt. Nehru", "Mahatma Gandhi", "Subhash Chandra Bose", "Sardar Patel"] },
+        { q: "King was assassinated in ____.", a: "1968", options: ["1963", "1965", "1968", "1970"] },
+        { q: "Martin Luther King, Jr. won the Nobel Peace Prize in ____.", a: "1964", options: ["1962", "1963", "1964", "1965"] },
+        { q: "The 'bank of justice' according to King is ____.", a: "Bankrupt", options: ["Full", "Bankrupt", "Closed", "Open"] },
+        { q: "What did the Negro realize during the struggle?", a: "That their freedom is tied to the white man's freedom", options: ["That they are superior", "That their freedom is tied to the white man's freedom", "That they must leave the country", "That they must fight with guns"] },
+        { q: "We must walk ____.", a: "Ahead", options: ["Backwards", "Alone", "Ahead", "Slowly"] },
+        { q: "We cannot be satisfied as long as the Negro's basic mobility is from a smaller _____ to a larger one.", a: "Ghetto", options: ["Village", "Ghetto", "City", "School"] },
+        { q: "Let us not wallow in the valley of ____.", a: "Despair", options: ["Money", "Despair", "Happiness", "Wealth"] },
+        { q: "The word 'momentous' means ____.", a: "Very important", options: ["Useless", "Very important", "Small", "Dangerous"] },
+        { q: "The phrase 'Let freedom ring from Stone Mountain of ____'.", a: "Georgia", options: ["Colorado", "Georgia", "California", "Tennessee"] },
+        { q: "King's dream is that 'every valley shall be ____'.", a: "Exalted", options: ["Filled", "Exalted", "Deepened", "Destroyed"] },
+        { q: "The condition of the Negro was ____.", a: "Appalling", options: ["Good", "Appalling", "Rich", "Happy"] },
+        { q: "Negroes are the former ____ of America.", a: "Slaves", options: ["Kings", "Slaves", "Masters", "Visitors"] },
+        { q: "King's style of speech is called ____.", a: "Biblical/Prophetic", options: ["Scientific", "Biblical/Prophetic", "Simple", "Lazy"] },
+        { q: "By the 'Content of their Character', King meant ____.", a: "Inner qualities", options: ["Bank balance", "Inner qualities", "Appearance", "Race"] }
+    ]
+},
+
+   "ch5": {
+    name: "Ideas that have Helped Mankind",
+    questions: [
+        { q: "Who is the author of 'Ideas that have Helped Mankind'?", a: "Bertrand Russell", options: ["Martin Luther King, Jr.", "Bertrand Russell", "Shiga Naoya", "Germaine Greer"] },
+        { q: "Bertrand Russell was a philosopher, historian, and _____.", a: "Mathematician", options: ["Doctor", "Mathematician", "Scientist", "Politician"] },
+        { q: "In what year was Bertrand Russell awarded the Nobel Prize in Literature?", a: "1950", options: ["1948", "1950", "1952", "1954"] },
+        { q: "According to Russell, what was the first most important thing that helped mankind?", a: "Increase in numbers", options: ["Invention of fire", "Increase in numbers", "Language", "Agriculture"] },
+        { q: "Russell states that human beings suffer more than animals due to their _____.", a: "Intelligence", options: ["Physical weakness", "Intelligence", "Lack of food", "Fear"] },
+        { q: "In the prehistoric age, what was the biggest problem for humans?", a: "Survival and food", options: ["Education", "Survival and food", "Politics", "War"] },
+        { q: "Which of the following was an idea that helped mankind in prehistoric times?", a: "The utilization of fire", options: ["The utilization of fire", "The internet", "Printing press", "Electricity"] },
+        { q: "What helped humans protect themselves from wild animals?", a: "The discovery of fire", options: ["Language", "The discovery of fire", "Clothing", "Agriculture"] },
+        { q: "Russell notes that birds die of hunger in large numbers during _____.", a: "Winter", options: ["Summer", "Winter", "Rainy season", "Spring"] },
+        { q: "Unlike animals, humans can pass on their _____ to the next generation.", a: "Knowledge and experience", options: ["Physical strength", "Knowledge and experience", "Biological traits", "Hunger"] },
+        { q: "The invention of _____ was a major milestone in human history.", a: "Language", options: ["Television", "Language", "Radio", "Telephone"] },
+        { q: "According to Russell, civilization is a state of _____ development.", a: "Social", options: ["Physical", "Social", "Biological", "Atomic"] },
+        { q: "The domestication of _____ was another step toward civilization.", a: "Animals", options: ["Birds", "Animals", "Insects", "Trees"] },
+        { q: "Russell believes that _____ has made us more friendly towards each other.", a: "Civilization", options: ["War", "Civilization", "Hunger", "Solitude"] },
+        { q: "Our emotions are still largely similar to those of our _____ ancestors.", a: "Savage", options: ["Civilized", "Savage", "Modern", "Educated"] },
+        { q: "Which of the following ideas helped mankind technically?", a: "Invention of the wheel", options: ["Invention of the wheel", "Feeling of love", "Religious faith", "Poetry"] },
+        { q: "The two broad categories of ideas that helped mankind are Knowledge/Technique and _____.", a: "Moral/Politics", options: ["Money/Gold", "Moral/Politics", "Art/Music", "War/Peace"] },
+        { q: "In ancient times, humans sometimes practiced _____ to ensure a good harvest.", a: "Human sacrifice", options: ["Dancing", "Human sacrifice", "Singing", "Fasting"] },
+        { q: "The development of _____ made it possible to store knowledge.", a: "Writing", options: ["Speaking", "Writing", "Cooking", "Hunting"] },
+        { q: "According to Russell, the _____ was a turning point in agriculture.", a: "Plough", options: ["Sword", "Plough", "Spear", "Axe"] },
+        { q: "One of the earliest domestication successes was the _____.", a: "Dog", options: ["Lion", "Dog", "Tiger", "Snake"] },
+        { q: "Bertrand Russell was a citizen of which country?", a: "Britain", options: ["USA", "Britain", "Germany", "France"] },
+        { q: "The 'taming of fire' was primarily used for _____.", a: "Cooking", options: ["Cooking", "Travel", "Building houses", "Clothing"] },
+        { q: "Russell argues that we are less _____ than our ancestors.", a: "Cruel", options: ["Cruel", "Smart", "Healthy", "Active"] },
+        { q: "The cultivation of _____ began a settled life for humans.", a: "Grain", options: ["Flowers", "Grain", "Trees", "Grass"] },
+        { q: "Man's _____ is what distinguishes him from the rest of the animal kingdom.", a: "Forethought", options: ["Strength", "Forethought", "Speed", "Eyesight"] },
+        { q: "Language grew very _____.", a: "Slowly", options: ["Fast", "Slowly", "Overnight", "Easily"] },
+        { q: "Russell says that 'the variety of our _____ is what makes us human'.", a: "Enjoyments", options: ["Suffering", "Enjoyments", "Eating habits", "Running"] },
+        { q: "Which of these is NOT a moral idea mentioned by Russell?", a: "Nuclear weapons", options: ["Law", "Nuclear weapons", "Government", "Freedom"] },
+        { q: "Agriculture led to the growth of _____.", a: "Populations", options: ["Forests", "Populations", "Icebergs", "Wildlife"] },
+        { q: "Early humans were often afraid of _____.", a: "Natural phenomena", options: ["Themselves", "Natural phenomena", "Computers", "Books"] },
+        { q: "Mathematics and Science are part of the category of _____.", a: "Knowledge and Technique", options: ["Moral ideas", "Knowledge and Technique", "Political ideas", "Superstitions"] },
+        { q: "What made humans more secure than animals?", a: "Intellectual ability", options: ["Intellectual ability", "Physical size", "Fast running", "Sharp teeth"] },
+        { q: "Russell's tone in this essay is _____.", a: "Analytical", options: ["Emotional", "Analytical", "Angry", "Fearful"] },
+        { q: "The progress of mankind has been _____.", a: "Long and difficult", options: ["Short and easy", "Long and difficult", "Instant", "Accidental"] }
+    ]
+},
+     
+"ch6": {
+    name: "The Artist",
+    questions: [
+        { q: "Who is the author of the short story 'The Artist'?", a: "Shiga Naoya", options: ["Bertrand Russell", "Shiga Naoya", "Anton Chekhov", "Guy de Maupassant"] },
+        { q: "What was Seibei's age?", a: "12 years old", options: ["10 years old", "12 years old", "14 years old", "15 years old"] },
+        { q: "Which school did Seibei attend?", a: "Primary school", options: ["Middle school", "High school", "Primary school", "University"] },
+        { q: "What was Seibei's hobby?", a: "Collecting gourds", options: ["Painting", "Collecting gourds", "Singing", "Playing football"] },
+        { q: "How did Seibei treat the gourds after buying them?", a: "He polished them with tea-leaves", options: ["He painted them", "He polished them with tea-leaves", "He ate them", "He sold them immediately"] },
+        { q: "Seibei lived in a _____.", a: "Harbor town", options: ["Village", "Harbor town", "Mountain city", "Desert"] },
+        { q: "One day Seibei bought a five-inch gourd from an old woman for _____.", a: "Ten sen", options: ["Five sen", "Ten sen", "Fifty sen", "One yen"] },
+        { q: "What did Seibei do to get rid of the unpleasant smell of the gourds?", a: "Used sake and tea-leaves", options: ["Used sake and tea-leaves", "Used perfume", "Washed them with soap", "Buried them in sand"] },
+        { q: "Which teacher caught Seibei polishing a gourd in class?", a: "Ethics teacher", options: ["Math teacher", "Ethics teacher", "History teacher", "Science teacher"] },
+        { q: "The Ethics teacher was particularly angry because he was a fan of _____.", a: "Bushido", options: ["Bushido", "Modern art", "Music", "Literature"] },
+        { q: "The teacher confiscated the gourd and gave it to the _____.", a: "Porter", options: ["Principal", "Porter", "Seibei's father", "Police"] },
+        { q: "What did Seibei's father do when he heard about the incident?", a: "He smashed Seibei's gourds with a hammer", options: ["He bought him more gourds", "He smashed Seibei's gourds with a hammer", "He scolded the teacher", "He laughed at the story"] },
+        { q: "What was the Porter's reaction when he realized the gourd's value?", a: "He sold it to a curio-dealer", options: ["He threw it away", "He sold it to a curio-dealer", "He gave it back to Seibei", "He kept it for his children"] },
+        { q: "How much did the curio-dealer pay the Porter for the gourd?", a: "Fifty yen", options: ["Five yen", "Ten yen", "Fifty yen", "Six hundred yen"] },
+        { q: "How much did the curio-dealer eventually sell the gourd for to a wealthy family?", a: "Six hundred yen", options: ["One hundred yen", "Six hundred yen", "Fifty yen", "Ten yen"] },
+        { q: "Seibei is now engrossed in _____.", a: "Painting pictures", options: ["Painting pictures", "Woodwork", "Singing", "Gardening"] },
+        { q: "Seibei's father began to scold him even for his new hobby of _____.", a: "Painting", options: ["Singing", "Painting", "Studying", "Running"] },
+        { q: "The story highlights the clash between _____ and talent.", a: "Traditional education", options: ["Traditional education", "Wealth", "Poverty", "Nature"] },
+        { q: "What kind of gourds did Seibei usually like?", a: "Symmetrical and ordinary", options: ["Fancy and long", "Symmetrical and ordinary", "Strange and twisted", "Large and heavy"] },
+        { q: "An old man once mocked Seibei's gourd, saying it was _____.", a: "Just a clumsy thing", options: ["A masterpiece", "Just a clumsy thing", "Too expensive", "Very beautiful"] },
+        { q: "Shiga Naoya is a famous _____ short story writer.", a: "Japanese", options: ["Chinese", "Japanese", "Korean", "Indian"] },
+        { q: "Where did Seibei find the most interesting gourds?", a: "At the curio-shops", options: ["In the forest", "At the curio-shops", "At the supermarket", "At the beach"] },
+        { q: "The teacher thought that Seibei's hobby was _____.", a: "Effeminate", options: ["Noble", "Effeminate", "Useful", "Expensive"] },
+        { q: "The Porter at Seibei's school was an _____ man.", a: "Old", options: ["Young", "Old", "Angry", "Unkind"] },
+        { q: "The gourd that was sold for 600 yen was originally bought by Seibei for _____.", a: "10 sen", options: ["10 sen", "50 sen", "1 yen", "5 yen"] },
+        { q: "What happened to Seibei's artistic spirit in the end?", a: "It moved from gourds to painting", options: ["It died out", "It moved from gourds to painting", "He became a teacher", "He became a businessman"] },
+        { q: "Seibei's father was a _____ by profession.", a: "Carpenter", options: ["Farmer", "Carpenter", "Merchant", "Doctor"] },
+        { q: "The teacher's visit to Seibei's house made his mother _____.", a: "Cry in fear", options: ["Happy", "Cry in fear", "Angry at the teacher", "Proud"] },
+        { q: "How did the teacher feel about 'individual' tastes?", a: "He disliked them", options: ["He encouraged them", "He disliked them", "He ignored them", "He loved them"] },
+        { q: "Seibei's father believed that boys should _____.", a: "Study hard", options: ["Study hard", "Play all day", "Collect gourds", "Sleep more"] },
+        { q: "The word 'Curio-dealer' refers to a person who deals in _____.", a: "Rare and antique items", options: ["Groceries", "Rare and antique items", "Electronic goods", "Medicines"] },
+        { q: "Which part of the gourd did Seibei cut off first?", a: "The top", options: ["The bottom", "The top", "The side", "The middle"] },
+        { q: "The story takes place in which country?", a: "Japan", options: ["China", "India", "Japan", "USA"] },
+        { q: "The author shows that parents often _____ their children's talent.", a: "Suppress", options: ["Nurture", "Suppress", "Understand", "Celebrate"] },
+        { q: "In the end, who was the only person who did not profit from the gourd?", a: "Seibei", options: ["The Porter", "The curio-dealer", "Seibei", "The old woman"] }
+    ]
+},
+      
+
+    "ch2": {
+    name: "A Child is Born",
+    questions: [
+        { q: "Who is the author of 'A Child is Born'?", a: "Germaine Greer", options: ["Shiga Naoya", "Germaine Greer", "Dorothy L. Sayers", "H.E. Bates"] },
+        { q: "Germaine Greer is a famous _____ writer.", a: "Feminist", options: ["Educational", "Scientific", "Feminist", "Historical"] },
+        { q: "In traditional societies, a pregnant woman is primarily supported by _____.", a: "The whole family", options: ["Only her husband", "The whole family", "The government", "The hospital"] },
+        { q: "In traditional societies, childbirth is a _____ event.", a: "Family/Social", options: ["Private", "Family/Social", "Religious", "Political"] },
+        { q: "The author discusses the differences between the East and the _____.", a: "West", options: ["North", "South", "West", "Middle East"] },
+        { q: "In many traditional societies, a woman goes to stay with her _____ during pregnancy.", a: "Mother", options: ["Mother", "Sister", "Friend", "In-laws"] },
+        { q: "According to the text, the naming ceremony of a child is very _____.", a: "Important", options: ["Useless", "Important", "Quiet", "Sad"] },
+        { q: "In Sylheti culture, a woman goes to her _____ house for the last months of pregnancy.", a: "Mother's", options: ["Father's", "Mother's", "Friend's", "Husband's"] },
+        { q: "What is the primary reward for a pregnant woman in a traditional society?", a: "Sense of security and belonging", options: ["Money", "Sense of security and belonging", "Gifts", "Freedom"] },
+        { q: "In the West, pregnancy is often treated as a _____ condition.", a: "Medical", options: ["Social", "Medical", "Religious", "Festive"] },
+        { q: "In traditional births, the presence of _____ helps reduce the mother's anxiety.", a: "Experienced kinswomen", options: ["Doctors", "Experienced kinswomen", "Strict nurses", "Male relatives"] },
+        { q: "A 'Sylheti' woman mentioned in the chapter belongs to which region?", a: "Bangladesh", options: ["India", "Bangladesh", "Pakistan", "Nepal"] },
+        { q: "The author suggests that Western technology has made childbirth _____.", options: ["Easier and happier", "More mechanical and lonely", "Cheaper", "Less safe"], a: "More mechanical and lonely" },
+        { q: "In many cultures, a woman is not truly accepted into her husband's family until _____.", a: "She gives birth to a child", options: ["She gets married", "She gives birth to a child", "She cooks well", "She earns money"] },
+        { q: "According to Greer, modern hospitals often ignore the _____ needs of the mother.", a: "Emotional", options: ["Physical", "Financial", "Emotional", "Medicinal"] },
+        { q: "The ceremony of 'Rupthoke' is mentioned in the context of _____.", a: "Naming and dressing the child", options: ["Marriage", "Naming and dressing the child", "Education", "Death"] },
+        { q: "In traditional societies, the burden of child-rearing is _____.", a: "Shared", options: ["Only on the mother", "Shared", "On the state", "On the school"] },
+        { q: "Which book is Germaine Greer most famous for?", a: "The Female Eunuch", options: ["The Female Eunuch", "The Artist", "A Pinch of Snuff", "Hind Swaraj"] },
+        { q: "What happens to the mother after the naming ceremony in traditional Bengali culture?", a: "She receives new clothes", options: ["She is ignored", "She receives new clothes", "She starts working immediately", "She goes to the hospital"] },
+        { q: "The author argues that Western mothers often suffer from _____.", a: "Post-partum depression/loneliness", options: ["Too much family help", "Post-partum depression/loneliness", "Lack of medicine", "Over-eating"] },
+        { q: "In traditional societies, the child is rarely left _____.", a: "Alone", options: ["With family", "Alone", "With the mother", "In the cradle"] },
+        { q: "Germaine Greer was born in _____.", a: "Australia", options: ["India", "UK", "Australia", "USA"] },
+        { q: "The 'inter-generational' support system is strongest in _____.", a: "Traditional societies", options: ["Western societies", "Traditional societies", "Big cities", "Modern hospitals"] },
+        { q: "The author criticizes the 'clumsy' intervention of _____ in natural processes.", a: "Western medicine", options: ["Western medicine", "Grandmothers", "Midwives", "Nature"] },
+        { q: "In the chapter, a woman’s status rises after she becomes a _____.", a: "Mother", options: ["Wife", "Mother", "Worker", "Student"] },
+        { q: "Many traditional societies believe that pregnancy is a _____ time.", a: "Taboo-filled and ritualistic", options: ["Normal", "Taboo-filled and ritualistic", "Dangerous", "Boring"] },
+        { q: "The child's birth is celebrated with _____ in traditional families.", a: "Music and singing", options: ["Silence", "Music and singing", "Fasting", "Sleep"] },
+        { q: "Who is the 'Chief Guest' at the naming ceremony in the example given?", a: "The newborn baby", options: ["The father", "The newborn baby", "The doctor", "The priest"] },
+        { q: "Western society emphasizes _____ over collective support.", a: "Individualism", options: ["Individualism", "Family", "Community", "Religion"] },
+        { q: "The author notes that in the West, the husband's presence is often _____.", a: "Mandatory but awkward", options: ["Mandatory but awkward", "Not allowed", "Useless", "The only help"] },
+        { q: "Greer's essay is an extract from her book _____.", a: "Sex and Destiny", options: ["Sex and Destiny", "The Change", "The Whole Woman", "Daddy"] },
+        { q: "Traditional midwives are often called _____ in local dialects.", a: "Dais", options: ["Dais", "Nurses", "Sisters", "Doctors"] },
+        { q: "The essay focuses on the _____ of childbirth.", a: "Anthropology/Culture", options: ["Biology", "Anthropology/Culture", "Surgery", "Economics"] },
+        { q: "Greer believes that 'modernity' is not always _____.", a: "Progress", options: ["Progress", "Expensive", "Fast", "Scientific"] },
+        { q: "The tone of this chapter is _____.", a: "Critical and Observational", options: ["Humorous", "Critical and Observational", "Sad", "Fearful"] }
+    ]
+},
+
+
+"ch8": {
+    name: "How Free is the Press",
+    questions: [
+        { q: "Who is the author of 'How Free is the Press'?", a: "Dorothy L. Sayers", options: ["Germaine Greer", "Dorothy L. Sayers", "H.E. Bates", "Bertrand Russell"] },
+        { q: "The freedom of the press is a _____ feature of a free society.", a: "Necessary", options: ["Useless", "Necessary", "Dangerous", "Temporary"] },
+        { q: "According to Sayers, the press is free in a _____ sense.", a: "Technical and legal", options: ["Moral", "Technical and legal", "Absolute", "Financial"] },
+        { q: "The author argues that the press is often 'shackled' by _____.", a: "Advertisers and owners", options: ["The Government", "Advertisers and owners", "The Police", "Common people"] },
+        { q: "The two chief factors that control the press are Advertisers and _____.", a: "The Wealthy Owners", options: ["The Editors", "The Wealthy Owners", "The Reporters", "The Readers"] },
+        { q: "What is the 'first and most obvious' way the press misleads the public?", a: "Sensational headlines", options: ["Long articles", "Sensational headlines", "True stories", "Scientific data"] },
+        { q: "The author mentions that 'Garbling' is a way of _____.", a: "Distorting the truth", options: ["Printing news", "Distorting the truth", "Helping the public", "Writing poetry"] },
+        { q: "A newspaper's first duty is to _____.", a: "Its proprietors", options: ["The truth", "Its proprietors", "The nation", "The poor"] },
+        { q: "The press can make or break a _____.", a: "Reputation", options: ["Building", "Reputation", "Machine", "Forest"] },
+        { q: "Which of the following is a method of press distortion mentioned by Sayers?", a: "Suppression of context", options: ["Sharing full videos", "Suppression of context", "Giving balanced views", "Honest interviewing"] },
+        { q: "Dorothy L. Sayers was a famous _____ writer.", a: "British", options: ["American", "British", "Indian", "Japanese"] },
+        { q: "The author states that the press often treats the public as _____.", a: "Half-wits", options: ["Geniuses", "Half-wits", "Partners", "Experts"] },
+        { q: "When a newspaper misrepresents a speech, it is called _____.", a: "Misquotation", options: ["Education", "Misquotation", "Illustration", "Inspiration"] },
+        { q: "The author provides personal examples of how the press _____ her.", a: "Misreported", options: ["Helped", "Misreported", "Ignored", "Rewarded"] },
+        { q: "In 'How Free is the Press', the author focuses on the press of _____.", a: "Britain", options: ["India", "Britain", "USA", "France"] },
+        { q: "What does the press do when it finds a small error in a speech?", a: "Magnifies it out of proportion", options: ["Corrects it quietly", "Magnifies it out of proportion", "Ignores it", "Applauds the speaker"] },
+        { q: "The freedom of the press is restricted during _____.", a: "War", options: ["Festivals", "War", "Elections", "Summer"] },
+        { q: "A large part of a newspaper's revenue comes from _____.", a: "Advertisements", options: ["Sales", "Advertisements", "Government grants", "Donations"] },
+        { q: "What is 'Flat Suppression'?", a: "Not printing a story at all", options: ["Printing it clearly", "Not printing a story at all", "Printing it on the last page", "Printing it in bold"] },
+        { q: "The 'Mirror of Public Opinion' is often _____.", a: "Cracked or distorted", options: ["Crystal clear", "Cracked or distorted", "Pure", "Enormous"] },
+        { q: "Sayers argues that the press creates a 'False _____'.", a: "Emphasis", options: ["Story", "Emphasis", "Identity", "Hope"] },
+        { q: "The editorial policy of a popular daily is controlled by _____.", a: "The Chief Proprietor", options: ["The Public", "The Chief Proprietor", "The Government", "The Junior Staff"] },
+        { q: "Misleading 'Scare-headlines' are used to _____.", a: "Sell more papers", options: ["Educate people", "Sell more papers", "Promote peace", "Lower the price"] },
+        { q: "The press has the power to keep the public in _____.", a: "Ignorance", options: ["Light", "Ignorance", "Wealth", "Safety"] },
+        { q: "Dorothy L. Sayers was also a well-known writer of _____.", a: "Detective fiction", options: ["Science fiction", "Detective fiction", "Horror", "Children's books"] },
+        { q: "The 'Unreliable' nature of the press is a threat to _____.", a: "Democracy", options: ["Monarchy", "Democracy", "Dictatorship", "Anarchy"] },
+        { q: "The author suggests that readers should be more _____.", a: "Critical", options: ["Trusting", "Critical", "Angry", "Passive"] },
+        { q: "When a reporter adds his own 'flavor' to a story, it is called _____.", a: "Inaccurate reporting", options: ["Honest work", "Inaccurate reporting", "Scientific research", "Creative writing"] },
+        { q: "The press can 'manufacture' a _____.", a: "Public demand", options: ["Product", "Public demand", "New island", "Car"] },
+        { q: "Sayers believes the press is more powerful than _____.", a: "The Parliament", options: ["The Parliament", "The Army", "Nature", "The Sun"] },
+        { q: "What happens to the letters sent to the editor that disagree with the paper’s policy?", a: "They are often ignored or suppressed", options: ["They are always printed", "They are often ignored or suppressed", "They are rewarded", "They are sent to the police"] },
+        { q: "The word 'Censorship' usually refers to control by _____.", a: "The Government", options: ["The Public", "The Government", "Children", "Teachers"] },
+        { q: "The press often resorts to 'Miraculous _____'.", a: "Intervention", options: ["Intervention", "Invention", "Cooperation", "Education"] },
+        { q: "The tone of this essay is _____.", a: "Skeptical and Warning", options: ["Happy", "Skeptical and Warning", "Religious", "Lazy"] },
+        { q: "Ultimately, the press survives on the _____ of the readers.", a: "Credulity/Trust", options: ["Money", "Credulity/Trust", "Anger", "Hatred"] }
+    ]
+},
+
+
+   "ch9": {
+    name: "The Earth",
+    questions: [
+        { q: "Who is the author of the story 'The Earth'?", a: "H.E. Bates", options: ["H.E. Bates", "Dorothy L. Sayers", "Germaine Greer", "Anton Chekhov"] },
+        { q: "Who was the central character of the story?", a: "Benjy", options: ["Johnson", "Benjy", "Sanders", "Florence"] },
+        { q: "What was the name of Benjy's father?", a: "Johnson", options: ["Sanders", "Johnson", "Smith", "Brown"] },
+        { q: "What kind of a person was Johnson?", a: "A tenant farmer and preacher", options: ["A rich businessman", "A tenant farmer and preacher", "A doctor", "A lawyer"] },
+        { q: "Benjy was a _____ boy in his childhood.", a: "Simple-minded", options: ["Very clever", "Simple-minded", "Angry", "Naughty"] },
+        { q: "The doctor advised Benjy's parents to give him _____.", a: "Some work", options: ["Medicine", "Some work", "Rest", "Books"] },
+        { q: "What business did Benjy start first?", a: "Keeping hens", options: ["Growing vegetables", "Keeping hens", "Selling milk", "Trading land"] },
+        { q: "How many hens did Benjy start with?", a: "About a dozen", options: ["Five", "About a dozen", "Fifty", "One hundred"] },
+        { q: "Benjy's parents put his earnings into a _____.", a: "Passbook", options: ["Locked box", "Passbook", "Business", "Friend's hand"] },
+        { q: "Who was the landlord of the land Johnson farmed?", a: "Sanders", options: ["Whitmore", "Sanders", "Benjy", "The Government"] },
+        { q: "At what age was Benjy handed his passbook?", a: "21", options: ["18", "21", "25", "30"] },
+        { q: "When Benjy got the money, what did he buy first?", a: "Land", options: ["A car", "Land", "More hens", "A new house"] },
+        { q: "What was the name of the girl who worked in Benjy's poultry farm?", a: "Florence", options: ["Mary", "Florence", "Anne", "Lucy"] },
+        { q: "What did Benjy's parents think of Florence?", a: "They did not like her", options: ["They loved her", "They did not like her", "They were indifferent", "They wanted her to leave"] },
+        { q: "Whom did Benjy marry against his parents' wishes?", a: "Florence", options: ["A rich girl", "Florence", "His cousin", "A girl from the city"] },
+        { q: "As Benjy grew older, he became very _____.", a: "Cunning and selfish", options: ["Kind and generous", "Cunning and selfish", "Religious", "Lazy"] },
+        { q: "Benjy eventually bought the land from _____.", a: "Sanders", options: ["Whitmore", "Sanders", "His father", "The bank"] },
+        { q: "What happened to Benjy's parents in the end?", a: "He drove them out of the house", options: ["He took care of them", "He drove them out of the house", "They died of old age", "They moved to the city"] },
+        { q: "Where did Benjy leave his parents?", a: "In the town on a pavement", options: ["At a relative's house", "In the town on a pavement", "In a hospital", "In a new cottage"] },
+        { q: "The story 'The Earth' takes place in _____.", a: "The English countryside", options: ["India", "The English countryside", "America", "Japan"] },
+        { q: "Johnson believed that his poverty was due to _____.", a: "Bad luck and fate", options: ["Laziness", "Bad luck and fate", "High taxes", "Large family"] },
+        { q: "Benjy's eyes were _____.", a: "Blue and simple", options: ["Black and angry", "Blue and simple", "Green and sharp", "Brown and warm"] },
+        { q: "For many years, Benjy's father had been a _____.", a: "Local preacher", options: ["Teacher", "Local preacher", "Carpenter", "Soldier"] },
+        { q: "What was the occupation of H.E. Bates?", a: "Short story writer/Novelist", options: ["Scientist", "Short story writer/Novelist", "Politician", "Musician"] },
+        { q: "The Johnsons had lived on the land for _____.", a: "Forty years", options: ["Ten years", "Forty years", "One hundred years", "Five years"] },
+        { q: "Florence had _____.", a: "Thick lips and unrefined looks", options: ["Great beauty", "Thick lips and unrefined looks", "A very loud voice", "Golden hair"] },
+        { q: "Benjy understood the _____ of a hen better than anything else.", a: "Economy", options: ["Anatomy", "Economy", "Flying", "Colors"] },
+        { q: "The passbook contained the savings of _____.", a: "Fifteen years", options: ["Two years", "Fifteen years", "Five years", "Twenty years"] },
+        { q: "When Benjy's father gave him the passbook, Benjy _____.", a: "Didn't thank him", options: ["Cried with joy", "Didn't thank him", "Gave it back", "Bought a gift"] },
+        { q: "Benjy's parents thought he was _____.", a: "Not quite right in the head", options: ["A genius", "Not quite right in the head", "A great artist", "Very lazy"] },
+        { q: "What did Benjy use to drive his parents into town?", a: "A Ford van", options: ["A horse cart", "A Ford van", "A luxury car", "A bicycle"] },
+        { q: "The story shows that Benjy’s simplicity was _____.", a: "Deceptive", options: ["Real", "Deceptive", "Temporary", "Genetic"] },
+        { q: "Which of these traits best describes Benjy?", a: "Practical and ruthless", options: ["Dreamer", "Practical and ruthless", "Emotional", "Spiritual"] },
+        { q: "The tone of H.E. Bates in this story is _____.", a: "Realistic and ironic", options: ["Romantic", "Realistic and ironic", "Comedic", "Supernatural"] },
+        { q: "What did Benjy’s parents have left at the end of the story?", a: "Nothing", options: ["Their hens", "The land", "Nothing", "The Ford van"] }
+    ]
+},
+
+    "ch10": {
+    name: "India Through a Traveller's Eye",
+    questions: [
+        { q: "Who is the author of 'India Through a Traveller's Eye'?", a: "Pearl S. Buck", options: ["H.E. Bates", "Pearl S. Buck", "Germaine Greer", "Bertrand Russell"] },
+        { q: "Pearl S. Buck was born in America but raised in _____.", a: "China", options: ["India", "China", "England", "Japan"] },
+        { q: "In which year did Pearl S. Buck win the Nobel Prize for Literature?", a: "1938", options: ["1930", "1938", "1945", "1950"] },
+        { q: "What was the main purpose of Pearl S. Buck's visit to India?", a: "To meet the young intellectuals and peasants", options: ["To see the Taj Mahal", "To meet the young intellectuals and peasants", "To study Indian music", "To join the army"] },
+        { q: "According to the author, what is the 'common quality' of all Indians?", a: "Religiousness", options: ["Poverty", "Religiousness", "Anger", "Pride"] },
+        { q: "Pearl S. Buck says that India has always been a part of the _____ of her life.", a: "Background", options: ["Background", "Future", "End", "Business"] },
+        { q: "The author found the young Indian intellectuals to be _____.", a: "Restless and embittered", options: ["Happy and satisfied", "Restless and embittered", "Lazy", "Uneducated"] },
+        { q: "The intellectuals were unhappy because they were living under _____.", a: "British rule", options: ["Poverty", "British rule", "Internal war", "Lack of food"] },
+        { q: "Pearl S. Buck was impressed by the _____ of the Indian peasants.", a: "Innate culture", options: ["Modernity", "Innate culture", "Wealth", "Ignorance"] },
+        { q: "The author compares the Indian villages to the villages of _____.", a: "China", options: ["China", "America", "Europe", "Africa"] },
+        { q: "Who according to the author held the real power of the leadership in India?", a: "Mahatma Gandhi", options: ["The British", "Mahatma Gandhi", "The Princes", "The Soldiers"] },
+        { q: "Gandhi's hold on his people was through his _____.", a: "Moral character", options: ["Wealth", "Moral character", "Military power", "Political cunning"] },
+        { q: "The author stayed in a house where the food was served on _____.", a: "Green banana leaves", options: ["Silver plates", "Green banana leaves", "Plastic trays", "Wooden boards"] },
+        { q: "What was the religion of the family the author stayed with?", a: "Hindu", options: ["Christian", "Hindu", "Muslim", "Sikh"] },
+        { q: "According to the author, the life span in India at that time was only _____.", a: "Twenty-seven years", options: ["Twenty-seven years", "Fifty years", "Forty years", "Thirty-five years"] },
+        { q: "The author observed that Indians were very _____ about their cleanliness.", a: "Scrupulous", options: ["Careless", "Scrupulous", "Indifferent", "Lazy"] },
+        { q: "Pearl S. Buck noticed that the Indian people were deeply _____.", a: "Religious", options: ["Atheistic", "Religious", "Secular", "Confused"] },
+        { q: "The color of the skin of Indians, according to Buck, varies from _____.", a: "Golden to deep brown", options: ["Golden to deep brown", "White to red", "Yellow to black", "Pale to pink"] },
+        { q: "The 'real' India is found in its _____.", a: "Villages", options: ["Cities", "Villages", "Factories", "Universities"] },
+        { q: "The author mentions that the British blamed the Indians for their own _____.", a: "Poverty", options: ["Poverty", "Culture", "Language", "Weather"] },
+        { q: "Pearl S. Buck was a _____ by birth.", a: "American", options: ["Indian", "American", "British", "Chinese"] },
+        { q: "She wrote the famous novel titled _____.", a: "The Good Earth", options: ["The Good Earth", "My Experiments with Truth", "Hind Swaraj", "A Passage to India"] },
+        { q: "The author found the Indian people to be very _____.", a: "Hospitable", options: ["Greedy", "Hospitable", "Rude", "Fearful"] },
+        { q: "Indians have a great capacity for _____.", a: "Fanaticism", options: ["Fanaticism", "Laziness", "Business", "Cruelty"] },
+        { q: "What did the author eat with her hands in the Indian home?", a: "Rice and lentils", options: ["Rice and lentils", "Bread and butter", "Noodles", "Meat"] },
+        { q: "The author noted that the Indian husband and wife had a relationship of _____.", a: "Deep respect", options: ["Conflict", "Deep respect", "Indifference", "Enmity"] },
+        { q: "According to Buck, the first thing she noticed was the _____ of the people.", a: "Quietness", options: ["Quietness", "Noise", "Violence", "Speed"] },
+        { q: "The author mentions the 'Great War' (WWII) and its impact on _____.", a: "India's freedom", options: ["India's freedom", "American trade", "Chinese food", "Global weather"] },
+        { q: "She believes that the West has much to learn from the _____ of India.", a: "Spirituality", options: ["Science", "Spirituality", "Technology", "Fashion"] },
+        { q: "The Indian peasants were physically _____.", a: "Thin and weak", options: ["Thin and weak", "Very fat", "Tall and muscular", "Short and healthy"] },
+        { q: "The author felt that the British rule had _____ the Indians.", a: "Drained", options: ["Enriched", "Drained", "Taught", "Saved"] },
+        { q: "Pearl S. Buck's visit took place _____ India's independence.", a: "Before", options: ["After", "Before", "During the year of", "Long after"] },
+        { q: "The author calls the Indian people 'a people of _____'.", a: "The sun", options: ["The sun", "The moon", "The stars", "The rain"] },
+        { q: "The tone of the author is one of _____.", a: "Admiration and Sympathy", options: ["Criticism", "Admiration and Sympathy", "Mockery", "Boredom"] },
+        { q: "Buck says that the 'Word of India' is her _____.", a: "Message to the West", options: ["Message to the West", "Last wish", "Only memory", "Business plan"] }
+    ]
+},
+    
+};
+
+let currentChapter = "";
+let currentIdx = 0;
+let score = 0;
+
+// Load Menu
+const grid = document.getElementById('menu-grid');
+Object.keys(quizData).forEach(id => {
+    const card = document.createElement('div');
+    card.className = 'chapter-card';
+    card.onclick = () => startTest(id);
+    card.innerHTML = `<span>PROSE</span><h3>${quizData[id].name}</h3><p style="font-size:12px; color:#94a3b8;">35 Questions</p>`;
+    grid.appendChild(card);
+});
+
+function startTest(id) {
+    currentChapter = id; currentIdx = 0; score = 0;
+    document.getElementById('chapter-menu').style.display = 'none';
+    document.getElementById('test-interface').style.display = 'block';
+    document.getElementById('active-chapter-title').innerText = quizData[id].name;
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const data = quizData[currentChapter].questions[currentIdx];
+    document.getElementById('progress').innerText = `Question ${currentIdx + 1}/35`;
+    document.getElementById('q-text').innerText = data.q;
+    document.getElementById('btn-next').style.display = 'none';
+    const container = document.getElementById('opt-container');
+    container.innerHTML = "";
+    data.options.forEach(opt => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerText = opt;
+        div.onclick = () => {
+            const opts = document.querySelectorAll('.option');
+            opts.forEach(o => o.classList.add('disabled'));
+            if(opt === data.a) { div.classList.add('correct'); score++; }
+            else { div.classList.add('wrong'); opts.forEach(o => { if(o.innerText === data.a) o.classList.add('correct'); }); }
+            document.getElementById('btn-next').style.display = 'block';
+        };
+        container.appendChild(div);
+    });
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if(currentIdx < quizData[currentChapter].questions.length) loadQuestion();
+    else showResults();
+}
+async function submitTest() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        alert("Log in first so we know whose dashboard to update!");
+        return;
+    }
+
+    // 1. Get all questions (assuming they have class 'question')
+    const totalQuestions = 35; 
+    let correct = 0;
+
+    // 2. Simple logic to count checked correct answers
+    // This assumes your correct radio buttons have a specific data attribute or class
+    const selectedAnswers = document.querySelectorAll('input[type="radio"]:checked');
+    
+    selectedAnswers.forEach(answer => {
+        if (answer.value === "correct") { // Make sure your correct answers have value="correct"
+            correct++;
+        }
+    });
+
+    // 3. Calculate percentage
+    const score = Math.round((correct / totalQuestions) * 100);
+
+    // 4. THE MAGIC PART: This moves the bar
+    try {
+        await firebase.database().ref(`users/${user.uid}/progress/english`).update({
+            ch1: score // This saves the score for Chapter 1
+        });
+        
+        alert(`Test Submitted! Score: ${score}%`);
+        window.location.href = "dasboard2.html"; // Send them back to see the bar move!
+    } catch (e) {
+        alert("Database Error: " + e.message);
+    }
+}
+function showResults() {
+    document.getElementById('test-interface').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('score-text').innerText = `${score} / 35`;
+
+    // SYNC TO FIREBASE
+    if (currentUser) {
+        const percentage = Math.round((score / 35) * 100);
+        database.ref(`users/${currentUser.uid}/progress/english`).update({
+            [currentChapter]: percentage
+        }).then(() => {
+            document.getElementById('sync-status').innerText = "✓ Progress saved to dashboard";
+            document.getElementById('sync-status').style.color = "green";
+        });
+    }
+
+    new Chart(document.getElementById('resultChart'), {
+        type: 'doughnut',
+        data: { datasets: [{ data: [score, 35-score], backgroundColor: ['#22c55e', '#f1f5f9'], borderWidth: 0 }] },
+        options: { cutout: '80%' }
+    });
+}
+</script>
+</body>
+</html>
