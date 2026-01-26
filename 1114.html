@@ -1,187 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="screen-orientation" content="portrait">
-  <meta name="orientation" content="portrait">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta charset="UTF-8">
-
-  <title>Mockshala – Physics Test</title>
-
-  <!-- Google Font -->
+  <title> Dinkar – Physics Test</title>
+  
   <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-
   <style>
-    /* PORTRAIT – normal website */
-    @media screen and (orientation: portrait) {
-      .rotate-warning {
-        display: none;
-      }
-    }
-
+    /* --- GENERAL STYLES --- */
     body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background: linear-gradient(
-        rgba(10, 25, 50, 0.9),
-        rgba(20, 40, 80, 0.9)
-      ),
-      url("https://images.unsplash.com/photo-1535223289827-42f1e9919769");
-      background-size: cover;
-      background-position: center;
+      margin: 0; padding: 0; min-height: 100vh;
+      background: linear-gradient(rgba(10, 25, 50, 0.9), rgba(20, 40, 80, 0.9)),
+                  url("https://images.unsplash.com/photo-1535223289827-42f1e9919769");
+      background-size: cover; background-position: center;
       font-family: 'Funnel Sans', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; justify-content: center; align-items: flex-start; padding: 20px 0;
     }
 
     .test-container {
-      width: 90%;
-      max-width: 800px;
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: 16px;
-      padding: 30px;
+      width: 95%; max-width: 800px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px; padding: 30px;
       box-shadow: 0 20px 45px rgba(0,0,0,0.35);
-      text-align: center;
+      position: relative; overflow: hidden;
     }
 
-    .title {
-      font-size: 32px;
-      font-weight: 700;
-      color: #0d47a1;
-      margin-bottom: 25px;
-    }
+    /* --- PROGRESS BAR --- */
+    .progress-container { width: 100%; height: 8px; background: #eee; position: absolute; top: 0; left: 0; }
+    #progress-bar { height: 100%; width: 0%; background: #4caf50; transition: width 0.3s ease; }
 
-    #question {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 25px;
-      color: #111;
-    }
+    .title { font-size: 26px; font-weight: 700; color: #0d47a1; margin: 15px 0; text-align: center; text-transform: uppercase; }
 
-    #options {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 25px;
-    }
+    /* --- QUIZ STYLES --- */
+    #question { font-size: 19px; font-weight: 600; margin-bottom: 20px; color: #222; line-height: 1.4; text-align: left; }
+    #options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
 
     .option {
-      padding: 14px 18px;
-      border-radius: 10px;
-      background: #f2f6fc;
-      border: 1px solid #c5d3ea;
-      cursor: pointer;
-      font-family: sans-serif;
-      font-size: 16px;
-      transition: all 0.2s ease;
+      padding: 15px; border-radius: 10px; background: #f8fafd;
+      border: 1px solid #d1d9e6; cursor: pointer; transition: 0.2s;
+      font-size: 16px; color: #333; text-align: left;
     }
 
-    .option:hover {
-      background: #e3f2fd;
-    }
+    /* INSTANT FEEDBACK COLORS */
+    .option.correct { background: #e8f5e9 !important; border-color: #4caf50 !important; color: #1b5e20; font-weight: bold; }
+    .option.wrong { background: #ffebee !important; border-color: #ef5350 !important; color: #b71c1c; }
+    .option.disabled { pointer-events: none; }
 
-    .option.selected {
-      background: #bbdefb;
-      border-color: #1565c0;
-      font-weight: 600;
-    }
-
-    .btn-row {
-      display: flex;
-      justify-content: space-between;
-    }
-
+    .btn-row { display: flex; gap: 10px; }
     button {
-      padding: 12px 26px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #1565c0;
-      color: white;
-      transition: background 0.2s ease;
+      flex: 1; padding: 14px; border: none; border-radius: 8px;
+      font-weight: 600; cursor: pointer; background: #1565c0; color: #fff;
+      font-size: 16px; transition: 0.2s;
     }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    #prevBtn { background: #546e7a; } /* Slate color for back button */
+    #submitBtn { display: none; background: #ffb300; color: #000; }
 
-    button:hover {
-      background: #0d47a1;
-    }
+    /* --- RESULT SCREEN STYLES --- */
+    #result-screen { display: none; text-align: left; }
+    .answer-box { padding: 15px; margin-bottom: 12px; border-radius: 10px; border-left: 6px solid #ccc; color: #333; }
+    .res-correct { border-left-color: #4caf50; background: #f1f8f1; }
+    .res-wrong { border-left-color: #f44336; background: #fff5f5; }
 
-    #submitBtn {
-      display: none;
-      background: #ffb300;
-      color: #000;
-    }
+    .score-box { background: #ffca44; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; border-radius: 12px; margin: 20px 0; color: #000; }
 
-    #submitBtn:hover {
-      background: #ff8f00;
-    }
+    /* MANAGED STATUS COLORS (Readable & Professional) */
+    .status-box { padding: 20px; text-align: center; font-size: 22px; font-weight: bold; border-radius: 12px; margin-top: 10px; }
+    .red { background: #fdecea; color: #b71c1c; border: 1px solid #f44336; }
+    .orange { background: #fff3e0; color: #e65100; border: 1px solid #ff9800; }
+    .yellow { background: #fffde7; color: #f57f17; border: 1px solid #fbc02d; }
+    .green { background: #e8f5e9; color: #1b5e20; border: 1px solid #4caf50; }
 
-    /* =========================
-       MOBILE RESPONSIVE STYLES
-       ========================= */
-    @media (max-width: 600px) {
-
-      .test-container {
-        width: 95%;
-        padding: 18px;
-      }
-
-      .title {
-        font-size: 24px;
-        padding: 16px;
-      }
-
-      #question {
-        font-size: 18px;
-        line-height: 1.4;
-      }
-
-      .option {
-        font-size: 15px;
-        padding: 14px;
-      }
-
-      .btn-row {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      button {
-        width: 100%;
-        min-height: 48px;
-        font-size: 16px;
-      }
+    @media (max-width: 600px) { 
+      .btn-row { flex-direction: column; } 
+      .test-container { padding: 20px 15px; }
     }
   </style>
 </head>
-
 <body>
 
-  <div class="test-container">
-    <div class="title"> moving charges and magnetism  </div>
+<div class="test-container">
+  <div class="progress-container"><div id="progress-bar"></div></div>
 
-    <!-- Question Text -->
-    <div id="question">Loading question...</div>
-
-    <!-- Options -->
+  <div id="quiz-screen">
+    <div class="title">Physics Test</div>
+    <div id="question">Loading...</div>
     <div id="options"></div>
-
-    <!-- Buttons -->
     <div class="btn-row">
-      <button id="nextBtn">Next</button>
-      <button id="submitBtn">Submit</button>
+      <button id="prevBtn" style="display: none;">Back</button>
+      <button id="nextBtn" disabled>Next Question</button>
+      <button id="submitBtn">View Results</button>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="1114question.js"></script>
-  <script src="1114test.js"></script>
+  <div id="result-screen">
+    <div class="title">Detailed Report</div>
+    <div id="report-list"></div>
+    <div id="final-score" class="score-box"></div>
+    <div id="status-msg" class="status-box"></div>
+    <button onclick="location.reload()" style="margin-top: 20px; width: 100%;">Restart Test</button>
+  </div>
+</div>
 
+<script>
+const questions = [
+{ q: "Magnetic force on a moving charge is maximum when velocity is", o: ["Parallel to magnetic field", "Perpendicular to magnetic field", "Anti-parallel to magnetic field", "Zero"], a: 1 },
+{ q: "Magnetic force on a stationary charge is", o: ["Maximum", "Minimum", "Zero", "Infinite"], a: 2 },
+{ q: "SI unit of magnetic field is", o: ["Weber", "Tesla", "Ampere", "Henry"], a: 1 },
+{ q: "Magnetic force on charge q moving with velocity v in field B is", o: ["qvB", "qvB sinθ", "qvB cosθ", "qB/v"], a: 1 },
+{ q: "Direction of magnetic force is given by", o: ["Fleming’s left-hand rule", "Fleming’s right-hand rule", "Right-hand thumb rule", "Maxwell’s rule"], a: 0 },
+{ q: "Magnetic force does no work because it is always", o: ["Zero", "Parallel to velocity", "Perpendicular to velocity", "Opposite to velocity"], a: 2 },
+{ q: "Path of charged particle moving perpendicular to uniform magnetic field is", o: ["Straight line", "Parabolic", "Circular", "Elliptical"], a: 2 },
+{ q: "Radius of circular path of charged particle is proportional to", o: ["Charge", "Magnetic field", "Velocity", "1/mass"], a: 2 },
+{ q: "Time period of charged particle in magnetic field depends on", o: ["Velocity", "Radius", "Magnetic field and mass", "Charge and mass"], a: 3 },
+{ q: "Cyclotron works on principle that", o: ["Electric field is uniform", "Frequency is constant", "Magnetic field varies", "Energy increases linearly"], a: 1 },
+{ q: "Cyclotron cannot accelerate", o: ["Protons", "Deuterons", "Alpha particles", "Electrons"], a: 3 },
+{ q: "SI unit of magnetic flux is", o: ["Tesla", "Weber", "Henry", "Ampere"], a: 1 },
+{ q: "Biot–Savart law gives magnetic field due to", o: ["Moving charge", "Stationary charge", "Current element", "Magnetic pole"], a: 2 },
+{ q: "Magnetic field at centre of circular current-carrying loop is proportional to", o: ["Radius", "Square of current", "Current", "1/current"], a: 2 },
+{ q: "Magnetic field at centre of a circular coil increases when", o: ["Radius increases", "Current decreases", "Number of turns increases", "Coil is removed"], a: 2 },
+{ q: "Magnetic field due to long straight current-carrying conductor varies as", o: ["r", "r²", "1/r", "1/r²"], a: 2 },
+{ q: "Direction of magnetic field around straight conductor is given by", o: ["Fleming’s left-hand rule", "Fleming’s right-hand rule", "Right-hand thumb rule", "Maxwell’s rule"], a: 2 },
+{ q: "Ampere’s circuital law is applicable for", o: ["Electrostatic field", "Uniform magnetic field", "Symmetric current distribution", "All magnetic fields"], a: 2 },
+{ q: "Force on a current-carrying conductor is maximum when conductor is", o: ["Parallel to magnetic field", "Perpendicular to magnetic field", "At 45° to field", "At any angle"], a: 1 },
+{ q: "SI unit of magnetic permeability is", o: ["T m/A", "H/m", "N/A²", "Wb/m²"], a: 1 },
+{ q: "Force on a current-carrying conductor is given by", o: ["BIL", "BIL sinθ", "BIL cosθ", "BI/L"], a: 1 },
+{ q: "Two parallel current-carrying conductors attract each other if currents are", o: ["Opposite", "Same direction", "Zero", "Unequal"], a: 1 },
+{ q: "Two parallel conductors repel each other when currents flow in", o: ["Same direction", "Opposite direction", "Equal magnitude", "Zero"], a: 1 },
+{ q: "Force per unit length between two parallel conductors defines", o: ["Volt", "Ohm", "Ampere", "Tesla"], a: 2 },
+{ q: "Magnetic field inside long solenoid is", o: ["Zero", "Non-uniform", "Uniform", "Infinite"], a: 2 },
+{ q: "Magnetic field inside solenoid depends on", o: ["Current", "Number of turns per unit length", "Permeability", "All of these"], a: 3 },
+{ q: "Magnetic field inside toroid is", o: ["Uniform", "Zero", "Non-uniform", "Infinite"], a: 0 },
+{ q: "Torque on a current loop in magnetic field is maximum when plane of loop is", o: ["Parallel to field", "Perpendicular to field", "Inclined at 45°", "Random"], a: 0 },
+{ q: "Torque on current loop depends on", o: ["Current", "Area", "Magnetic field", "All of these"], a: 3 },
+{ q: "Magnetic dipole moment of a current loop is", o: ["IA", "I/A", "A/I", "BIA"], a: 0 },
+{ q: "SI unit of magnetic dipole moment is", o: ["A·m²", "T·m", "Wb/m", "N·m"], a: 0 },
+{ q: "Potential energy of magnetic dipole is minimum when", o: ["Perpendicular to field", "Parallel to field", "Anti-parallel to field", "Zero field"], a: 1 },
+{ q: "Potential energy of dipole is maximum when", o: ["Parallel to field", "Perpendicular to field", "Anti-parallel to field", "Zero field"], a: 2 },
+{ q: "Magnetic field lines form", o: ["Open curves", "Closed loops", "Straight lines", "Random curves"], a: 1 },
+{ q: "Magnetic field at a point is tangent to", o: ["Magnetic flux", "Electric field", "Field lines", "Equipotential surface"], a: 2 },
+{ q: "Magnetic field lines are crowded where field is", o: ["Weak", "Uniform", "Strong", "Zero"], a: 2 },
+{ q: "Magnetic field inside a hollow current-carrying conductor is", o: ["Zero", "Maximum", "Uniform", "Infinite"], a: 0 },
+{ q: "Cyclotron frequency depends on", o: ["Velocity", "Radius", "Magnetic field and charge-to-mass ratio", "Energy"], a: 2 },
+{ q: "Motion of charged particle in combined E and B fields (perpendicular) is", o: ["Circular", "Straight line", "Helical", "Parabolic"], a: 1 },
+{ q: "Magnetic force acts as", o: ["Centripetal force", "Gravitational force", "Electric force", "Frictional force"], a: 0 },
+{ q: "If velocity is parallel to magnetic field, path is", o: ["Circular", "Helical", "Straight line", "Parabolic"], a: 2 },
+{ q: "Magnetic field at centre of semicircular arc is proportional to", o: ["Radius", "1/radius", "Radius²", "Independent of radius"], a: 1 },
+{ q: "Fleming’s left-hand rule is used in", o: ["Generator", "Motor", "Transformer", "Battery"], a: 1 },
+{ q: "Unit of magnetic field strength H is", o: ["Tesla", "A/m", "Wb", "Henry"], a: 1 },
+{ q: "Earth’s magnetic field is approximately", o: ["10⁻⁶ T", "10⁻⁵ T", "10⁻⁴ T", "1 T"], a: 1 },
+{ q: "Magnetic field due to moving charge depends on", o: ["Speed", "Direction of motion", "Charge", "All of these"], a: 3 },
+{ q: "If magnetic field is doubled, radius of circular path becomes", o: ["Double", "Half", "Four times", "Same"], a: 1 },
+{ q: "Charged particle moving at angle θ to B follows", o: ["Circular path", "Straight path", "Helical path", "Parabolic path"], a: 2 },
+{ q: "SI unit of magnetic flux density is", o: ["Weber", "Tesla", "Henry", "Ampere"], a: 1 },
+{ q: "Magnetic field inside solenoid is independent of", o: ["Current", "Number of turns", "Length", "Radius"], a: 3 }
+];
+let cur = 0, score = 0;
+let userAnswers = Array(questions.length).fill(-1);
+
+function loadQ() {
+  const q = questions[cur];
+  document.getElementById("question").innerText = `Q${cur+1}. ${q.q}`;
+  const optBox = document.getElementById("options");
+  optBox.innerHTML = "";
+  
+  // Show/Hide Back Button
+  document.getElementById("prevBtn").style.display = cur === 0 ? "none" : "block";
+  
+  // Progress bar
+  document.getElementById("progress-bar").style.width = ((cur+1)/questions.length)*100 + "%";
+
+  q.o.forEach((opt, i) => {
+    const div = document.createElement("div");
+    div.className = "option"; div.innerText = opt;
+    
+    // If already answered, show the reveal state
+    if (userAnswers[cur] !== -1) {
+      if (i === q.a) div.classList.add("correct");
+      else if (i === userAnswers[cur]) div.classList.add("wrong");
+      div.classList.add("disabled");
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("submitBtn").disabled = false;
+    }
+
+    div.onclick = () => {
+      if(userAnswers[cur] !== -1) return;
+      userAnswers[cur] = i;
+      const all = document.querySelectorAll(".option");
+      if(i === q.a) { div.classList.add("correct"); score++; }
+      else { div.classList.add("wrong"); all[q.a].classList.add("correct"); }
+      all.forEach(el => el.classList.add("disabled"));
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("submitBtn").disabled = false;
+    };
+    optBox.appendChild(div);
+  });
+
+  // Toggle Visibility of Next/Submit
+  document.getElementById("nextBtn").style.display = cur === questions.length-1 ? "none" : "block";
+  document.getElementById("submitBtn").style.display = cur === questions.length-1 ? "block" : "none";
+  
+  // If not answered yet, disable forward movement
+  if (userAnswers[cur] === -1) {
+    document.getElementById("nextBtn").disabled = true;
+    document.getElementById("submitBtn").disabled = true;
+  }
+}
+
+document.getElementById("nextBtn").onclick = () => { cur++; loadQ(); };
+document.getElementById("prevBtn").onclick = () => { cur--; loadQ(); };
+
+document.getElementById("submitBtn").onclick = () => {
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("result-screen").style.display = "block";
+  let html = "";
+  questions.forEach((q, i) => {
+    const isCor = userAnswers[i] === q.a;
+    html += `<div class="answer-box ${isCor?'res-correct':'res-wrong'}">
+      <b>Q${i+1}. ${q.q}</b><br>
+      <span style="font-size:14px;">Your Choice: ${userAnswers[i]===-1?'None':q.o[userAnswers[i]]}</span><br>
+      <span style="font-size:14px; color:#1b5e20; font-weight:600;">Correct: ${q.o[q.a]}</span>
+    </div>`;
+  });
+  document.getElementById("report-list").innerHTML = html;
+  const p = Math.round((score/questions.length)*100);
+  document.getElementById("final-score").innerText = `Result: ${score} / ${questions.length} (${p}%)`;
+  
+  let m = "", c = "";
+  if(p < 60) { m = "Mehanat Karo 💪"; c = "red"; }
+  else if(p < 75) { m = "Thik Hai 🙂"; c = "orange"; }
+  else if(p < 90) { m = "Bahut Badhiya 👏"; c = "yellow"; }
+  else { m = "System Pad Denge 🔥"; c = "green"; }
+  const s = document.getElementById("status-msg");
+  s.innerText = m; s.className = "status-box " + c;
+  window.scrollTo(0,0);
+};
+
+loadQ();
+</script>
 </body>
 </html>
