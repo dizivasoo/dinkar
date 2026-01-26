@@ -1,187 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="screen-orientation" content="portrait">
-  <meta name="orientation" content="portrait">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta charset="UTF-8">
-
-  <title>Mockshala – Physics Test</title>
-
-  <!-- Google Font -->
+  <title> Dinkar – Physics Test</title>
+  
   <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-
   <style>
-    /* PORTRAIT – normal website */
-    @media screen and (orientation: portrait) {
-      .rotate-warning {
-        display: none;
-      }
-    }
-
+    /* --- GENERAL STYLES --- */
     body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background: linear-gradient(
-        rgba(10, 25, 50, 0.9),
-        rgba(20, 40, 80, 0.9)
-      ),
-      url("https://images.unsplash.com/photo-1535223289827-42f1e9919769");
-      background-size: cover;
-      background-position: center;
+      margin: 0; padding: 0; min-height: 100vh;
+      background: linear-gradient(rgba(10, 25, 50, 0.9), rgba(20, 40, 80, 0.9)),
+                  url("https://images.unsplash.com/photo-1535223289827-42f1e9919769");
+      background-size: cover; background-position: center;
       font-family: 'Funnel Sans', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; justify-content: center; align-items: flex-start; padding: 20px 0;
     }
 
     .test-container {
-      width: 90%;
-      max-width: 800px;
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: 16px;
-      padding: 30px;
+      width: 95%; max-width: 800px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px; padding: 30px;
       box-shadow: 0 20px 45px rgba(0,0,0,0.35);
-      text-align: center;
+      position: relative; overflow: hidden;
     }
 
-    .title {
-      font-size: 32px;
-      font-weight: 700;
-      color: #0d47a1;
-      margin-bottom: 25px;
-    }
+    /* --- PROGRESS BAR --- */
+    .progress-container { width: 100%; height: 8px; background: #eee; position: absolute; top: 0; left: 0; }
+    #progress-bar { height: 100%; width: 0%; background: #4caf50; transition: width 0.3s ease; }
 
-    #question {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 25px;
-      color: #111;
-    }
+    .title { font-size: 26px; font-weight: 700; color: #0d47a1; margin: 15px 0; text-align: center; text-transform: uppercase; }
 
-    #options {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 25px;
-    }
+    /* --- QUIZ STYLES --- */
+    #question { font-size: 19px; font-weight: 600; margin-bottom: 20px; color: #222; line-height: 1.4; text-align: left; }
+    #options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
 
     .option {
-      padding: 14px 18px;
-      border-radius: 10px;
-      background: #f2f6fc;
-      border: 1px solid #c5d3ea;
-      cursor: pointer;
-      font-family: sans-serif;
-      font-size: 16px;
-      transition: all 0.2s ease;
+      padding: 15px; border-radius: 10px; background: #f8fafd;
+      border: 1px solid #d1d9e6; cursor: pointer; transition: 0.2s;
+      font-size: 16px; color: #333; text-align: left;
     }
 
-    .option:hover {
-      background: #e3f2fd;
-    }
+    /* INSTANT FEEDBACK COLORS */
+    .option.correct { background: #e8f5e9 !important; border-color: #4caf50 !important; color: #1b5e20; font-weight: bold; }
+    .option.wrong { background: #ffebee !important; border-color: #ef5350 !important; color: #b71c1c; }
+    .option.disabled { pointer-events: none; }
 
-    .option.selected {
-      background: #bbdefb;
-      border-color: #1565c0;
-      font-weight: 600;
-    }
-
-    .btn-row {
-      display: flex;
-      justify-content: space-between;
-    }
-
+    .btn-row { display: flex; gap: 10px; }
     button {
-      padding: 12px 26px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #1565c0;
-      color: white;
-      transition: background 0.2s ease;
+      flex: 1; padding: 14px; border: none; border-radius: 8px;
+      font-weight: 600; cursor: pointer; background: #1565c0; color: #fff;
+      font-size: 16px; transition: 0.2s;
     }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    #prevBtn { background: #546e7a; } /* Slate color for back button */
+    #submitBtn { display: none; background: #ffb300; color: #000; }
 
-    button:hover {
-      background: #0d47a1;
-    }
+    /* --- RESULT SCREEN STYLES --- */
+    #result-screen { display: none; text-align: left; }
+    .answer-box { padding: 15px; margin-bottom: 12px; border-radius: 10px; border-left: 6px solid #ccc; color: #333; }
+    .res-correct { border-left-color: #4caf50; background: #f1f8f1; }
+    .res-wrong { border-left-color: #f44336; background: #fff5f5; }
 
-    #submitBtn {
-      display: none;
-      background: #ffb300;
-      color: #000;
-    }
+    .score-box { background: #ffca44; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; border-radius: 12px; margin: 20px 0; color: #000; }
 
-    #submitBtn:hover {
-      background: #ff8f00;
-    }
+    /* MANAGED STATUS COLORS (Readable & Professional) */
+    .status-box { padding: 20px; text-align: center; font-size: 22px; font-weight: bold; border-radius: 12px; margin-top: 10px; }
+    .red { background: #fdecea; color: #b71c1c; border: 1px solid #f44336; }
+    .orange { background: #fff3e0; color: #e65100; border: 1px solid #ff9800; }
+    .yellow { background: #fffde7; color: #f57f17; border: 1px solid #fbc02d; }
+    .green { background: #e8f5e9; color: #1b5e20; border: 1px solid #4caf50; }
 
-    /* =========================
-       MOBILE RESPONSIVE STYLES
-       ========================= */
-    @media (max-width: 600px) {
-
-      .test-container {
-        width: 95%;
-        padding: 18px;
-      }
-
-      .title {
-        font-size: 24px;
-        padding: 16px;
-      }
-
-      #question {
-        font-size: 18px;
-        line-height: 1.4;
-      }
-
-      .option {
-        font-size: 15px;
-        padding: 14px;
-      }
-
-      .btn-row {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      button {
-        width: 100%;
-        min-height: 48px;
-        font-size: 16px;
-      }
+    @media (max-width: 600px) { 
+      .btn-row { flex-direction: column; } 
+      .test-container { padding: 20px 15px; }
     }
   </style>
 </head>
-
 <body>
 
-  <div class="test-container">
-    <div class="title"> semiconductor </div>
+<div class="test-container">
+  <div class="progress-container"><div id="progress-bar"></div></div>
 
-    <!-- Question Text -->
-    <div id="question">Loading question...</div>
-
-    <!-- Options -->
+  <div id="quiz-screen">
+    <div class="title">Physics Test</div>
+    <div id="question">Loading...</div>
     <div id="options"></div>
-
-    <!-- Buttons -->
     <div class="btn-row">
-      <button id="nextBtn">Next</button>
-      <button id="submitBtn">Submit</button>
+      <button id="prevBtn" style="display: none;">Back</button>
+      <button id="nextBtn" disabled>Next Question</button>
+      <button id="submitBtn">View Results</button>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="1124question.js"></script>
-  <script src="1124test.js"></script>
+  <div id="result-screen">
+    <div class="title">Detailed Report</div>
+    <div id="report-list"></div>
+    <div id="final-score" class="score-box"></div>
+    <div id="status-msg" class="status-box"></div>
+    <button onclick="location.reload()" style="margin-top: 20px; width: 100%;">Restart Test</button>
+  </div>
+</div>
 
+<script>
+const questions = [
+  { q: "The energy gap in a semiconductor is of the order of", o: ["10 eV", "5 eV", "1 eV", "0 eV"], a: 2 },
+  { q: "At absolute zero temperature, a semiconductor behaves like", o: ["Conductor", "Insulator", "Semiconductor", "Superconductor"], a: 1 },
+  { q: "The charge carriers in intrinsic semiconductor are", o: ["Only electrons", "Only holes", "Electrons and holes", "Protons"], a: 2 },
+  { q: "Example of intrinsic semiconductor is", o: ["Doped silicon", "Doped germanium", "Pure silicon", "Copper"], a: 2 },
+  { q: "Semiconductor formed by doping with pentavalent impurity is", o: ["p-type", "n-type", "Intrinsic", "Insulator"], a: 1 },
+  { q: "Majority charge carriers in n-type semiconductor are", o: ["Holes", "Protons", "Electrons", "Neutrons"], a: 2 },
+  { q: "Trivalent impurity is added to form", o: ["n-type semiconductor", "p-type semiconductor", "Intrinsic semiconductor", "Insulator"], a: 1 },
+  { q: "Majority charge carriers in p-type semiconductor are", o: ["Electrons", "Holes", "Ions", "Neutrons"], a: 1 },
+  { q: "Example of pentavalent impurity is", o: ["Boron", "Aluminium", "Phosphorus", "Indium"], a: 2 },
+  { q: "Example of trivalent impurity is", o: ["Arsenic", "Antimony", "Boron", "Phosphorus"], a: 2 },
+  { q: "p-n junction is formed by", o: ["Heating semiconductor", "Joining p-type and n-type semiconductors", "Cooling semiconductor", "Applying voltage"], a: 1 },
+  { q: "Depletion layer contains", o: ["Free electrons", "Free holes", "Immobile ions", "Neutral atoms"], a: 2 },
+  { q: "Potential barrier in p-n junction is due to", o: ["Diffusion of carriers", "Drift of carriers", "Recombination", "External voltage"], a: 0 },
+  { q: "Width of depletion layer increases when junction is", o: ["Forward biased", "Reverse biased", "Unbiased", "Heated"], a: 1 },
+  { q: "In forward bias, p-side is connected to", o: ["Negative terminal", "Positive terminal", "Ground", "Neutral terminal"], a: 1 },
+  { q: "Forward biased p-n junction offers", o: ["High resistance", "Infinite resistance", "Low resistance", "Zero resistance"], a: 2 },
+  { q: "Reverse biased p-n junction acts as", o: ["Conductor", "Capacitor", "Insulator", "Amplifier"], a: 2 },
+  { q: "Zener diode is used as", o: ["Amplifier", "Rectifier", "Voltage regulator", "Oscillator"], a: 2 },
+  { q: "Zener breakdown occurs due to", o: ["Heating", "High reverse voltage", "Forward current", "Low temperature"], a: 1 },
+  { q: "A diode conducts current mainly in", o: ["Both directions", "Forward direction", "Reverse direction", "Random direction"], a: 1 },
+  { q: "Half-wave rectifier uses", o: ["Two diodes", "Four diodes", "One diode", "No diode"], a: 2 },
+  { q: "Full-wave rectifier converts", o: ["AC to DC", "DC to AC", "High voltage to low", "Low voltage to high"], a: 0 },
+  { q: "Ripple factor is minimum for", o: ["Half-wave rectifier", "Full-wave rectifier", "No rectifier", "Zener diode"], a: 1 },
+  { q: "Transistor has how many layers?", o: ["One", "Two", "Three", "Four"], a: 2 },
+  { q: "Transistor has how many junctions?", o: ["One", "Two", "Three", "Four"], a: 1 },
+  { q: "The three regions of a transistor are", o: ["Anode, cathode, grid", "Source, drain, gate", "Emitter, base, collector", "p, n, i"], a: 2 },
+  { q: "Base of a transistor is", o: ["Thick and highly doped", "Thin and lightly doped", "Thick and lightly doped", "Thin and highly doped"], a: 1 },
+  { q: "Main function of transistor is", o: ["Rectification", "Amplification", "Heating", "Cooling"], a: 1 },
+  { q: "In common emitter configuration, current gain is", o: ["Less than 1", "Equal to 1", "Greater than 1", "Zero"], a: 2 },
+  { q: "Logic gate that gives HIGH output only when all inputs are HIGH is", o: ["OR", "AND", "NOT", "NAND"], a: 1 },
+  { q: "NOT gate is also called", o: ["Buffer", "Inverter", "Rectifier", "Amplifier"], a: 1 },
+  { q: "NAND gate is known as", o: ["Universal gate", "Basic gate", "Exclusive gate", "Negative gate"], a: 0 },
+  { q: "LED emits light due to", o: ["Heating", "Recombination of electrons and holes", "Magnetic effect", "Photoelectric effect"], a: 1 },
+  { q: "Solar cell works on", o: ["Thermionic effect", "Photoelectric effect", "Photovoltaic effect", "Hall effect"], a: 2 },
+  { q: "Semiconductor devices are preferred because they are", o: ["Bulky", "Power consuming", "Reliable and compact", "Expensive"], a: 2 }
+];
+let cur = 0, score = 0;
+let userAnswers = Array(questions.length).fill(-1);
+
+function loadQ() {
+  const q = questions[cur];
+  document.getElementById("question").innerText = `Q${cur+1}. ${q.q}`;
+  const optBox = document.getElementById("options");
+  optBox.innerHTML = "";
+  
+  // Show/Hide Back Button
+  document.getElementById("prevBtn").style.display = cur === 0 ? "none" : "block";
+  
+  // Progress bar
+  document.getElementById("progress-bar").style.width = ((cur+1)/questions.length)*100 + "%";
+
+  q.o.forEach((opt, i) => {
+    const div = document.createElement("div");
+    div.className = "option"; div.innerText = opt;
+    
+    // If already answered, show the reveal state
+    if (userAnswers[cur] !== -1) {
+      if (i === q.a) div.classList.add("correct");
+      else if (i === userAnswers[cur]) div.classList.add("wrong");
+      div.classList.add("disabled");
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("submitBtn").disabled = false;
+    }
+
+    div.onclick = () => {
+      if(userAnswers[cur] !== -1) return;
+      userAnswers[cur] = i;
+      const all = document.querySelectorAll(".option");
+      if(i === q.a) { div.classList.add("correct"); score++; }
+      else { div.classList.add("wrong"); all[q.a].classList.add("correct"); }
+      all.forEach(el => el.classList.add("disabled"));
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("submitBtn").disabled = false;
+    };
+    optBox.appendChild(div);
+  });
+
+  // Toggle Visibility of Next/Submit
+  document.getElementById("nextBtn").style.display = cur === questions.length-1 ? "none" : "block";
+  document.getElementById("submitBtn").style.display = cur === questions.length-1 ? "block" : "none";
+  
+  // If not answered yet, disable forward movement
+  if (userAnswers[cur] === -1) {
+    document.getElementById("nextBtn").disabled = true;
+    document.getElementById("submitBtn").disabled = true;
+  }
+}
+
+document.getElementById("nextBtn").onclick = () => { cur++; loadQ(); };
+document.getElementById("prevBtn").onclick = () => { cur--; loadQ(); };
+
+document.getElementById("submitBtn").onclick = () => {
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("result-screen").style.display = "block";
+  let html = "";
+  questions.forEach((q, i) => {
+    const isCor = userAnswers[i] === q.a;
+    html += `<div class="answer-box ${isCor?'res-correct':'res-wrong'}">
+      <b>Q${i+1}. ${q.q}</b><br>
+      <span style="font-size:14px;">Your Choice: ${userAnswers[i]===-1?'None':q.o[userAnswers[i]]}</span><br>
+      <span style="font-size:14px; color:#1b5e20; font-weight:600;">Correct: ${q.o[q.a]}</span>
+    </div>`;
+  });
+  document.getElementById("report-list").innerHTML = html;
+  const p = Math.round((score/questions.length)*100);
+  document.getElementById("final-score").innerText = `Result: ${score} / ${questions.length} (${p}%)`;
+  
+  let m = "", c = "";
+  if(p < 60) { m = "Mehanat Karo 💪"; c = "red"; }
+  else if(p < 75) { m = "Thik Hai 🙂"; c = "orange"; }
+  else if(p < 90) { m = "Bahut Badhiya 👏"; c = "yellow"; }
+  else { m = "System Pad Denge 🔥"; c = "green"; }
+  const s = document.getElementById("status-msg");
+  s.innerText = m; s.className = "status-box " + c;
+  window.scrollTo(0,0);
+};
+
+loadQ();
+</script>
 </body>
 </html>
