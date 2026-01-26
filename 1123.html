@@ -1,3 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8">
+  <title> Dinkar – Physics Test</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- GENERAL STYLES --- */
+    body {
+      margin: 0; padding: 0; min-height: 100vh;
+      background: linear-gradient(rgba(10, 25, 50, 0.9), rgba(20, 40, 80, 0.9)),
+                  url("https://images.unsplash.com/photo-1535223289827-42f1e9919769");
+      background-size: cover; background-position: center;
+      font-family: 'Funnel Sans', sans-serif;
+      display: flex; justify-content: center; align-items: flex-start; padding: 20px 0;
+    }
+
+    .test-container {
+      width: 95%; max-width: 800px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px; padding: 30px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      position: relative; overflow: hidden;
+    }
+
+    /* --- PROGRESS BAR --- */
+    .progress-container { width: 100%; height: 8px; background: #eee; position: absolute; top: 0; left: 0; }
+    #progress-bar { height: 100%; width: 0%; background: #4caf50; transition: width 0.3s ease; }
+
+    .title { font-size: 26px; font-weight: 700; color: #0d47a1; margin: 15px 0; text-align: center; text-transform: uppercase; }
+
+    /* --- QUIZ STYLES --- */
+    #question { font-size: 19px; font-weight: 600; margin-bottom: 20px; color: #222; line-height: 1.4; text-align: left; }
+    #options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
+
+    .option {
+      padding: 15px; border-radius: 10px; background: #f8fafd;
+      border: 1px solid #d1d9e6; cursor: pointer; transition: 0.2s;
+      font-size: 16px; color: #333; text-align: left;
+    }
+
+    /* INSTANT FEEDBACK COLORS */
+    .option.correct { background: #e8f5e9 !important; border-color: #4caf50 !important; color: #1b5e20; font-weight: bold; }
+    .option.wrong { background: #ffebee !important; border-color: #ef5350 !important; color: #b71c1c; }
+    .option.disabled { pointer-events: none; }
+
+    .btn-row { display: flex; gap: 10px; }
+    button {
+      flex: 1; padding: 14px; border: none; border-radius: 8px;
+      font-weight: 600; cursor: pointer; background: #1565c0; color: #fff;
+      font-size: 16px; transition: 0.2s;
+    }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    #prevBtn { background: #546e7a; } /* Slate color for back button */
+    #submitBtn { display: none; background: #ffb300; color: #000; }
+
+    /* --- RESULT SCREEN STYLES --- */
+    #result-screen { display: none; text-align: left; }
+    .answer-box { padding: 15px; margin-bottom: 12px; border-radius: 10px; border-left: 6px solid #ccc; color: #333; }
+    .res-correct { border-left-color: #4caf50; background: #f1f8f1; }
+    .res-wrong { border-left-color: #f44336; background: #fff5f5; }
+
+    .score-box { background: #ffca44; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; border-radius: 12px; margin: 20px 0; color: #000; }
+
+    /* MANAGED STATUS COLORS (Readable & Professional) */
+    .status-box { padding: 20px; text-align: center; font-size: 22px; font-weight: bold; border-radius: 12px; margin-top: 10px; }
+    .red { background: #fdecea; color: #b71c1c; border: 1px solid #f44336; }
+    .orange { background: #fff3e0; color: #e65100; border: 1px solid #ff9800; }
+    .yellow { background: #fffde7; color: #f57f17; border: 1px solid #fbc02d; }
+    .green { background: #e8f5e9; color: #1b5e20; border: 1px solid #4caf50; }
+
+    @media (max-width: 600px) { 
+      .btn-row { flex-direction: column; } 
+      .test-container { padding: 20px 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="test-container">
+  <div class="progress-container"><div id="progress-bar"></div></div>
+
+  <div id="quiz-screen">
+    <div class="title">Physics Test</div>
+    <div id="question">Loading...</div>
+    <div id="options"></div>
+    <div class="btn-row">
+      <button id="prevBtn" style="display: none;">Back</button>
+      <button id="nextBtn" disabled>Next Question</button>
+      <button id="submitBtn">View Results</button>
+    </div>
+  </div>
+
+  <div id="result-screen">
+    <div class="title">Detailed Report</div>
+    <div id="report-list"></div>
+    <div id="final-score" class="score-box"></div>
+    <div id="status-msg" class="status-box"></div>
+    <button onclick="location.reload()" style="margin-top: 20px; width: 100%;">Restart Test</button>
+  </div>
+</div>
+
+<script>
 const questions = [
 { q: "Rutherford’s α-particle scattering experiment led to the discovery of", o: ["Electron", "Neutron", "Nucleus", "Proton"], a: 2 },
 { q: "According to Rutherford’s model, most of the atom is", o: ["Positively charged", "Negatively charged", "Empty space", "Neutral"], a: 2 },
@@ -29,3 +135,88 @@ const questions = [
 { q: "Bohr radius is approximately", o: ["5.3 × 10⁻¹¹ m", "5.3 × 10⁻¹⁰ m", "5.3 × 10⁻⁹ m", "5.3 × 10⁻¹² m"], a: 0 },
 { q: "Hydrogen spectrum is an example of", o: ["Continuous spectrum", "Absorption spectrum", "Line spectrum", "Band spectrum"], a: 2 }
 ];
+let cur = 0, score = 0;
+let userAnswers = Array(questions.length).fill(-1);
+
+function loadQ() {
+  const q = questions[cur];
+  document.getElementById("question").innerText = `Q${cur+1}. ${q.q}`;
+  const optBox = document.getElementById("options");
+  optBox.innerHTML = "";
+  
+  // Show/Hide Back Button
+  document.getElementById("prevBtn").style.display = cur === 0 ? "none" : "block";
+  
+  // Progress bar
+  document.getElementById("progress-bar").style.width = ((cur+1)/questions.length)*100 + "%";
+
+  q.o.forEach((opt, i) => {
+    const div = document.createElement("div");
+    div.className = "option"; div.innerText = opt;
+    
+    // If already answered, show the reveal state
+    if (userAnswers[cur] !== -1) {
+      if (i === q.a) div.classList.add("correct");
+      else if (i === userAnswers[cur]) div.classList.add("wrong");
+      div.classList.add("disabled");
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("submitBtn").disabled = false;
+    }
+
+    div.onclick = () => {
+      if(userAnswers[cur] !== -1) return;
+      userAnswers[cur] = i;
+      const all = document.querySelectorAll(".option");
+      if(i === q.a) { div.classList.add("correct"); score++; }
+      else { div.classList.add("wrong"); all[q.a].classList.add("correct"); }
+      all.forEach(el => el.classList.add("disabled"));
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("submitBtn").disabled = false;
+    };
+    optBox.appendChild(div);
+  });
+
+  // Toggle Visibility of Next/Submit
+  document.getElementById("nextBtn").style.display = cur === questions.length-1 ? "none" : "block";
+  document.getElementById("submitBtn").style.display = cur === questions.length-1 ? "block" : "none";
+  
+  // If not answered yet, disable forward movement
+  if (userAnswers[cur] === -1) {
+    document.getElementById("nextBtn").disabled = true;
+    document.getElementById("submitBtn").disabled = true;
+  }
+}
+
+document.getElementById("nextBtn").onclick = () => { cur++; loadQ(); };
+document.getElementById("prevBtn").onclick = () => { cur--; loadQ(); };
+
+document.getElementById("submitBtn").onclick = () => {
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("result-screen").style.display = "block";
+  let html = "";
+  questions.forEach((q, i) => {
+    const isCor = userAnswers[i] === q.a;
+    html += `<div class="answer-box ${isCor?'res-correct':'res-wrong'}">
+      <b>Q${i+1}. ${q.q}</b><br>
+      <span style="font-size:14px;">Your Choice: ${userAnswers[i]===-1?'None':q.o[userAnswers[i]]}</span><br>
+      <span style="font-size:14px; color:#1b5e20; font-weight:600;">Correct: ${q.o[q.a]}</span>
+    </div>`;
+  });
+  document.getElementById("report-list").innerHTML = html;
+  const p = Math.round((score/questions.length)*100);
+  document.getElementById("final-score").innerText = `Result: ${score} / ${questions.length} (${p}%)`;
+  
+  let m = "", c = "";
+  if(p < 60) { m = "Mehanat Karo 💪"; c = "red"; }
+  else if(p < 75) { m = "Thik Hai 🙂"; c = "orange"; }
+  else if(p < 90) { m = "Bahut Badhiya 👏"; c = "yellow"; }
+  else { m = "System Pad Denge 🔥"; c = "green"; }
+  const s = document.getElementById("status-msg");
+  s.innerText = m; s.className = "status-box " + c;
+  window.scrollTo(0,0);
+};
+
+loadQ();
+</script>
+</body>
+</html>
