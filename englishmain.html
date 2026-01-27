@@ -3,20 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Selection | Dinkar</title>
+    <title> class 12 english question answer bihar board </title>
     <style>
-        :root { --primary: #6366f1; --bg: #ffffff; }
+        :root { 
+            --primary: #6366f1; 
+            --bg: #ffffff; /* Background remains white */
+            --text-main: #000000; /* Main text set to black */
+            --text-muted: #64748b; /* Muted text for descriptions */
+        }
         body { 
-            margin: 0; background: var(--bg); color: black ; 
-            font-family: 'Segoe UI', sans-serif; display: flex; 
-            flex-direction: column; align-items: center; justify-content: center; height: 100vh;
+            margin: 0; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh;
         }
         .container { width: 90%; max-width: 500px; text-align: center; }
         h1 { margin-bottom: 30px; font-weight: 800; letter-spacing: -1px; }
         
         .choice-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            /* Changed from transparent white to a subtle light gray border */
+            background: #ffffff;
+            border: 1px solid #e2e8f0; 
             padding: 25px;
             margin: 15px 0;
             border-radius: 20px;
@@ -24,16 +36,18 @@
             transition: 0.3s;
             text-decoration: none;
             display: block;
-            color: white;
+            color: var(--text-main); /* Card text is now black */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Added slight shadow for depth */
         }
         .choice-card:hover {
             transform: translateY(-5px);
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(99, 102, 241, 0.05);
             border-color: var(--primary);
         }
         .choice-card h2 { margin: 0; font-size: 22px; color: var(--primary); }
-        .choice-card p { margin: 10px 0 0; opacity: 0.6; font-size: 14px; }
+        .choice-card p { margin: 10px 0 0; color: var(--text-muted); font-size: 14px; }
         .back-link { margin-top: 20px; color: #94a3b8; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: var(--primary); }
     </style>
 </head>
 <body>
@@ -55,5 +69,4 @@
     </div>
 
 </body>
-
 </html>
