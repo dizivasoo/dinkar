@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dinkar | Learning Platform</title>
+<title> Dinkar | class 12 </title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
@@ -88,6 +88,15 @@ body {
 
 .overlay.active { opacity: 1; pointer-events: auto; }
 
+header-centre {
+  display: flex;
+  justify-content: center; /* Aligns horizontally */
+  align-items: center;     /* Aligns vertically */
+  height: 60px;            /* Adjust height as needed */
+  background-color: #f8f9fa; 
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+}
 /* Header */
 header {
   margin: 10px;
@@ -521,6 +530,7 @@ footer { margin: 15px; padding: 20px; text-align: center; font-size: 13px; opaci
 
 <header class="glass" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 20px;">
   <div class="menu-trigger" onclick="toggleSidebar()">☰</div>
+  <div class="header-center">Class 12</div>
   <h1 style="margin-left: 15px; font-size: 20px;">dinkar</h1>
 </header>
 
@@ -536,7 +546,7 @@ footer { margin: 15px; padding: 20px; text-align: center; font-size: 13px; opaci
   <div class="hero-text">
     <h2>Dinkar School FOR MCQ</h2>
     <p>BSEB, NEET & JEE focused mock tests and rank improvement.</p>
-    <button class="start-btn" onclick="go('subjectslisthh.html')"> START TEST </button>
+    <button class="start-btn" onclick="go('subjectslisthh.html')">GET STARTED</button>
   </div>
 </section>
 
@@ -833,4 +843,3 @@ function toggleSidebar(){
 
 </body>
 </html>
-
