@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hindi PYQs | Mobile</title>
+
+<style>
+/* Reset and Mobile Optimization */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+
+body{
+  min-height:100vh;
+  /* Warm Saffron/Cream gradient for Hindi */
+  background: radial-gradient(circle at top, #fff7ed, #ffedd5);
+  color: #7c2d12;
+  padding-bottom: 40px;
+}
+
+.page{
+  max-width: 480px;
+  margin: auto;
+  padding: 16px;
+}
+
+/* Header with Back Button */
+.header{
+  position: relative;
+  padding: 16px;
+  border-radius: 18px;
+  text-align: center;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(124, 45, 18, 0.08);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn {
+  position: absolute;
+  left: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #ffedd5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.back-btn:active {
+  background: #fed7aa;
+  transform: scale(0.9);
+}
+
+.header h1{font-size: 19px; font-weight: 800; color: #9a3412;}
+
+.hero{
+  margin-bottom: 24px;
+  padding: 24px;
+  border-radius: 22px;
+  /* Hindi Subject Gradient: Orange to Deep Orange */
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(234, 88, 12, 0.2);
+}
+
+.hero h2{font-size: 20px; font-weight: 700;}
+.hero p{font-size: 13px; opacity: 0.9; margin-top: 4px;}
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.card{
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  background: #ffffff;
+  font-weight: 700;
+  color: #9a3412;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.1s ease;
+  border: 1px solid rgba(154, 52, 18, 0.05);
+}
+
+.card:active {
+  transform: scale(0.95);
+  background: #fffaf5;
+}
+
+.year-text { font-size: 20px; }
+.sub-text { font-size: 11px; font-weight: 500; opacity: 0.6; margin-top: 2px; }
+
+</style>
+</head>
+
+<body>
+<div class="page">
+  <div class="header">
+    <button class="back-btn" onclick="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a3412" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <h1>Hindi PYQs</h1>
+  </div>
+
+  <div class="hero">
+    <h2>हिन्दी साहित्य (Hindi)</h2>
+    <p>BSEB Class 12 • 2009–2025</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+  function goBack() {
+    if (document.referrer !== "") {
+        window.history.back();
+    } else {
+        window.location.href = "index.html"; 
+    }
+  }
+
+  // Updated file list for Hindi
+  const examFiles = [
+    { year: 2025, file: "bsebhindipyq2025.pdf" },
+    { year: 2024, file: "bsebhindipyq2024.pdf" },
+    { year: 2023, file: "bsebhindipyq2023.pdf" },
+    { year: 2022, file: "bsebhindipyq2022.pdf" },
+    { year: 2021, file: "bsebhindipyq2021.pdf" },
+    { year: 2019, file: "bsebhindipyq2019.pdf" },
+    { year: 2018, file: "bsebhindipyq2018.pdf" }
+  ];
+
+  const grid = document.getElementById("grid");
+
+  examFiles.forEach(item => {
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `
+      <div class="year-text">${item.year}</div>
+      <div class="sub-text">यहाँ क्लिक करें</div>
+    `;
+
+    c.onclick = () => {
+      window.open(item.file, '_blank');
+    };
+
+    grid.appendChild(c);
+  });
+</script>
+</body>
+</html>
