@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"EM waves need medium",o:["Yes","No","Sometimes","Only air"],a:1},
-{q:"Speed of EM waves in vacuum is",o:["3×10⁸","3×10⁶","3×10⁵","3×10⁷"],a:0},
-{q:"Radio waves have",o:["Longest wavelength","Shortest","Medium","None"],a:0},
-{q:"Gamma rays have",o:["Highest energy","Lowest energy","No energy","None"],a:0},
-{q:"Visible light range is",o:["400–700 nm","100–200","800–1000","None"],a:0},
-{q:"X-rays are used in",o:["Medical","Cooking","Heating","Cooling"],a:0},
-{q:"UV rays cause",o:["Sunburn","Cold","Heat","Rain"],a:0},
-{q:"Microwaves used in",o:["Radar","X-ray","TV","Torch"],a:0},
-{q:"EM waves are",o:["Transverse","Longitudinal","Mechanical","None"],a:0},
-{q:"Maxwell predicted",o:["EM waves","Atoms","Electrons","Protons"],a:0}
+  {q:"Which of the following has the shortest wavelength?",o:["Gamma rays","X-rays","Ultraviolet rays","Microwaves"],a:0},
+  {q:"Electromagnetic waves are produced by",o:["A static charge","An accelerating charge","A charge moving with constant velocity","None of these"],a:1},
+  {q:"The ratio of the amplitude of magnetic field to the amplitude of electric field for an electromagnetic wave propagating in vacuum is",o:["c","1/c","c²","1/c²"],a:1},
+  {q:"The velocity of electromagnetic waves in a medium of permittivity ε and permeability μ is",o:["1/√(με)","√(μ/ε)","√(ε/μ)","√(με)"],a:0},
+  {q:"The dimension of (1/μ₀ε₀) is same as that of",o:["Velocity","(Velocity)²","Force","Acceleration"],a:1},
+  {q:"Which part of the electromagnetic spectrum is used in satellite communication?",o:["Radiowaves","Microwaves","Ultraviolet","Infrared"],a:1},
+  {q:"The displacement current arises due to",o:["Flow of electrons","Flow of protons","Change in magnetic flux","Change in electric flux with time"],a:3},
+  {q:"Greenhouse effect is caused by",o:["Ultraviolet rays","Infrared rays","X-rays","Gamma rays"],a:1},
+  {q:"The source of energy for the sun is",o:["Nuclear fission","Nuclear fusion","Chemical reaction","Gravitational contraction"],a:0},
+  {q:"Electromagnetic waves are",o:["Transverse in nature","Longitudinal in nature","Mechanical waves","None of these"],a:0},
+  {q:"The ozone layer absorbs",o:["Infrared radiation","Microwaves","Ultraviolet radiation","Visible light"],a:2},
+  {q:"Which of the following is used to investigate the structure of crystals?",o:["X-rays","UV rays","Infrared","Microwaves"],a:0},
+  {q:"The waves used in 'night vision' cameras are",o:["X-rays","Microwaves","Infrared","Gamma rays"],a:2},
+  {q:"The amplitude of electric and magnetic fields in an EM wave are related as",o:["E₀ = B₀/c","E₀ = cB₀","E₀ = c/B₀","E₀ = B₀"],a:1},
+  {q:"According to Maxwell, a changing electric field produces",o:["Electric pressure","Magnetic field","Electric current","Radiation pressure"],a:1},
+  {q:"The frequency of visible light is of the order of",o:["10¹⁵ Hz","10¹⁰ Hz","10⁸ Hz","10⁴ Hz"],a:0},
+  {q:"Which electromagnetic wave is used in RADAR systems?",o:["Ultraviolet","Infrared","Microwaves","Gamma rays"],a:2},
+  {q:"If E and B are the electric and magnetic field vectors of EM waves, then the direction of propagation of EM wave is along",o:["E","B","E × B","B × E"],a:2},
+  {q:"The velocity of EM waves in vacuum is",o:["3 × 10⁸ m/s","3 × 10¹⁰ m/s","3 × 10⁶ m/s","Depends on frequency"],a:0},
+  {q:"Which of the following is NOT an electromagnetic wave?",o:["X-rays","Sound waves","Gamma rays","Microwaves"],a:1},
+  {q:"The physical quantity that remains same for all EM waves in vacuum is",o:["Wavelength","Frequency","Speed","Energy"],a:2},
+  {q:"In an EM wave, the phase difference between electric and magnetic field vectors is",o:["0","π/2","π","π/4"],a:0},
+  {q:"The wave with the highest frequency is",o:["Radio waves","Gamma rays","Microwaves","Visible light"],a:1},
+  {q:"Maxwell's modified Ampere's Law is",o:["∮B·dl = μ₀I","∮B·dl = μ₀(I + I_d)","∮E·dA = Q/ε₀","∮B·dA = 0"],a:1},
+  {q:"The pressure exerted by an electromagnetic wave on a surface is called",o:["Magnetic pressure","Radiation pressure","Electric pressure","Thermal pressure"],a:1},
+  {q:"Water purifier mostly uses",o:["Infrared rays","Microwaves","Ultraviolet rays","X-rays"],a:2},
+  {q:"If the wavelength of light is 4000Å, then its frequency is",o:["7.5 × 10¹⁴ Hz","5 × 10¹⁴ Hz","3 × 10¹⁴ Hz","6 × 10¹⁴ Hz"],a:0},
+  {q:"Welders wear special glass goggles to protect their eyes from",o:["Infrared rays","Microwaves","X-rays","UV rays"],a:3},
+  {q:"Which of the following travels with the speed of light?",o:["α-rays","β-rays","γ-rays","Cathode rays"],a:2},
+  {q:"The value of displacement current is equal to",o:["ε₀(dΦ_E/dt)","μ₀(dΦ_B/dt)","(dΦ_E/dt)","ε₀E/t"],a:0},
+  {q:"Electromagnetic waves carry",o:["Charge","Mass","Energy and Momentum","None of these"],a:2},
+  {q:"Radio waves are reflected back to earth by the",o:["Troposphere","Stratosphere","Ionosphere","Mesosphere"],a:2},
+  {q:"The wavelength of visible light ranges from",o:["400 nm to 750 nm","1 nm to 100 nm","1 mm to 1 m","10 m to 100 m"],a:0},
+  {q:"Who first experimentally demonstrated the existence of EM waves?",o:["Maxwell","Hertz","Marconi","Ampere"],a:1},
+  {q:"The energy of EM waves is divided",o:["Equally between E and B","More in E than B","More in B than E","Depends on wavelength"],a:0}
 ];
-
 
 let index = 0;
 let score = 0;
@@ -332,7 +356,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +427,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_8")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +438,7 @@ localStorage.getItem("physics_chapter_8")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
