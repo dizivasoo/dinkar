@@ -301,18 +301,42 @@ body{
 
 /* QUESTIONS */
 const questions = [
-{q:"Induced emf is due to change in",o:["Flux","Current","Voltage","Resistance"],a:0},
-{q:"SI unit of flux is",o:["Weber","Tesla","Henry","Volt"],a:0},
-{q:"Faraday’s law relates emf with",o:["Flux","Current","Field","Charge"],a:0},
-{q:"Lenz’s law obeys",o:["Energy conservation","Charge conservation","Momentum","Mass"],a:0},
-{q:"Self inductance unit is",o:["Henry","Tesla","Weber","Volt"],a:0},
-{q:"Mutual inductance occurs between",o:["Two coils","One coil","Battery","Resistor"],a:0},
-{q:"Induced current direction is given by",o:["Lenz law","Ohm law","Kirchhoff","Ampere"],a:0},
-{q:"AC generator works on",o:["Induction","Conduction","Radiation","Reflection"],a:0},
-{q:"Eddy currents cause",o:["Heating","Cooling","Motion","Light"],a:0},
-{q:"Transformer works on",o:["Induction","DC","Resistance","Capacitance"],a:0}
+  {q:"The phenomena of generation of induced emf in a conductor when the magnetic flux linked with it changes is called",o:["Magnetic induction","Electromagnetic induction","Self induction","Mutual induction"],a:1},
+  {q:"Lenz's law is a consequence of the law of conservation of",o:["Charge","Mass","Momentum","Energy"],a:3},
+  {q:"The SI unit of magnetic flux is",o:["Tesla","Henry","Gauss","Weber"],a:3},
+  {q:"The polarity of induced emf is given by",o:["Ampere's law","Lenz's law","Biot-Savart law","Fleming's Right Hand Rule"],a:1},
+  {q:"The self-inductance of a long solenoid is proportional to",o:["Number of turns","Square of number of turns","Area of cross-section","Both B and C"],a:3},
+  {q:"Eddy currents are produced when",o:["A metal is kept in a steady magnetic field","A metal is kept in a varying magnetic field","A circular coil is placed in a steady field","Current is passed through a conductor"],a:1},
+  {q:"The SI unit of self-inductance is",o:["Weber","Henry","Tesla","Farad"],a:1},
+  {q:"A metal plate can be heated by",o:["Passing direct current","Passing alternating current","Placing in a time-varying magnetic field","All of the above"],a:3},
+  {q:"The mutual inductance between two coils depends on",o:["Medium between coils","Distance between coils","Orientation of coils","All of the above"],a:3},
+  {q:"If the number of turns in a coil is doubled, its self-inductance becomes",o:["Double","Half","Four times","One-fourth"],a:2},
+  {q:"An inductor stores energy in its",o:["Electric field","Magnetic field","Core","Coil"],a:1},
+  {q:"The induced emf in a coil rotating in a uniform magnetic field is maximum when the angle between field and area vector is",o:["0°","90°","45°","180°"],a:1},
+  {q:"The role of inductance in a circuit is equivalent to",o:["Inertia","Force","Friction","Momentum"],a:0},
+  {q:"The working of an AC generator is based on",o:["Chemical effect","Heating effect","Mutual induction","Electromagnetic induction"],a:3},
+  {q:"The magnetic flux linked with a coil of N turns and area A perpendicular to field B is",o:["B/A","NAB","BA/N","Zero"],a:1},
+  {q:"A transformer works on the principle of",o:["Self induction","Eddy currents","Mutual induction","Seebeck effect"],a:2},
+  {q:"When a magnet is moved towards a coil, the induced current in the coil produces a",o:["Force of attraction","Gravitational force","Repulsive force","None of these"],a:2},
+  {q:"The expression for motional emf is",o:["Bv/l","Blv","B²/lv","Bl/v"],a:1},
+  {q:"The coefficient of mutual induction for two coils is 2H. If current in one changes by 5A in 1s, the emf in other is",o:["10V","5V","2V","0.4V"],a:0},
+  {q:"Dimensional formula of magnetic flux is",o:["[ML²T⁻²A⁻¹]","[MLT⁻²A⁻¹]","[ML²T⁻¹A⁻¹]","[ML²T⁻²A⁻²]"],a:0},
+  {q:"If a current of 2A in a coil of 100 turns produces a flux of 0.05 Wb, the self-inductance is",o:["2.5 H","5 H","0.5 H","25 H"],a:0},
+  {q:"Which of the following does not use eddy currents?",o:["Magnetic braking","Induction furnace","Electric heater","Galvanometer damping"],a:2},
+  {q:"The rate of change of magnetic flux has the same units as",o:["Current","Resistance","Potential difference","Capacitance"],a:2},
+  {q:"The energy density in a magnetic field B is proportional to",o:["B","√B","B²","1/B²"],a:2},
+  {q:"A copper ring is held horizontally and a bar magnet is dropped through the ring. Its acceleration is",o:["Equal to g","Greater than g","Zero","Less than g"],a:3},
+  {q:"The flux linked with a circuit of resistance R changes by ΔΦ. The total charge Q that flows is",o:["ΔΦ/R","R·ΔΦ","ΔΦ/R²","R²/ΔΦ"],a:0},
+  {q:"Self-inductance of a coil is the measure of",o:["Electrical friction","Electrical inertia","Electrical momentum","Electrical energy"],a:1},
+  {q:"Two coils are placed close to each other. The mutual inductance is maximum when",o:["Coils are parallel","Coils are perpendicular","Coils are at 45°","Coils are concentric and coplanar"],a:3},
+  {q:"The magnetic flux linked with a coil changes from 10Wb to 2Wb in 0.1s. The induced emf is",o:["8V","0.8V","80V","40V"],a:2},
+  {q:"The core of a transformer is laminated to",o:["Increase flux","Decrease resistance","Reduce hysteresis","Reduce eddy current loss"],a:3},
+  {q:"A coil is removed from a magnetic field rapidly. The induced charge is",o:["More than if removed slowly","Less than if removed slowly","Independent of speed","Zero"],a:2},
+  {q:"A back emf is produced in",o:["Transformer","DC Motor","Voltmeter","Ammeter"],a:1},
+  {q:"The unit of L/R is same as that of",o:["Frequency","Velocity","Force","Time"],a:3},
+  {q:"Henry is equivalent to",o:["Weber/Ampere","Volt·sec/Ampere","Ohm·sec","All of the above"],a:3},
+  {q:"In an AC generator, the brush is made of",o:["Copper","Iron","Aluminum","Carbon"],a:3}
 ];
-
 
 
 let index = 0;
@@ -334,7 +358,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -405,8 +429,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_7")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -416,7 +440,7 @@ localStorage.getItem("physics_chapter_7")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
