@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 /35 </div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Haloalkanes contain",o:["Halogen","Oxygen","Nitrogen","Sulphur"],a:0},
-{q:"C–X bond is",o:["Polar","Non-polar","Ionic","Metallic"],a:0},
-{q:"SN1 reaction occurs in",o:["Tertiary","Primary","Secondary","All"],a:0},
-{q:"SN2 reaction is",o:["Single step","Two step","Slow","Ionic"],a:0},
-{q:"Aryl halides are",o:["Reactive","Less reactive","Very reactive","Unstable"],a:1},
-{q:"Grignard reagent reacts with",o:["Water","Alcohol","Ether","None"],a:0},
-{q:"Chloroform is",o:["CHCl₃","CCl₄","CH₂Cl₂","CH₃Cl"],a:0},
-{q:"Wurtz reaction forms",o:["Alkane","Alkene","Alkyne","Alcohol"],a:0},
-{q:"Iodoform test is given by",o:["Methyl ketones","Alcohols","Acids","Amines"],a:0},
-{q:"Haloarenes undergo",o:["Electrophilic substitution","Nucleophilic","Addition","Elimination"],a:0}
+  {q:"Which of the following is a primary halide?",o:["Isopropyl chloride","sec-Butyl chloride","neopentyl chloride","tert-Butyl chloride"],a:2},
+  {q:"The IUPAC name of CH3CH(Cl)CH3 is:",o:["2-Chloropropane","1-Chloropropane","Isopropyl chloride","Chloropropene"],a:0},
+  {q:"Which of the following has the highest boiling point?",o:["n-Butyl chloride","Isobutyl chloride","tert-Butyl chloride","sec-Butyl chloride"],a:0},
+  {q:"Haloalkanes are more reactive than haloarenes towards nucleophilic substitution due to:",o:["Resonance effect","sp2 hybridisation","Partial double bond character","Steric hindrance"],a:0},
+  {q:"The conversion of an alkyl halide into an alcohol is a:",o:["Substitution reaction","Addition reaction","Elimination reaction","Dehydrohalogenation"],a:0},
+  {q:"Which of the following will undergo SN1 reaction fastest?",o:["tert-Butyl bromide","n-Butyl bromide","sec-Butyl bromide","Isobutyl bromide"],a:0},
+  {q:"The reaction of methyl bromide with silver fluoride to give methyl fluoride is called:",o:["Swarts reaction","Finkelstein reaction","Wurtz reaction","Sandmeyer reaction"],a:0},
+  {q:"Alkyl iodides are often prepared by the reaction of alkyl chlorides/bromides with NaI in acetone. This is:",o:["Finkelstein reaction","Swarts reaction","Etard reaction","Wurtz reaction"],a:0},
+  {q:"In SN2 reactions, the order of reactivity of halides is:",o:["CH3X > 1° > 2° > 3°","3° > 2° > 1° > CH3X","1° > 3° > 2° > CH3X","All react at same rate"],a:0},
+  {q:"Phosgene is a common name for:",o:["Carbonyl chloride","Phosphine","Phosphorus trichloride","Carbon tetrachloride"],a:0},
+  {q:"Which of the following is an example of a gem-dihalide?",o:["1,2-Dichloroethane","Ethylidene chloride","Ethylene dichloride","Allyl chloride"],a:1},
+  {q:"Reaction of ethyl chloride with aqueous KOH gives:",o:["Ethene","Ethanol","Ethane","Ethyl alcohol"],a:1},
+  {q:"A chiral molecule is one which is:",o:["Symmetrical","Non-superimposable on its mirror image","Planar","Superimposable on its mirror image"],a:1},
+  {q:"The reaction: 2RX + 2Na -> R-R + 2NaX is:",o:["Fittig reaction","Wurtz reaction","Frankland reaction","Sandmeyer reaction"],a:1},
+  {q:"Which reagent is used in the Sandmeyer reaction?",o:["Cu2Cl2 / HCl","Cu powder / HCl","AgF / H2O","NaI / Acetone"],a:1},
+  {q:"The nature of C-X bond in haloalkanes is:",o:["Non-polar","Polar covalent","Ionic","Purely covalent"],a:1},
+  {q:"Chloroform is stored in dark colored bottles because:",o:["It is volatile","It oxidizes to poisonous Phosgene","It reacts with glass","It evaporates easily"],a:1},
+  {q:"Ambident nucleophiles like KCN react with alkyl halides to primarily form:",o:["Isocyanides","Nitrites","Alkyl cyanides","Nitroalkanes"],a:2},
+  {q:"The catalyst used in the Friedel-Crafts alkylation of benzene is:",o:["Anhydrous AlCl3","FeCl3","Conc. H2SO4","ZnCl2"],a:0},
+  {q:"Which compound is used as a refrigerant (Freon)?",o:["CF2Cl2","CHCl3","CH2Cl2","CCl4"],a:0},
+  {q:"Optical isomerism is shown by:",o:["2-Chlorobutane","1-Chlorobutane","n-Butyl chloride","2-Chloropropane"],a:0},
+  {q:"SN2 reaction proceeds with:",o:["Racemisation","Retention of configuration","Inversion of configuration","None of these"],a:2},
+  {q:"Which of the following is a polyhalogen compound?",o:["Vinyl chloride","Isopropyl chloride","Carbon tetrachloride","Ethyl bromide"],a:2},
+  {q:"The major product of the reaction between 2-bromobutane and alcoholic KOH is:",o:["1-Butene","2-Butanol","2-Butene","Butane"],a:2},
+  {q:"DDT is prepared by the reaction of chlorobenzene with:",o:["Chloral","Chloroform","Carbon tetrachloride","Chlorine"],a:0},
+  {q:"Reaction of chlorobenzene with sodium in dry ether to give diphenyl is:",o:["Wurtz reaction","Wurtz-Fittig reaction","Fittig reaction","Sandmeyer reaction"],a:2},
+  {q:"Which has the highest dipole moment?",o:["CH3Cl","CH3F","CH3Br","CH3I"],a:0},
+  {q:"Grignard reagent is prepared by the reaction of alkyl halide with:",o:["Sodium","Zinc","Magnesium","Calcium"],a:2},
+  {q:"Alkyl halides are insoluble in water because:",o:["They are non-polar","They cannot form hydrogen bonds","They are lighter than water","They form a separate layer"],a:1},
+  {q:"Identify the allylic halide among the following:",o:["3-Chloroprop-1-ene","Chlorobenzene","1-Chloropropene","2-Chloropropane"],a:0},
+  {q:"The commercial name of CCl4 is:",o:["Pyrene","Freon","Teflon","Chloral"],a:3},
+  {q:"Which of the following is used in fire extinguishers?",o:["Chloroform","Iodoform","Freon","Pyrene (CCl4)"],a:3},
+  {q:"Pure chloroform can be tested by:",o:["AgNO3 solution","FeCl3 solution","Schiff's reagent","Benedict's solution"],a:0},
+  {q:"The major product formed when ethyl bromide reacts with AgCN is:",o:["Ethyl cyanide","Ethyl bromide","Ethyl alcohol","Ethyl isocyanide"],a:3},
+  {q:"Which halide will be most reactive towards SN1?",o:["Benzyl chloride","Vinyl chloride","Chlorobenzene","Ethyl chloride"],a:0}
 ];
-
 
 
 let index = 0;
@@ -333,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_10")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -415,7 +439,7 @@ localStorage.getItem("chemistry_chapter_10")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
