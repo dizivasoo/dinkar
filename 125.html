@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Communication system has",o:["Transmitter","Receiver","Channel","All"],a:3},
-{q:"Bandwidth means",o:["Frequency range","Amplitude","Power","Noise"],a:0},
-{q:"AM stands for",o:["Amplitude modulation","Angle modulation","Audio modulation","None"],a:0},
-{q:"FM varies",o:["Frequency","Amplitude","Phase","None"],a:0},
-{q:"Carrier wave has",o:["High frequency","Low frequency","Zero","None"],a:0},
-{q:"Noise affects",o:["Signal quality","Power","Frequency","None"],a:0},
-{q:"Antenna converts",o:["Electrical to EM","EM to sound","Heat","None"],a:0},
-{q:"Optical fiber uses",o:["TIR","Reflection","Diffraction","None"],a:0},
-{q:"Satellite communication uses",o:["Microwaves","X-rays","UV","Gamma"],a:0},
-{q:"Modulation is needed to",o:["Reduce antenna size","Increase noise","Lose signal","None"],a:0}
+  { q: "The range of frequencies used for speech signals in telephony is:", o: ["10 kHz to 20 kHz", "300 Hz to 3100 Hz", "5 MHz to 10 MHz", "1 GHz to 2 GHz"], a: 1 },
+  { q: "Which of the following layers of atmosphere is crucial for sky wave propagation?", o: ["Troposphere", "Stratosphere", "Ionosphere", "Mesosphere"], a: 2 },
+  { q: "The process of superimposing a low-frequency signal on a high-frequency carrier is:", o: ["Demodulation", "Modulation", "Attenuation", "Amplification"], a: 1 },
+  { q: "In a communication system, noise most likely affects the signal in the:", o: ["Transmitter", "Receiver", "Channel", "Source"], a: 2 },
+  { q: "A device that converts sound energy into electrical energy is a:", o: ["Loudspeaker", "Transducer (Microphone)", "Amplifier", "Antenna"], a: 1 },
+  { q: "The maximum distance up to which a TV transmission can be received depends on:", o: ["Height of antenna", "Power of transmitter", "Both A and B", "None of these"], a: 2 },
+  { q: "Which frequency range is generally used for satellite communication?", o: ["30 to 300 kHz", "3 to 30 MHz", "3 to 30 GHz", "100 to 200 Hz"], a: 2 },
+  { q: "Ground wave propagation is effective for frequencies:", o: ["Less than 2 MHz", "Greater than 30 MHz", "Exactly 100 MHz", "Above 1 GHz"], a: 0 },
+  { q: "The modulation index 'm' for an AM wave is kept such that:", o: ["m > 1", "m = 0", "0 < m <= 1", "m = infinity"], a: 2 },
+  { q: "Which mode of propagation is used for line-of-sight (LOS) communication?", o: ["Sky wave", "Space wave", "Ground wave", "Surface wave"], a: 1 },
+  { q: "Optical fiber communication works on the principle of:", o: ["Reflection", "Refraction", "Total Internal Reflection", "Scattering"], a: 2 },
+  { q: "The loss of strength of a signal while propagating through a medium is called:", o: ["Distortion", "Attenuation", "Noise", "Reception"], a: 1 },
+  { q: "A repeater is a combination of:", o: ["Filter and Mixer", "Receiver and Transmitter", "Amplifier and Attenuator", "Modulator and Demodulator"], a: 1 },
+  { q: "In Frequency Modulation (FM):", o: ["Amplitude varies", "Phase varies", "Frequency varies with signal", "Everything is constant"], a: 2 },
+  { q: "The bandwidth of a video signal is approximately:", o: ["20 kHz", "4.2 MHz", "100 MHz", "2 GHz"], a: 1 },
+  { q: "Digital signals are usually:", o: ["Continuous", "Discrete", "Random", "None of these"], a: 1 },
+  { q: "Sky wave propagation is NOT possible for frequencies above 30 MHz because:", o: ["Waves are absorbed", "Ionosphere cannot reflect them", "Antenna size becomes too large", "Earth's curvature prevents it"], a: 1 },
+  { q: "The height of a TV tower is 100m. The coverage range is (R=6400km):", o: ["~36 km", "~50 km", "~64 km", "~100 km"], a: 0 },
+  { q: "Which device is used to increase the power of a transmitted signal?", o: ["Rectifier", "Amplifier", "Transducer", "Detector"], a: 1 },
+  { q: "FAX is used for the transmission of:", o: ["Live video", "Voice only", "Static documents/images", "Only binary numbers"], a: 2 },
+  { q: "The range of a signal can be increased by using:", o: ["Low frequency", "High power transmitter", "Repeaters", "Both B and C"], a: 2 },
+  { q: "An antenna acts as a:", o: ["Resistor", "Transducer", "Capacitor", "Inductor"], a: 1 },
+  { q: "The wavelength of a 100 MHz electromagnetic wave is:", o: ["0.3 m", "3 m", "30 m", "300 m"], a: 1 },
+  { q: "Modulation is necessary for:", o: ["Short antenna length", "High power transmission", "Reduced interference", "All of the above"], a: 2 },
+  { q: "A modem is a device used for:", o: ["Modulation only", "Demodulation only", "Both Modulation/Demodulation", "Encryption"], a: 2 },
+  { q: "Which of the following is an example of point-to-point communication?", o: ["Radio", "Television", "Telephony", "Public address system"], a: 2 },
+  { q: "The core of an optical fiber has a refractive index that is:", o: ["Lower than cladding", "Higher than cladding", "Same as cladding", "Zero"], a: 1 },
+  { q: "In AM, the bandwidth is equal to:", o: ["fm", "2 * fm", "3 * fm", "fm / 2"], a: 1 },
+  { q: "The critical frequency for a layer in the ionosphere depends on:", o: ["Transmitter power", "Antenna height", "Electron density", "Distance from tower"], a: 2 },
+  { q: "Which is a 'Broadcast' type communication?", o: ["Mobile phone", "Walkie-talkie", "Radio transmission", "Email"], a: 2 },
+  { q: "The 'length' of a dipole antenna is ideally:", o: ["lambda", "lambda / 2", "lambda / 4", "2 * lambda"], a: 1 },
+  { q: "A signal $A \sin(\omega t)$ is a:", o: ["Digital signal", "Analog signal", "Pulse signal", "Noise signal"], a: 1 },
+  { q: "Frequencies in the UHF range normally propagate by means of:", o: ["Ground waves", "Sky waves", "Space waves", "Surface waves"], a: 2 },
+  { q: "The process of extracting information from a modulated carrier is:", o: ["Transduction", "Modulation", "Demodulation", "Rectification"], a: 2 },
+  { q: "Information in a communication system can be:", o: ["Analog only", "Digital only", "Both Analog and Digital", "None of these"], a: 2 }
 ];
 
 
@@ -332,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_15")
 
   document.querySelector(".test-box").innerHTML = `
@@ -415,7 +440,7 @@ localStorage.getItem("physics_chapter_15")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
