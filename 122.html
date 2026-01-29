@@ -299,20 +299,43 @@ body{
 
 <script>
 /* QUESTIONS */
-/* QUESTIONS */
-const questions = [
-{q:"Nucleus contains",o:["Protons","Neutrons","Both","Electrons"],a:2},
-{q:"Mass defect causes",o:["Binding energy","Radiation","Charge","None"],a:0},
-{q:"E=mc² given by",o:["Einstein","Newton","Bohr","Planck"],a:0},
-{q:"Alpha decay emits",o:["Helium nucleus","Electron","Photon","Neutron"],a:0},
-{q:"Beta decay emits",o:["Electron","Photon","Proton","Alpha"],a:0},
-{q:"Gamma rays have",o:["No mass","Charge","Both","None"],a:0},
-{q:"Half life is time for",o:["Half decay","Full decay","No decay","None"],a:0},
-{q:"Fusion occurs in",o:["Sun","Earth","Reactor","Bomb"],a:0},
-{q:"Fission uses",o:["Uranium","Hydrogen","Helium","Carbon"],a:0},
-{q:"Binding energy per nucleon is max for",o:["Iron","Uranium","Hydrogen","Gold"],a:0}
+  const questions = [
+  {q: "The radius of a nucleus with mass number A is proportional to", o: ["A^(1/3)", "A", "A^2", "A^(1/2)"], a: 0},
+  {q: "In the fusion of two light nuclei, the total mass of the products is", o: ["More than the sum of masses of reactants", "Equal to the sum of masses of reactants", "Less than the sum of masses of reactants", "Twice the mass of reactants"], a: 2},
+  {q: "The mass defect per nucleon is a measure of", o: ["Size of nucleus", "Binding energy per nucleon", "Atomic number", "Number of neutrons"], a: 1},
+  {q: "Two nuclei have their mass numbers in the ratio 1:8. The ratio of their nuclear radii is", o: ["1:8", "1:2", "1:4", "2:1"], a: 1},
+  {q: "The energy equivalent of 1 amu is nearly", o: ["931.5 MeV", "93.15 MeV", "1.6 x 10^-19 J", "0.511 MeV"], a: 0},
+  {q: "Which of the following is used as a moderator in a nuclear reactor?", o: ["Uranium", "Cadmium", "Boron", "Heavy Water"], a: 3},
+  {q: "In an alpha decay, the atomic number of the parent nucleus", o: ["Decreases by 2", "Increases by 2", "Decreases by 4", "Remains same"], a: 0},
+  {q: "Nuclear forces are", o: ["Charge dependent", "Long range", "Strongly attractive and short range", "Gravitational in nature"], a: 2},
+  {q: "The stability of a nucleus is decided by its", o: ["Binding energy per nucleon", "Total binding energy", "Number of protons", "Number of electrons"], a: 0},
+  {q: "The density of nuclear matter is", o: ["Dependent on A", "Independent of A", "Proportional to A", "Inversely proportional to A"], a: 1},
+  {q: "During a beta-minus (β-) decay, the neutron to proton ratio", o: ["Increases", "Remains same", "Decreases", "Becomes zero"], a: 2},
+  {q: "The force between two neutrons is", o: ["Repulsive", "Strongly attractive", "Zero", "Only gravitational"], a: 1},
+  {q: "A radioactive element has a half-life of 5 days. After 20 days, the fraction remaining is", o: ["1/4", "1/8", "1/10", "1/16"], a: 3},
+  {q: "The mass number of a nucleus is", o: ["Always less than atomic number", "Always more than atomic number", "Number of nucleons in the nucleus", "Total number of protons"], a: 2},
+  {q: "For a stable nucleus, the number of neutrons (N) related to atomic number (Z) for heavy nuclei is", o: ["N < Z", "N = Z", "N > Z", "N = 0"], a: 2},
+  {q: "The unit of radioactivity 'Curie' is equal to", o: ["3.7 x 10^10 disintegrations/sec", "1 disintegration/sec", "10^6 disintegrations/sec", "3.7 x 10^7 disintegrations/sec"], a: 0},
+  {q: "Which particle is emitted when a neutron is converted into a proton inside a nucleus?", o: ["Positron", "Alpha particle", "Gamma ray", "Electron"], a: 3},
+  {q: "The binding energy per nucleon is maximum for the nucleus", o: ["U-238", "Fe-56", "O-16", "He-4"], a: 1},
+  {q: "Nuclear fission is the process in which", o: ["A heavy nucleus splits into two lighter nuclei", "Two light nuclei combine", "A nucleus emits an alpha particle", "Electrons are ejected from the shell"], a: 0},
+  {q: "The source of energy in the sun is", o: ["Nuclear fission", "Chemical reaction", "Nuclear fusion", "Radioactive decay"], a: 2},
+  {q: "Control rods in a nuclear reactor are made of", o: ["Graphite", "Cadmium", "Sodium", "Plutonium"], a: 1},
+  {q: "Isotopes have the same", o: ["Mass number", "Chemical properties", "Number of neutrons", "Binding energy"], a: 0},
+  {q: "Isobars are atoms having the same", o: ["Number of protons", "Number of neutrons", "Atomic number", "Mass number"], a: 3},
+  {q: "The radius of a nucleus is of the order of", o: ["10^-15 m", "10^-10 m", "10^-8 m", "10^-12 m"], a: 0},
+  {q: "One gram of a substance is converted into energy. The energy released is", o: ["9 x 10^13 J", "3 x 10^8 J", "1 J", "9 x 10^10 J"], a: 0},
+  {q: "The mean life (τ) of a radioactive substance is related to half-life (T) as", o: ["τ = 1.44 T", "τ = T", "τ = 0.693 T", "τ = T^2"], a: 0},
+  {q: "Which of the following has zero rest mass?", o: ["Neutron", "Electron", "Alpha particle", "Photon (Gamma ray)"], a: 3},
+  {q: "If the binding energy per nucleon increases, the nucleus becomes", o: ["Less stable", "More stable", "Radioactive", "Lighter"], a: 1},
+  {q: "Which of the following rays is not deflected by a magnetic field?", o: ["Alpha rays", "Beta rays", "Gamma rays", "Positrons"], a: 2},
+  {q: "In an endothermic nuclear reaction, the Q-value is", o: ["Positive", "Zero", "Negative", "Infinite"], a: 2},
+  {q: "The particle used to trigger fission in U-235 is", o: ["Proton", "Alpha particle", "Fast neutron", "Slow neutron"], a: 3},
+  {q: "Nuclear fusion requires high temperature because", o: ["It is an exothermic process", "Nuclei must overcome electrostatic repulsion", "Binding energy is low", "Moderators are not used"], a: 1},
+  {q: "Which of the following are called nucleons?", o: ["Electrons and protons", "Electrons and neutrons", "Photons and neutrons", "Protons and neutrons"], a: 3},
+  {q: "In a nuclear reactor, the coolant is used to", o: ["Slow down neutrons", "Control the chain reaction", "Absorb neutrons", "Transfer heat from reactor core"], a: 3},
+  {q: "The most stable nuclei are found in the mass number range of", o: ["1 to 20", "200 to 240", "120 to 180", "40 to 120"], a: 3}
 ];
-
 
 let index = 0;
 let score = 0;
@@ -333,7 +356,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +427,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_12")
 
   document.querySelector(".test-box").innerHTML = `
@@ -416,7 +439,7 @@ localStorage.getItem("physics_chapter_12")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
