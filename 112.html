@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"SI unit of potential is",o:["Volt","Joule","Coulomb","Ampere"],a:0},
-{q:"Potential energy depends on",o:["Charge","Position","Both","None"],a:2},
-{q:"Capacitance unit is",o:["Farad","Volt","Ohm","Tesla"],a:0},
-{q:"Capacitance increases with",o:["Area","Dielectric","Both","None"],a:2},
-{q:"Parallel plate capacitor stores",o:["Charge","Energy","Both","None"],a:1},
-{q:"Dielectric reduces",o:["Charge","Field","Potential","Energy"],a:1},
-{q:"Series combination gives",o:["Less capacitance","More capacitance","Same","Infinite"],a:0},
-{q:"Capacitor blocks",o:["AC","DC","Both","None"],a:1},
-{q:"Energy stored is proportional to",o:["V","Q","C","V²"],a:3},
-{q:"Electric potential is scalar",o:["True","False","Sometimes","None"],a:0}
+  {q:"The SI unit of electrostatic potential is",o:["Joule","Volt","Farad","Coulomb"],a:1},
+  {q:"Work done in moving a charge between two points on an equipotential surface is",o:["Zero","Positive","Negative","Infinite"],a:0},
+  {q:"The electrostatic potential at a point on the equator of an electric dipole is",o:["Maximum","Minimum","Zero","Constant"],a:2},
+  {q:"The SI unit of capacitance is",o:["Ohm","Henry","Farad","Tesla"],a:2},
+  {q:"If the distance between two plates of a parallel plate capacitor is doubled, its capacitance",o:["Doubles","Is halved","Remains same","Becomes zero"],a:1},
+  {q:"Dielectric constant of a metal is",o:["Zero","One","Infinite","Negative"],a:2},
+  {q:"Potential energy of a system of two charges is given by",o:["kq1q2/r","kq1q2/r²","1/2 CV²","Zero"],a:0},
+  {q:"The capacity of a spherical conductor of radius R is",o:["4πε₀R","4πε₀/R","R/4πε₀","4πε₀R²"],a:0},
+  {q:"The electric potential inside a hollow charged sphere is",o:["Zero","Uniform","Increasing","Decreasing"],a:1},
+  {q:"Three capacitors of 3μF each are connected in series. The equivalent capacitance is",o:["9μF","1μF","3μF","0.33μF"],a:1},
+  {q:"The energy stored in a capacitor of capacitance C and potential V is",o:["CV","1/2 CV²","C/V","V/C"],a:1},
+  {q:"When a dielectric slab is introduced between plates of a capacitor, the capacitance",o:["Decreases","Increases","Remains same","Becomes zero"],a:1},
+  {q:"The potential at a point due to a point charge 'q' at distance 'r' is proportional to",o:["r","1/r","r²","1/r²"],a:1},
+  {q:"Direction of electric field is always ______ to the equipotential surface",o:["Parallel","Normal","At 45°","Opposite"],a:1},
+  {q:"Van de Graaff generator is used to produce high",o:["Current","Voltage","Resistance","Power"],a:1},
+  {q:"A capacitor blocks ______ current in steady state",o:["AC","DC","Both","Neither"],a:1},
+  {q:"The equivalent capacitance of capacitors in parallel is",o:["C1+C2","1/C1+1/C2","C1-C2","C1*C2"],a:0},
+  {q:"Polar molecules have a permanent",o:["Magnetic moment","Dipole moment","Charge","Volume"],a:1},
+  {q:"Unit of dielectric strength is",o:["V/m","V-m","C/m","Farad"],a:0},
+  {q:"If a capacitor is charged and then disconnected from a battery, the charge",o:["Increases","Decreases","Remains constant","Becomes zero"],a:2},
+  {q:"The surface of a charged conductor is always",o:["An insulator","An equipotential surface","Non-linear","Positively charged"],a:1},
+  {q:"Work done to rotate a dipole from 0° to 180° in a field E is",o:["pE","2pE","Zero","-pE"],a:1},
+  {q:"Which of the following is a scalar quantity?",o:["Electric Field","Electric Potential","Force","Acceleration"],a:1},
+  {q:"In a parallel plate capacitor, if area is doubled, capacitance is",o:["Halved","Doubled","Quadrupled","Same"],a:1},
+  {q:"The potential at infinity is taken as",o:["Maximum","Infinite","Zero","One"],a:2},
+  {q:"The ratio of charge to potential is called",o:["Resistance","Inductance","Capacitance","Current"],a:2},
+  {q:"If three capacitors of 2μF are in parallel, total capacitance is",o:["6μF","2μF","0.66μF","1μF"],a:0},
+  {q:"Potential gradient is equal to",o:["Electric Field","Flux","Charge","Work"],a:0},
+  {q:"1 Volt is equivalent to",o:["1 J/C","1 C/J","1 N/C","1 J/s"],a:0},
+  {q:"The force between plates of a parallel plate capacitor is",o:["q²/2Aε₀","q/Aε₀","Zero","qE"],a:0},
+  {q:"Two capacitors are in series. They must have the same",o:["Voltage","Charge","Capacitance","Energy"],a:1},
+  {q:"The electron-volt (eV) is a unit of",o:["Potential","Charge","Energy","Power"],a:2},
+  {q:"Electric field is zero where potential is",o:["Zero","Constant","Maximum","Minimum"],a:1},
+  {q:"The dimension of capacitance is",o:["[M⁻¹L⁻²T⁴A²]","[ML²T⁻³A⁻¹]","[MLT]","[A T]"],a:0},
+  {q:"Sharing of charges between two conductors results in loss of",o:["Charge","Potential","Energy","Mass"],a:2}
 ];
-
 
 
 let index = 0;
