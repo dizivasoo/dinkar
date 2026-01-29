@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Photoelectric effect proves",o:["Particle nature","Wave nature","Both","None"],a:0},
-{q:"Photon energy depends on",o:["Frequency","Wavelength","Speed","None"],a:0},
-{q:"Threshold frequency depends on",o:["Metal","Light","Intensity","None"],a:0},
-{q:"Electron shows",o:["Wave nature","Particle","Both","None"],a:2},
-{q:"de Broglie wavelength ∝",o:["1/p","p","v","m"],a:0},
-{q:"Higher frequency gives",o:["Higher energy","Lower","Same","None"],a:0},
-{q:"Stopping potential depends on",o:["Frequency","Intensity","Area","None"],a:0},
-{q:"Intensity affects",o:["Current","Energy","Wavelength","None"],a:0},
-{q:"Photoelectric emission is",o:["Instant","Delayed","Slow","None"],a:0},
-{q:"Electron microscope uses",o:["Electron waves","Light","X-rays","None"],a:0}
+  {q:"The minimum energy required to remove an electron from a metal surface is called", o:["Work function", "Binding energy", "Ionization energy", "Threshold energy"], a:0},
+  {q:"The phenomenon of photoelectric effect was explained by Einstein using", o:["Wave theory", "Quantum theory", "Electromagnetic theory", "Special relativity"], a:1},
+  {q:"The maximum kinetic energy of photoelectrons depends upon the", o:["Frequency of incident light", "Intensity of incident light", "Time of exposure", "Velocity of source"], a:0},
+  {q:"If the frequency of incident light is less than threshold frequency, then", o:["Electrons are emitted with low speed", "Photocurrent is maximum", "No photoelectrons are emitted", "Saturation current increases"], a:2},
+  {q:"According to de-Broglie, the wavelength associated with a particle of mass m and velocity v is", o:["h/mv", "hmv", "mv/h", "h/m²v"], a:0},
+  {q:"The stopping potential in a photoelectric experiment is a measure of", o:["Maximum kinetic energy", "Average kinetic energy", "Minimum kinetic energy", "Total energy"], a:0},
+  {q:"The slope of the graph between stopping potential and frequency of incident radiation is", o:["h/e", "e/h", "h", "e"], a:0},
+  {q:"In the photoelectric effect, the number of photoelectrons emitted per second is proportional to", o:["Intensity of incident radiation", "Frequency of incident radiation", "Wavelength of incident radiation", "Work function of the metal"], a:0},
+  {q:"Davisson-Germer experiment demonstrated the", o:["Particle nature of light", "Wave nature of electrons", "Particle nature of electrons", "Transverse nature of light"], a:1},
+  {q:"A photon of frequency ν has momentum equal to", o:["hν/c", "hν/c²", "hν", "mc²"], a:0},
+  {q:"The rest mass of a photon is", o:["Infinite", "m₀", "hν/c²", "Zero"], a:3},
+  {q:"Which of the following has the smallest de-Broglie wavelength (all moving with same velocity)?", o:["Electron", "Proton", "Alpha particle", "Neutron"], a:2},
+  {q:"The strength of photoelectric current depends upon", o:["Intensity of incident radiation", "Frequency of incident radiation", "Angle of incidence", "Distance between plates"], a:0},
+  {q:"The de-Broglie wavelength of an electron accelerated through a potential difference V is approximately", o:["12.27/√V Å", "1.227/√V Å", "122.7/√V Å", "0.1227/√V Å"], a:0},
+  {q:"Photoelectric effect supports the", o:["Wave nature of light", "Quantum nature of light", "Dual nature of light", "Longitudinal nature of light"], a:1},
+  {q:"When the intensity of light is increased, the stopping potential", o:["Increases", "Decreases", "Remains unchanged", "Becomes zero"], a:2},
+  {q:"The work function of a metal depends on", o:["Nature of metal", "Frequency of light", "Intensity of light", "Angle of incidence"], a:0},
+  {q:"If an electron and a proton have the same kinetic energy, which one has a shorter de-Broglie wavelength?", o:["Electron", "Proton", "Both have same", "Cannot be determined"], a:1},
+  {q:"The threshold frequency for a metal is f₀. When light of frequency 2f₀ is incident, the max KE is K. If frequency is 5f₀, max KE will be", o:["4K", "3K", "5K", "10K"], a:0},
+  {q:"An increase in the frequency of incident radiation increases the", o:["Photoelectric current", "Stopping potential", "Threshold frequency", "Saturation current"], a:1},
+  {q:"The momentum of a photon of wavelength λ is", o:["h/λ", "λ/h", "hλ", "h/cλ"], a:0},
+  {q:"The maximum velocity of photoelectrons is v. If the frequency is doubled, the new maximum velocity will be", o:["More than √2v", "Less than √2v", "Exactly 2v", "v/2"], a:3},
+  {q:"Cathode rays consist of", o:["Photons", "Protons", "Electrons", "α-particles"], a:2},
+  {q:"Which of the following is NOT a property of a photon?", o:["Zero rest mass", "Travels with speed c", "Has charge", "Energy is hν"], a:2},
+  {q:"In Einstein's photoelectric equation, hν = Φ + K.max, Φ represents", o:["Photon energy", "Kinetic energy", "Work function", "Threshold frequency"], a:2},
+  {q:"If light of wavelength λ is incident on a metal, the stopping potential is V. If 2λ is used, the stopping potential will be", o:["V/2", "2V", "More than V/2", "Less than V/2"], a:3},
+  {q:"Matter waves are", o:["Electromagnetic waves", "Mechanical waves", "Probability waves", "Transverse waves"], a:3},
+  {q:"The saturation current in a photocell can be increased by", o:["Increasing frequency", "Increasing intensity", "Decreasing distance between electrodes", "Both B and C"], a:3},
+  {q:"Emission of electrons from a metal surface by heating it is called", o:["Photoelectric emission", "Secondary emission", "Field emission", "Thermionic emission"], a:3},
+  {q:"Which of these can be used as a material for a photoelectric cell working with visible light?", o:["Zinc", "Magnesium", "Cadmium", "Cesium"], a:3},
+  {q:"A particle with zero rest mass and non-zero energy/momentum must travel at", o:["Speed of sound", "Speed of light", "Zero speed", "Infinite speed"], a:3},
+  {q:"The photoelectric effect occurs when the time lag between incidence and emission is", o:["10⁻³ s", "10⁻⁶ s", "10⁻⁹ s or less", "1 s"], a:2},
+  {q:"If we consider the wave nature of light, then the photoelectric effect", o:["Can be explained easily", "Cannot explain why there is no time lag", "Can explain threshold frequency", "Can explain stopping potential"], a:3},
+  {q:"Light of a certain frequency strikes a metal. If the intensity is halved, the maximum kinetic energy of electrons", o:["Is halved", "Is doubled", "Is quartered", "Remains same"], a:3},
+  {q:"What happens to the de-Broglie wavelength of a particle if its momentum is tripled?", o:["Triples", "Remains same", "Becomes one-third", "Becomes nine times"], a:3}
 ];
 
 let index = 0;
@@ -331,7 +356,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -402,8 +427,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_11")
 
   document.querySelector(".test-box").innerHTML = `
@@ -414,7 +439,7 @@ localStorage.getItem("physics_chapter_11")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
