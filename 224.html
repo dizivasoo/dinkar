@@ -300,19 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Electrochemical cell converts",o:["Electrical to chemical","Chemical to electrical","Heat to electrical","Light to heat"],a:1},
-{q:"Anode is site of",o:["Reduction","Oxidation","Neutralization","Hydrolysis"],a:1},
-{q:"Cathode is site of",o:["Oxidation","Reduction","Fusion","Evaporation"],a:1},
-{q:"Standard electrode potential is measured at",o:["0°C","25°C","50°C","100°C"],a:1},
-{q:"Salt bridge maintains",o:["Charge balance","Temperature","Pressure","Voltage"],a:0},
-{q:"EMF of cell is",o:["E°cathode − E°anode","E°anode − E°cathode","Sum","Product"],a:0},
-{q:"Faraday is unit of",o:["Charge","Current","Voltage","Resistance"],a:0},
-{q:"Electrolysis requires",o:["Electric current","Heat","Pressure","Catalyst"],a:0},
-{q:"Conductance increases with",o:["Dilution","Concentration","Pressure","Volume"],a:0},
-{q:"Galvanic cell works on",o:["Spontaneous reaction","Non-spontaneous reaction","Heat","Pressure"],a:0}
+  { q: "The unit of molar conductivity is:", o: ["S cm^2 mol^-1", "S cm^-1", "S cm^2 mol", "S cm^2"], a: 0 },
+  { q: "Which of the following is a secondary cell?", o: ["Leclanche cell", "Mercury cell", "Lead storage battery", "Dry cell"], a: 2 },
+  { q: "The standard electrode potential for Hydrogen electrode is:", o: ["1.0 V", "0.0 V", "0.5 V", "2.0 V"], a: 1 },
+  { q: "Kohlrausch's law is applicable for:", o: ["Strong electrolytes", "Weak electrolytes", "Both strong and weak", "None"], a: 2 },
+  { q: "The device that converts chemical energy into electrical energy is:", o: ["Galvanic cell", "Electrolytic cell", "Radiometer", "Voltmeter"], a: 0 },
+  { q: "During the electrolysis of aqueous NaCl, the gas liberated at the cathode is:", o: ["Chlorine", "Oxygen", "Hydrogen", "Sodium vapor"], a: 2 },
+  { q: "The electrode potential depends on:", o: ["Nature of metal", "Concentration of ions", "Temperature", "All of these"], a: 3 },
+  { q: "Specific conductance (Kappa) increases with:", o: ["Increase in concentration", "Increase in dilution", "Decrease in temperature", "None"], a: 0 },
+  { q: "A fuel cell converts the energy of combustion of fuels directly into:", o: ["Heat energy", "Mechanical energy", "Electrical energy", "Solar energy"], a: 2 },
+  { q: "The quantity of charge required to obtain 1 mole of Aluminum from Al3+ is:", o: ["1 F", "2 F", "3 F", "4 F"], a: 2 },
+  { q: "Rusting of iron is an example of:", o: ["Electrochemical phenomenon", "Reduction", "Photo-oxidation", "None"], a: 0 },
+  { q: "In a Galvanic cell, the anode is:", o: ["Positive", "Negative", "Neutral", "None"], a: 1 },
+  { q: "The salt bridge is used to:", o: ["Complete the circuit", "Maintain neutrality", "Both A and B", "Increase voltage"], a: 2 },
+  { q: "Which of the following metals can displace Hydrogen from dilute acids?", o: ["Copper", "Silver", "Zinc", "Gold"], a: 2 },
+  { q: "According to Faraday's first law, the mass deposited is proportional to:", o: ["Current density", "Charge", "Resistance", "Voltage"], a: 1 },
+  { q: "For a spontaneous reaction, ΔG must be:", o: ["Positive", "Zero", "Negative", "One"], a: 2 },
+  { q: "Molar conductivity of weak electrolytes _________ steeply with dilution.", o: ["Increases", "Decreases", "Remains constant", "First decreases then increases"], a: 0 },
+  { q: "The potential of a cell under standard conditions is E° cell = :", o: ["E(left) - E(right)", "E(right) - E(left)", "E(anode) - E(cathode)", "None"], a: 1 },
+  { q: "One Faraday is equal to approximately:", o: ["96500 C", "95600 C", "69500 C", "90000 C"], a: 0 },
+  { q: "Which substance is used as an electrolyte in a dry cell?", o: ["H2SO4", "KOH", "NH4Cl + ZnCl2", "NaOH"], a: 2 },
+  { q: "In electrolysis, oxidation takes place at:", o: ["Anode", "Cathode", "Both", "None"], a: 0 },
+  { q: "The cell constant of a conductivity cell is:", o: ["l/A", "A/l", "R/l", "l*A"], a: 0 },
+  { q: "The most powerful reducing agent among the following is:", o: ["F2", "Cl2", "Li", "Na"], a: 2 },
+  { q: "Reduction potential of an element is 0.80V. It will act as a:", o: ["Strong reducing agent", "Strong oxidizing agent", "Weak oxidizing agent", "None"], a: 1 },
+  { q: "Copper can be electroplated using a solution of:", o: ["NaCl", "CuSO4", "AgNO3", "ZnSO4"], a: 1 },
+  { q: "The conductivity of electrolytic conductor is due to:", o: ["Flow of electrons", "Flow of ions", "Flow of atoms", "None"], a: 1 },
+  { q: "The Nernst equation relates electrode potential with:", o: ["Concentration", "Pressure", "Mass", "Volume"], a: 0 },
+  { q: "Which of the following is an insulator?", o: ["Graphite", "Copper", "Diamond", "Silver"], a: 2 },
+  { q: "On increasing the temperature, the conductivity of an electrolytic solution:", o: ["Decreases", "Increases", "Remains same", "Fluctuates"], a: 1 },
+  { q: "Protective coating of which metal is used in galvanization of iron?", o: ["Pb", "Cr", "Zn", "Sn"], a: 2 },
+  { q: "The charge on 1 mole of electrons is:", o: ["1.6 x 10^-19 C", "96500 C", "6.023 x 10^23 C", "1 C"], a: 1 },
+  { q: "The efficiency of a fuel cell is approximately:", o: ["40%", "100%", "70%", "10%"], a: 2 },
+  { q: "Which of the following is not a colligative property?", o: ["Osmotic pressure", "Elevation in BP", "Electrode potential", "Depression in FP"], a: 2 },
+  { q: "Standard EMF of a cell with spontaneous reaction is always:", o: ["Negative", "Zero", "Positive", "Infinite"], a: 2 },
+  { q: "Mercury cell is used in:", o: ["Automobiles", "Hearing aids", "Solar panels", "Nuclear reactors"], a: 1 }
 ];
-
-
 
 let index = 0;
 let score = 0;
@@ -333,7 +356,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +427,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35- score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_3")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -415,7 +438,7 @@ localStorage.getItem("chemistry_chapter_3")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
