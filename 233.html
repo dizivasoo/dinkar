@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35 </div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Aldehydes contain",o:["–CHO","–CO–","–COOH","–OH"],a:0},
-{q:"Ketones have",o:["Carbonyl group","Hydroxyl","Carboxyl","Amino"],a:0},
-{q:"Carboxylic acids are",o:["Acidic","Basic","Neutral","Salt"],a:0},
-{q:"Tollens test is given by",o:["Aldehyde","Ketone","Acid","Alcohol"],a:0},
-{q:"Fehling solution reacts with",o:["Aldehyde","Ketone","Ether","Phenol"],a:0},
-{q:"Acetic acid formula is",o:["CH₃COOH","HCOOH","C₂H₅OH","CH₃CHO"],a:0},
-{q:"Ketones do not give",o:["Tollens test","Iodoform test","Reduction","Addition"],a:0},
-{q:"Carboxylic acids form",o:["Salts","Esters","Amides","All"],a:3},
-{q:"Formic acid reduces",o:["Tollens reagent","Fehling","Both","None"],a:2},
-{q:"Aldol reaction occurs in",o:["Aldehydes","Ketones","Both","None"],a:2}
+  {q:"Which of the following is most reactive towards nucleophilic addition?",o:["Formaldehyde","Acetaldehyde","Acetone","Diethyl ketone"],a:0},
+  {q:"The IUPAC name of Mesityl oxide is:",o:["4-Methylpent-3-en-2-one","3-Methylpent-2-en-4-one","4-Methylpent-4-en-2-one","None of these"],a:0},
+  {q:"Which of the following does not give Fehling's test?",o:["Benzaldehyde","Acetaldehyde","Propanal","Ethanal"],a:0},
+  {q:"The oxidation of toluene to benzaldehyde by chromyl chloride is called:",o:["Etard reaction","Stephen reaction","Cannizzaro reaction","Rosenmund reduction"],a:0},
+  {q:"Which of the following is used as a formalin solution?",o:["40% HCHO","10% CH3CHO","40% CH3OH","None of these"],a:0},
+  {q:"The product of the reaction between an aldehyde and a primary amine is:",o:["Schiff's base","Oxime","Hydrazone","Semicarbazone"],a:0},
+  {q:"Dry distillation of calcium acetate gives:",o:["Acetone","Acetaldehyde","Formaldehyde","Acetic acid"],a:0},
+  {q:"Which carboxylic acid has the lowest pKa value?",o:["Trichloroacetic acid","Dichloroacetic acid","Chloroacetic acid","Acetic acid"],a:0},
+  {q:"The reagent used in the Stephen reduction is:",o:["SnCl2 / HCl","H2 / Pd-BaSO4","LiAlH4","NaBH4"],a:0},
+  {q:"Which of the following is known as oil of bitter almonds?",o:["Benzaldehyde","Acetophenone","Benzophenone","Benzoic acid"],a:0},
+  {q:"Rosenmund reduction is used for the preparation of:",o:["Aldehydes","Ketones","Alcohols","Acids"],a:1},
+  {q:"Which of the following will undergo Cannizzaro reaction?",o:["Trimethyl acetaldehyde","Acetaldehyde","Propanal","Butanal"],a:1},
+  {q:"Reaction of carbonyl compounds with NH2NH2 and KOH in glycol is:",o:["Wolff-Kishner reduction","Clemmensen reduction","Stephen's reduction","Etard reaction"],a:1},
+  {q:"Aldehydes are isomeric with:",o:["Ketones","Alcohols","Ethers","Esters"],a:1},
+  {q:"Tollen’s reagent is:",o:["Ammoniacal silver nitrate","Ammoniacal cuprous chloride","Alkaline KMnO4","Fehling's solution"],a:1},
+  {q:"HVZ reaction is used for the preparation of:",o:["alpha-halo acids","beta-halo acids","Alkanes","Acid chlorides"],a:1},
+  {q:"Which of the following reduces Tollen’s reagent?",o:["Methanoic acid","Ethanoic acid","Propanoic acid","Benzoic acid"],a:1},
+  {q:"The formation of cyanohydrin from a ketone is an example of:",o:["Nucleophilic addition","Electrophilic addition","Nucleophilic substitution","Electrophilic substitution"],a:0},
+  {q:"Which test is used to distinguish between aldehydes and ketones?",o:["Fehling's test","Iodoform test","Beilstein test","Molisch test"],a:0},
+  {q:"Treatment of acetaldehyde with dilute NaOH gives:",o:["Aldol","Crotonaldehyde","Sodium acetate","Ethanol"],a:2},
+  {q:"Urotropine is formed by the action of ammonia on:",o:["Formaldehyde","Acetaldehyde","Acetone","Benzaldehyde"],a:2},
+  {q:"Which of the following gives iodoform test?",o:["Pentan-2-one","Pentan-3-one","Benzophenone","Propanoic acid"],a:0},
+  {q:"Clemmensen reduction involves the use of:",o:["Zn-Hg / conc. HCl","LiAlH4","Na / Ethanol","NH2NH2 / KOH"],a:0},
+  {q:"The product of Aldol condensation of two molecules of acetone is:",o:["4-Hydroxy-4-methylpentan-2-one","3-Hydroxybutanal","Diacetone alcohol","Both A and C"],a:3},
+  {q:"The starting material for the manufacture of Vinegar is:",o:["Ethanol","Methanol","Formaldehyde","Ethanal"],a:0},
+  {q:"Which of the following is the strongest acid?",o:["Formic acid","Acetic acid","Propionic acid","Butyric acid"],a:0},
+  {q:"Benzoic acid can be converted into Benzyl alcohol by using:",o:["LiAlH4","NaBH4","H2 / Ni","Na / C2H5OH"],a:0},
+  {q:"The functional group present in ketones is:",o:["-CO-","–CHO","–COOH","–OH"],a:0},
+  {q:"Decarboxylation of sodium acetate with soda lime gives:",o:["Methane","Ethane","Propane","Butane"],a:0},
+  {q:"Which of the following does not contain an -OH group?",o:["Methyl acetate","Acetic acid","Phenol","Ethanol"],a:0},
+  {q:"Aldol condensation is given by aldehydes and ketones having:",o:["Alpha-hydrogen","Beta-hydrogen","Gamma-hydrogen","No hydrogen"],a:0},
+  {q:"Reaction of Benzene with CO and HCl in presence of AlCl3 gives:",o:["Benzaldehyde","Acetophenone","Benzoic acid","Benzyl chloride"],a:0},
+  {q:"Which of the following reagent reacts with both HCHO and CH3COCH3?",o:["HCN","Tollen's reagent","Fehling's solution","Schiff's reagent"],a:0},
+  {q:"Gattermann-Koch reaction is used to prepare:",o:["Benzaldehyde","Toluene","Benzophenone","Chlorobenzene"],a:0},
+  {q:"Calcium formate on heating gives:",o:["HCHO","CH3CHO","CH3COCH3","HCOOH"],a:0}
 ];
-
 
 
 let index = 0;
@@ -333,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_12")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -415,7 +439,7 @@ localStorage.getItem("chemistry_chapter_12")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
