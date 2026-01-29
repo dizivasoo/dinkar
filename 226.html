@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35 </div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Adsorption is a",o:["Surface phenomenon","Bulk phenomenon","Chemical reaction","Physical change"],a:0},
-{q:"Absorption is a",o:["Surface","Bulk","Chemical","Physical"],a:1},
-{q:"Physisorption involves",o:["Weak forces","Strong forces","Chemical bonds","Ions"],a:0},
-{q:"Chemisorption is",o:["Reversible","Irreversible","Weak","Physical"],a:1},
-{q:"Catalyst increases rate by",o:["Lowering activation energy","Increasing temperature","Increasing pressure","Increasing volume"],a:0},
-{q:"Colloids show",o:["Tyndall effect","Brownian motion","Both","None"],a:2},
-{q:"Gold sol is a",o:["Lyophobic","Lyophilic","Suspension","Solution"],a:0},
-{q:"Emulsion is a type of",o:["Colloid","Solution","Compound","Element"],a:0},
-{q:"Enzyme is a",o:["Biocatalyst","Inhibitor","Salt","Acid"],a:0},
-{q:"Dialysis removes",o:["Impurities","Solvent","Colloid","Catalyst"],a:0}
+  { q: "Which of the following is an example of absorption?", o: ["Water on silica gel", "Ink on paper", "Water on calcium chloride", "Hydrogen on charcoal"], a: 2 },
+  { q: "In Physisorption, the adsorbent and adsorbate are held by:", o: ["Chemical bonds", "Hydrogen bonds", "Vander Waals forces", "Ionic bonds"], a: 2 },
+  { q: "Which gas is adsorbed most easily on activated charcoal?", o: ["H2", "N2", "SO2", "O2"], a: 2 },
+  { q: "Physical adsorption is generally:", o: ["Irreversible", "Endothermic", "Reversible", "Non-specific"], a: 2 },
+  { q: "Extent of physisorption _________ with increase in temperature.", o: ["Increases", "Decreases", "Remains same", "First increases then decreases"], a: 1 },
+  { q: "The enthalpy of chemisorption is usually in the range of:", o: ["20-40 kJ/mol", "40-100 kJ/mol", "80-240 kJ/mol", "200-500 kJ/mol"], a: 2 },
+  { q: "Which of the following is a lyophobic colloid?", o: ["Starch", "Gum", "Gold sol", "Gelatin"], a: 2 },
+  { q: "The movement of colloidal particles under the influence of an electric field is:", o: ["Dialysis", "Electrophoresis", "Brownian motion", "Tyndall effect"], a: 1 },
+  { q: "Cloud is an example of:", o: ["Solid in gas", "Liquid in gas", "Gas in liquid", "Solid in liquid"], a: 1 },
+  { q: "The process of removing a dissolved substance from a colloidal solution by diffusion through a membrane is:", o: ["Peptization", "Coagulation", "Dialysis", "Electrolysis"], a: 2 },
+  { q: "Which ion has the highest coagulating power for a positive sol?", o: ["Cl-", "SO4^2-", "PO4^3-", "[Fe(CN)6]^4-"], a: 3 },
+  { q: "Brownian movement is caused by:", o: ["Temperature fluctuations", "Gravity", "Collisions of molecules of dispersion medium", "Electrical charge"], a: 2 },
+  { q: "Tyndall effect is observed in:", o: ["True solution", "Colloidal solution", "Precipitate", "Solvent"], a: 1 },
+  { q: "The catalyst used in the Haber's process for the synthesis of Ammonia is:", o: ["Pt", "Fe + Mo", "V2O5", "Ni"], a: 1 },
+  { q: "Enzymes are basically:", o: ["Carbohydrates", "Lipids", "Proteins", "Minerals"], a: 2 },
+  { q: "Gold number is a measure of:", o: ["Purity of gold", "Protective power of lyophilic colloid", "Coagulating power", "Size of gold particles"], a: 1 },
+  { q: "Which of the following is used to stop bleeding from a cut?", o: ["NaCl", "Alum", "Glucose", "Kanes"], a: 1 },
+  { q: "A reaction in which one of the products acts as a catalyst is:", o: ["Homogeneous catalysis", "Heterogeneous catalysis", "Autocatalysis", "Biocatalysis"], a: 2 },
+  { q: "The size of colloidal particles ranges between:", o: ["1 nm to 1000 nm", "0.1 nm to 1 nm", "1000 nm to 5000 nm", "10 nm to 100 nm"], a: 0 },
+  { q: "Which of the following is an emulsifier?", o: ["Water", "Oil", "Soap", "Salt"], a: 2 },
+  { q: "Freundlich adsorption isotherm is given by:", o: ["x/m = kp", "x/m = kp^(1/n)", "x/m = k/p", "x/m = p/k"], a: 1 },
+  { q: "Peptization is a process of:", o: ["Precipitating a colloid", "Purifying a colloid", "Converting a precipitate into a colloid", "Movement of particles"], a: 2 },
+  { q: "Shape-selective catalysis is a reaction catalyzed by:", o: ["Zeolites", "Enzymes", "Platinum", "Iron"], a: 0 },
+  { q: "The zigzag motion of colloidal particles is known as:", o: ["Tyndall effect", "Peptization", "Brownian motion", "Coagulation"], a: 2 },
+  { q: "Milk is a/an:", o: ["Sol", "Gel", "Emulsion", "Aerosol"], a: 2 },
+  { q: "Which of the following is not a surfactant?", o: ["Soap", "Detergent", "Water", "Aryl sulfonates"], a: 2 },
+  { q: "According to Hardy-Schulze law, coagulating power is directly proportional to:", o: ["Size of ion", "Charge on ion", "Magnitude of charge on ion", "Hydration energy"], a: 2 },
+  { q: "In the adsorption of acetic acid on charcoal, the acetic acid is:", o: ["Adsorbent", "Adsorbate", "Absorbent", "Catalyst"], a: 1 },
+  { q: "Butter is a type of emulsion of:", o: ["Liquid in liquid", "Solid in liquid", "Water in oil", "Oil in water"], a: 2 },
+  { q: "The number of phases in a colloidal system is:", o: ["1", "2", "3", "4"], a: 1 },
+  { q: "The catalyst used in the dehydration of ethyl alcohol to form ethene is:", o: ["Al2O3", "Fe", "Cu", "Pt"], a: 0 },
+  { q: "Which of the following is a solid sol?", o: ["Smoke", "Cake", "Gemstones", "Foam"], a: 2 },
+  { q: "Which is a characteristic of chemisorption?", o: ["Low enthalpy", "Reversible", "Highly specific", "Multimolecular layer"], a: 2 },
+  { q: "Cottrell precipitator works on the principle of:", o: ["Neutralization of charge", "Diffusion", "Gravitation", "Osmosis"], a: 0 },
+  { q: "Formation of micelles takes place only above:", o: ["Inversion temperature", "Critical temperature", "Kraft temperature", "Boiling point"], a: 2 }
 ];
-
 
 
 let index = 0;
@@ -333,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct /35) * 360;
 localStorage.getItem("chemistry_chapter_5")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -415,7 +439,7 @@ localStorage.getItem("chemistry_chapter_5")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
