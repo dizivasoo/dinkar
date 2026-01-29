@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,21 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Metallurgy is extraction of",o:["Non-metals","Metals","Alloys","Salts"],a:1},
-{q:"Ore is",o:["Impure metal","Pure metal","Mineral","Metal oxide"],a:0},
-{q:"Gangue is",o:["Impurity","Ore","Metal","Flux"],a:0},
-{q:"Flux combines with",o:["Ore","Metal","Gangue","Slag"],a:2},
-{q:"Slag is",o:["Metal","Waste","Ore","Flux"],a:1},
-{q:"Roasting is done in",o:["Air","Vacuum","Water","Nitrogen"],a:0},
-{q:"Calcination is done in",o:["Limited air","Excess air","Water","Nitrogen"],a:0},
-{q:"Electrolytic reduction is used for",o:["Highly reactive metals","Less reactive","Noble metals","All"],a:0},
-{q:"Froth flotation is used for",o:["Sulphide ores","Oxide ores","Carbonates","Halides"],a:0},
-{q:"Bauxite is ore of",o:["Iron","Copper","Aluminium","Zinc"],a:2}
+  {q:"Metallurgy is extraction of",o:["Non-metals","Metals","Alloys","Salts"],a:1},
+  {q:"Ore is",o:["Impure metal","Pure metal","Mineral","Metal oxide"],a:0},
+  {q:"Gangue is",o:["Impurity","Ore","Metal","Flux"],a:0},
+  {q:"Which of the following is an oxide ore?",o:["Cassiterite","Galena","Zinc blende","Cinnabar"],a:0},
+  {q:"Froth floatation process is used for the concentration of",o:["Oxide ores","Sulphide ores","Chloride ores","Carbonate ores"],a:1},
+  {q:"The process of heating the ore in the absence of air below its melting point is",o:["Roasting","Smelting","Calcination","Refining"],a:2},
+  {q:"The process of heating the ore in a regular supply of air is",o:["Roasting","Calcination","Reduction","Fluxing"],a:0},
+  {q:"Cinnabar is an ore of which metal?",o:["Copper","Mercury","Iron","Zinc"],a:1},
+  {q:"Which substance is used as a depressant in froth floatation to separate ZnS from PbS?",o:["NaCN","Xanthate","Aniline","Pine oil"],a:0},
+  {q:"The method used for the refining of Zirconium is",o:["Liquation","Distillation","Mond process","Van Arkel method"],a:3},
+  {q:"The mineral from which a metal can be extracted profitably is called",o:["Flux","Slag","Ore","Gangue"],a:2},
+  {q:"Magnetic separation is used for the concentration of",o:["Magnetite","Haematite","Cassiterite","All of these"],a:3},
+  {q:"In the extraction of Iron, the flux used is",o:["Silica","Limestone","Coke","Calcium silicate"],a:1},
+  {q:"The purest form of commercial iron is",o:["Cast iron","Wrought iron","Pig iron","Steel"],a:1},
+  {q:"Mond process is used for the refining of",o:["Ni","Zr","Ti","Zn"],a:0},
+  {q:"In Hall-Heroult process, the cathode is made of",o:["Copper","Aluminium","Carbon (Graphite)","Platinum"],a:2},
+  {q:"The role of cryolite in the metallurgy of aluminium is",o:["To lower melting point","To increase conductivity","Both A and B","To decrease solubility"],a:2},
+  {q:"Hydrometallurgy is used for the extraction of",o:["Al","Fe","Ag","Mg"],a:2},
+  {q:"Blast furnace is used to get which form of iron?",o:["Wrought iron","Pig iron","Steel","Pure iron"],a:1},
+  {q:"The chemical formula of Malachite is",o:["CuCO3.Cu(OH)2","Cu2S","CuFeS2","Cu2O"],a:0},
+  {q:"Zone refining is based on the principle of",o:["Fractional distillation","Differential solubility","Vapour pressure","Adsorption"],a:1},
+  {q:"The common impurities present in bauxite are",o:["Fe2O3","SiO2","TiO2","All of these"],a:3},
+  {q:"Which of the following is not a carbonate ore?",o:["Siderite","Calamine","Dolomite","Bauxite"],a:3},
+  {q:"Self-reduction process is used for the extraction of",o:["Cu","Pb","Hg","All of these"],a:3},
+  {q:"The slag formed during the extraction of Iron is",o:["FeSiO3","CaSiO3","MgSiO3","ZnSiO3"],a:1},
+  {q:"Leaching is a process of",o:["Reduction","Concentration","Refining","Oxidation"],a:1},
+  {q:"Cyanide process is used for the extraction of",o:["Ag and Au","Cu and Zn","Fe and Al","Ni and Co"],a:0},
+  {q:"Which metal is refined by Distillation?",o:["Zinc","Copper","Iron","Nickel"],a:0},
+  {q:"Ellingham diagram helps in the selection of",o:["Flux","Reducing agent","Oxidizing agent","Catalyst"],a:1},
+  {q:"Liquation is used when",o:["Metal has high melting point","Impurities have lower melting point","Metal has low melting point","Metal is volatile"],a:2},
+  {q:"Poling process is used for the refining of",o:["Aluminium","Copper","Iron","Sodium"],a:1},
+  {q:"Which of the following is a halide ore?",o:["Cryolite","Haematite","Calamine","Galena"],a:0},
+  {q:"The most abundant metal in the earth's crust is",o:["Iron","Aluminium","Calcium","Sodium"],a:1},
+  {q:"The gas evolved during Roasting is usually",o:["CO2","SO2","N2","O2"],a:1},
+  {q:"Bessemer converter is used in the metallurgy of",o:["Aluminium","Copper","Gold","Silver"],a:1}
 ];
-
-
-
-
 let index = 0;
 let score = 0;
 let answered = false;
@@ -334,7 +355,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -405,8 +426,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_6")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -416,7 +437,7 @@ localStorage.getItem("chemistry_chapter_6")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
