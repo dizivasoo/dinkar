@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Magnetic field is produced by",o:["Charge","Moving charge","Mass","Neutral body"],a:1},
-{q:"SI unit of magnetic field is",o:["Tesla","Gauss","Weber","Ampere"],a:0},
-{q:"Force on moving charge depends on",o:["Velocity","Field","Charge","All"],a:3},
-{q:"Fleming’s left hand rule is for",o:["Motor","Generator","Transformer","AC"],a:0},
-{q:"Lorentz force acts on",o:["Stationary charge","Moving charge","Neutral body","Mass"],a:1},
-{q:"Cyclotron works on",o:["DC","AC","Both","None"],a:1},
-{q:"Radius of circular path depends on",o:["Velocity","Field","Charge","All"],a:3},
-{q:"Current produces",o:["Electric field","Magnetic field","Gravity","None"],a:1},
-{q:"Right hand thumb rule gives",o:["Direction of field","Force","Current","Voltage"],a:0},
-{q:"Velocity selector uses",o:["Electric field","Magnetic field","Both","None"],a:2}
+  {q:"The magnetic field produced by a moving charge is called",o:["Electric field","Magnetic field","Gravitational field","None"],a:1},
+  {q:"The SI unit of magnetic induction (B) is",o:["Weber","Tesla","Gauss","Maxwell"],a:1},
+  {q:"A stationary charge produces",o:["Only electric field","Only magnetic field","Both fields","No field"],a:0},
+  {q:"The force on a charge 'q' moving with velocity 'v' in magnetic field 'B' is",o:["q(v.B)","q(v x B)","v(q x B)","B(q x v)"],a:1},
+  {q:"The magnetic field at the center of a circular current-carrying loop is",o:["μ₀I/2r","μ₀I/2πr","μ₀I/r","Zero"],a:0},
+  {q:"A cyclotron is used to accelerate",o:["Electrons","Neutrons","Positive ions","All of these"],a:2},
+  {q:"The work done by a magnetic field on a moving charge is",o:["Positive","Negative","Zero","Infinite"],a:2},
+  {q:"Two parallel wires carrying current in the same direction ______ each other",o:["Repel","Attract","Rotate","Do nothing"],a:1},
+  {q:"The SI unit of magnetic flux is",o:["Tesla","Ohm","Weber","Henry"],a:2},
+  {q:"The path of a charged particle entering a magnetic field perpendicularly is",o:["Straight line","Parabola","Circle","Helix"],a:2},
+  {q:"The magnetic field inside a long straight solenoid is",o:["Zero","Decreasing","Uniform","Infinite"],a:2},
+  {q:"The principle of a moving coil galvanometer is based on",o:["Heating effect","Chemical effect","Torque on a current loop","Electrolysis"],a:2},
+  {q:"To convert a galvanometer into a voltmeter, we connect",o:["Low resistance in parallel","High resistance in series","Low resistance in series","High resistance in parallel"],a:1},
+  {q:"The magnetic moment of a current loop (I) with area (A) is",o:["I/A","IA","A/I","I²A"],a:1},
+  {q:"The sensitivity of a galvanometer increases if the magnetic field is",o:["Decreased","Increased","Kept zero","Made variable"],a:1},
+  {q:"Biot-Savart Law is analogous to which law in electrostatics?",o:["Gauss's Law","Coulomb's Law","Ohm's Law","Faraday's Law"],a:1},
+  {q:"The force between two parallel currents is used to define",o:["Volt","Ohm","Ampere","Candela"],a:2},
+  {q:"A toroid is essentially a solenoid bent into the shape of a",o:["Square","Triangle","Circle","Helix"],a:2},
+  {q:"Magnetic field due to a straight very long current-carrying wire is",o:["μ₀I/2r","μ₀I/2πr","μ₀I/4πr","Zero"],a:1},
+  {q:"Lorentz force formula is",o:["F = qE","F = q(v x B)","F = q[E + (v x B)]","F = ma"],a:2},
+  {q:"The magnetic field lines around a straight wire are",o:["Straight","Concentric circles","Elliptical","Parabolic"],a:1},
+  {q:"If a charge enters a magnetic field at an angle of 0°, the force is",o:["Maximum","Minimum (Zero)","q v B","Infinite"],a:1},
+  {q:"The resistance of an ideal ammeter is",o:["Infinite","Zero","High","One Ohm"],a:1},
+  {q:"A shunt is a ______ resistance",o:["High","Low","Variable","Zero"],a:1},
+  {q:"The direction of magnetic force is given by",o:["Ohm's Law","Fleming's Left Hand Rule","Lenz's Law","Ampere's Law"],a:1},
+  {q:"The radius of the circular path of a charge in 'B' is proportional to",o:["Mass","Velocity","Both 0 and 1","Field"],a:2},
+  {q:"The torque on a current loop in a magnetic field is $\tau = $",o:["MB sinθ","MB cosθ","MB tanθ","Zero"],a:0},
+  {q:"Current sensitivity of a galvanometer is defined as",o:["$\alpha/I$","$I/\alpha$","$\alpha/V$","$V/\alpha$"],a:0},
+  {q:"Ampere’s Circuital Law is $\oint B \cdot dl = $",o:["μ₀I","I/μ₀","Zero","ε₀I"],a:0},
+  {q:"In a cyclotron, the frequency of revolution is independent of",o:["Mass","Charge","Velocity","Magnetic Field"],a:2},
+  {q:"Magnetic field lines ______ form closed loops",o:["Always","Never","Sometimes","Rarely"],a:0},
+  {q:"The gyro-magnetic ratio of an electron is",o:["e/m","e/2m","2e/m","m/e"],a:1},
+  {q:"A charge 'q' moves parallel to a magnetic field. The force on it is",o:["qvB","Zero","Infinite","None"],a:1},
+  {q:"Which of the following is NOT a vector?",o:["Magnetic Field","Magnetic Flux","Magnetic Moment","Current Density"],a:1},
+  {q:"The deflection in a galvanometer is ______ to the current",o:["Inversely proportional","Directly proportional","Equal","Independent"],a:1}
 ];
-
 
 let index = 0;
 let score = 0;
@@ -414,7 +438,7 @@ localStorage.getItem("physics_chapter_4")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
