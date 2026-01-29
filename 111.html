@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Electric charge is quantified in",o:["Coulomb","Ampere","Volt","Ohm"],a:0},
-{q:"Like charges",o:["Attract","Repel","Neutralize","Disappear"],a:1},
-{q:"SI unit of electric field is",o:["N/C","V","J/C","W"],a:0},
-{q:"Coulomb’s law depends on",o:["Charge","Distance","Medium","All"],a:3},
-{q:"Electric field inside conductor is",o:["Zero","Maximum","Infinite","Constant"],a:0},
-{q:"Charge on electron is",o:["Positive","Negative","Neutral","Variable"],a:1},
-{q:"Electric lines start from",o:["Positive charge","Negative charge","Neutral body","Conductor"],a:0},
-{q:"Number of field lines indicates",o:["Force","Charge","Strength","Energy"],a:2},
-{q:"Permittivity of vacuum is",o:["ε₀","μ₀","k","G"],a:0},
-{q:"Force between charges increases when distance is",o:["Increased","Decreased","Same","Zero"],a:1}
+  {q:"Electric charge is quantified in",o:["Coulomb","Ampere","Volt","Ohm"],a:0},
+  {q:"Like charges",o:["Attract","Repel","Neutralize","Disappear"],a:1},
+  {q:"SI unit of electric field is",o:["N/C","V","J/C","W"],a:0},
+  {q:"Coulomb’s law depends on",o:["Charge","Distance","Medium","All"],a:3},
+  {q:"Electric field inside conductor is",o:["Zero","Maximum","Infinite","Constant"],a:0},
+  {q:"The charge on an electron is",o:["1.6 x 10^-19 C","-1.6 x 10^-19 C","1.6 x 10^-18 C","9.1 x 10^-31 C"],a:1},
+  {q:"Electric field lines always start from",o:["Negative charge","Positive charge","Neutral point","Infinity"],a:1},
+  {q:"The torque on a dipole is maximum when the angle with the field is",o:["0°","45°","90°","180°"],a:2},
+  {q:"SI unit of electric flux is",o:["V/m","N/C","Nm²/C","C/m"],a:2},
+  {q:"Gauss's Law is valid for",o:["Open surfaces","Any closed surface","Only spheres","Only cubes"],a:1},
+  {q:"A glass rod rubbed with silk acquires",o:["Positive charge","Negative charge","No charge","Variable charge"],a:0},
+  {q:"Direction of an electric dipole moment is",o:["Positive to negative","Negative to positive","Vertical","Circular"],a:1},
+  {q:"If the distance between two charges is doubled, the force becomes",o:["Double","Half","Four times","One-fourth"],a:3},
+  {q:"The net charge on an electric dipole is",o:["q","2q","Zero","-q"],a:2},
+  {q:"Electric field due to a point charge 'q' at distance 'r' is proportional to",o:["r","1/r","r²","1/r²"],a:3},
+  {q:"Quantization of charge is represented by the formula",o:["Q = I/t","Q = ne","Q = CV","Q = W/V"],a:1},
+  {q:"The permittivity of free space ($\epsilon_0$) is",o:["8.854 x 10^-12","9 x 10^9","1.6 x 10^-19","1"],a:0},
+  {q:"The force between two charges is 10N. If a dielectric of $K=2$ is inserted, the force is",o:["20N","10N","5N","2.5N"],a:2},
+  {q:"Stable equilibrium of a dipole occurs when the angle is",o:["0°","90°","180°","270°"],a:0},
+  {q:"Surface charge density is defined as",o:["Charge/Length","Charge/Area","Charge/Volume","Work/Charge"],a:1},
+  {q:"Electric field at an axial point of a dipole is proportional to",o:["1/r","1/r²","1/r³","1/r⁴"],a:2},
+  {q:"Which of the following cannot be the value of a charge?",o:["1.6 x 10^-19 C","3.2 x 10^-19 C","2.4 x 10^-19 C","4.8 x 10^-19 C"],a:2},
+  {q:"Metal shields are used for protection against electric fields because of",o:["Earthing","Induction","Electrostatic Shielding","Polarization"],a:2},
+  {q:"Number of electrons in 1 Coulomb of charge is",o:["6.25 x 10^18","1.6 x 10^19","6.25 x 10^17","1"],a:0},
+  {q:"Electric field lines",o:["Form closed loops","Never intersect","Are scalar","Are always straight"],a:1},
+  {q:"Linear charge density has the unit",o:["C/m","C/m²","C/m³","C"],a:0},
+  {q:"Electric flux through a cube of side 'a' containing charge 'q' is",o:["q/$\epsilon_0$","q/6$\epsilon_0$","Zero","6q/$\epsilon_0$"],a:0},
+  {q:"Work done in moving a charge on an equipotential surface is",o:["Positive","Negative","Zero","Infinite"],a:2},
+  {q:"Dimension of electric charge is",o:["[M L T]","[A T]","[M L T A]","[A]"],a:1},
+  {q:"Electric field due to a thin infinite plane sheet of charge is",o:["$\sigma/\epsilon_0$","$\sigma/2\epsilon_0$","Zero","2$\sigma/\epsilon_0$"],a:1},
+  {q:"The dipole moment of a water molecule is",o:["Zero","Non-zero","Infinite","Negative"],a:1},
+  {q:"Mass of a body decreases slightly when it is",o:["Negatively charged","Positively charged","Neutralized","Heated"],a:1},
+  {q:"A soap bubble is given a negative charge. Its radius",o:["Decreases","Increases","Remains same","Vanishes"],a:1},
+  {q:"The electric field at a very far point on the axis of a dipole is $E$. At the same distance on the equator, it is",o:["E","2E","E/2","E/4"],a:2},
+  {q:"Force per unit charge is called",o:["Potential","Flux","Electric Field","Current"],a:2}
 ];
 
 
@@ -415,7 +440,7 @@ localStorage.getItem("physics_chapter_1")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
