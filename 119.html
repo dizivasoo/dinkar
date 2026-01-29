@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Mirror formula relates",o:["f,v,u","v,u","f,u","None"],a:0},
-{q:"Power of lens unit is",o:["Dioptre","Metre","Cm","Watt"],a:0},
-{q:"Concave mirror forms real image when object is",o:["Beyond F","At pole","Between F & P","None"],a:0},
-{q:"Convex lens is",o:["Converging","Diverging","Neutral","None"],a:0},
-{q:"Myopia corrected by",o:["Concave lens","Convex lens","Mirror","None"],a:0},
-{q:"Hypermetropia corrected by",o:["Convex lens","Concave","Mirror","None"],a:0},
-{q:"Total internal reflection occurs when angle >",o:["Critical","90","0","None"],a:0},
-{q:"Prism deviates light due to",o:["Refraction","Reflection","Diffraction","None"],a:0},
-{q:"Magnification is ratio of",o:["Image/Object","Object/Image","Distance","None"],a:0},
-{q:"Human eye has",o:["Retina","Cornea","Lens","All"],a:3}
+  {q:"The refractive index of glass is 1.5. The speed of light in glass is",o:["2 x 10⁸ m/s","3 x 10⁸ m/s","1.5 x 10⁸ m/s","2.5 x 10⁸ m/s"],a:0},
+  {q:"A convex lens of focal length 20 cm is placed in contact with a concave lens of focal length 40 cm. The power of the combination is",o:["+2.5 D","+5.0 D","-2.5 D","-5.0 D"],a:0},
+  {q:"Total internal reflection occurs when light travels from",o:["Rarer to denser medium","Denser to rarer medium","One medium to another of same RI","Vacuum to any medium"],a:1},
+  {q:"The critical angle for a medium is 30°. The refractive index of the medium is",o:["1","1.5","2","2.5"],a:2},
+  {q:"A person cannot see objects clearly beyond 2 m. The disease he is suffering from is",o:["Hypermetropia","Presbyopia","Astigmatism","Myopia"],a:3},
+  {q:"To correct myopia, a person should use a",o:["Concave lens","Convex lens","Cylindrical lens","Bifocal lens"],a:0},
+  {q:"The focal length of a plane mirror is",o:["Zero","Infinity","Fixed but small","Negative"],a:1},
+  {q:"For a thin prism of angle A and refractive index n, the angle of minimum deviation is",o:["(n-1)A","(n+1)A","A/n","n/A"],a:0},
+  {q:"The magnifying power of a compound microscope is high if",o:["f_o and f_e are both small","f_o and f_e are both large","f_o is small and f_e is large","f_o is large and f_e is small"],a:0},
+  {q:"The sky appears blue due to",o:["Scattering of light","Refraction of light","Dispersion of light","Total internal reflection"],a:0},
+  {q:"The phenomenon used in optical fibers is",o:["Refraction","Scattering","Dispersion","Total internal reflection"],a:3},
+  {q:"An object is placed at the focus of a convex lens. The image will be formed at",o:["Focus","Center of curvature","Between F and C","Infinity"],a:3},
+  {q:"Which of the following colors of white light deviated the most by a prism?",o:["Red","Yellow","Violet","Green"],a:2},
+  {q:"The power of a lens is -2.0 D. Its focal length is",o:["-50 cm","-20 cm","50 cm","20 cm"],a:0},
+  {q:"Mirage is an optical phenomenon caused by",o:["Refraction only","Total internal reflection","Reflection only","Diffraction"],a:1},
+  {q:"The image formed by an objective of a compound microscope is",o:["Virtual and magnified","Real and magnified","Real and diminished","Virtual and diminished"],a:1},
+  {q:"The unit of power of a lens is",o:["Dioptre","Watt","Meter","Decibel"],a:0},
+  {q:"A convex lens is dipped in a liquid whose refractive index is equal to that of the lens. It will act as a",o:["Plane glass sheet","Converging lens","Diverging lens","Mirror"],a:0},
+  {q:"The length of an astronomical telescope in normal adjustment is",o:["f_o + f_e","f_o - f_e","f_o / f_e","f_o * f_e"],a:0},
+  {q:"If a symmetrical convex lens of focal length f is cut into two equal parts along the principal axis, the focal length of each part will be",o:["f","2f","f/2","Infinity"],a:0},
+  {q:"A point source of light is placed at the bottom of a water tank. The area of the surface through which light emerges depends on",o:["Refractive index of water","Depth of the source","Both A and B","Color of light only"],a:2},
+  {q:"The angle of deviation produced by a prism is minimum when",o:["i = e","i > e","i < e","i + e = 90°"],a:0},
+  {q:"In an astronomical telescope, the final image is",o:["Real and erect","Virtual and erect","Real and inverted","Virtual and inverted"],a:3},
+  {q:"The primary rainbow is formed due to",o:["One TIR and two refractions","Two TIRs and two refractions","Scattering","Diffraction"],a:0},
+  {q:"The secondary rainbow is fainter than the primary rainbow because of",o:["Multiple reflections","Single reflection","Absorption of light","Two total internal reflections"],a:3},
+  {q:"If the wavelength of light increases, the refractive index of the medium",o:["Increases","Decreases","Remains same","First increases then decreases"],a:1},
+  {q:"The near point of a normal human eye is",o:["25 cm","50 cm","100 cm","Infinity"],a:0},
+  {q:"Linear magnification produced by a convex mirror is always",o:["Equal to 1","More than 1","Less than 1","Infinity"],a:2},
+  {q:"The speed of light is maximum in",o:["Glass","Water","Diamond","Vacuum"],a:3},
+  {q:"The brilliance of a diamond is mainly due to",o:["Refraction","Dispersion","Total internal reflection","Interference"],a:2},
+  {q:"To increase the magnifying power of a telescope",o:["Increase f_o","Decrease f_e","Both A and B","Increase f_e"],a:2},
+  {q:"A ray of light passes from glass to water. The critical angle is",o:["sin⁻¹(2/3)","sin⁻¹(3/4)","sin⁻¹(8/9)","sin⁻¹(1/2)"],a:2},
+  {q:"When light is refracted, which of the following does not change?",o:["Wavelength","Frequency","Velocity","Amplitude"],a:1},
+  {q:"The relation between focal length f and radius of curvature R of a spherical mirror is",o:["f = R","f = 2R","R = f/2","f = R/2"],a:3},
+  {q:"The limit of resolution of the human eye is about",o:["1 minute","1 second","1 degree","0.1 degree"],a:0}
 ];
 
 
@@ -332,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_9")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +439,7 @@ localStorage.getItem("physics_chapter_9")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
