@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Solid state has",o:["Fixed shape","Fixed volume","Both","None"],a:2},
-{q:"Amorphous solids are",o:["Crystalline","Non-crystalline","Ionic","Metallic"],a:1},
-{q:"Unit cell is",o:["Smallest unit","Largest unit","Random unit","Complex unit"],a:0},
-{q:"Coordination number of FCC is",o:["4","6","8","12"],a:3},
-{q:"Packing efficiency of BCC is",o:["52%","68%","74%","60%"],a:1},
-{q:"Schottky defect reduces",o:["Density","Mass","Volume","Shape"],a:0},
-{q:"Frenkel defect occurs in",o:["Ionic solids","Metallic solids","Covalent solids","All"],a:0},
-{q:"Conductors have",o:["Low conductivity","No conductivity","High conductivity","Variable"],a:2},
-{q:"Insulators have",o:["High conductivity","Low conductivity","Free electrons","Holes"],a:1},
-{q:"Bragg’s law relates to",o:["Diffraction","Reflection","Refraction","Absorption"],a:0}
+  { q: "Which of the following is an example of a covalent network solid semiconductor?", o: ["Aluminium", "Silicon", "Sodium Chloride", "Argon"], a: 1 },
+  { q: "The conductivity of a semiconductor ________ with an increase in temperature.", o: ["Decreases", "Increases", "Remains constant", "First increases then decreases"], a: 1 },
+  { q: "Doping Silicon with Boron (Group 13) leads to the formation of a/an:", o: ["n-type semiconductor", "p-type semiconductor", "Intrinsic semiconductor", "Insulator"], a: 1 },
+  { q: "In n-type semiconductors, the majority charge carriers are:", o: ["Holes", "Electrons", "Ions", "Protons"], a: 1 },
+  { q: "Which element acts as a donor impurity for Germanium?", o: ["Indium", "Boron", "Phosphorus", "Aluminium"], a: 2 },
+  { q: "The forbidden energy gap in insulators is typically:", o: ["Very small", "Zero", "Very large (> 3eV)", "None of these"], a: 2 },
+  { q: "F-centres in a crystal are an example of:", o: ["p-type doping", "Impurity defect", "Metal excess defect", "Stoichiometric defect"], a: 2 },
+  { q: "Which of the following is a 12-16 compound semiconductor?", o: ["GaAs", "InSb", "ZnS", "SiC"], a: 2 },
+  { q: "To get an n-type semiconductor from Silicon, it should be doped with a substance with valence electrons:", o: ["2", "3", "5", "1"], a: 2 },
+  { q: "Pure Silicon and Germanium are examples of:", o: ["Extrinsic semiconductors", "Intrinsic semiconductors", "Superconductors", "Non-metals"], a: 1 },
+  { q: "In a p-type semiconductor, the 'holes' are:", o: ["Positively charged ions", "Missing electrons in the lattice", "Protons", "Neutrons"], a: 1 },
+  { q: "The gap between valence band and conduction band is called:", o: ["Fermi level", "Overlapping zone", "Band gap", "Conductive path"], a: 2 },
+  { q: "Which of the following is a 13-15 compound semiconductor?", o: ["ZnO", "CdS", "GaAs", "NaCl"], a: 2 },
+  { q: "Schottky defect is generally observed in:", o: ["Semiconductors", "Highly ionic compounds", "Non-polar solids", "Molecular solids"], a: 1 },
+  { q: "Which defect increases the density of the crystal?", o: ["Frenkel defect", "Schottky defect", "Interstitial defect", "None of these"], a: 2 },
+  { q: "An example of a metal deficiency defect is shown by:", o: ["NaCl", "FeO", "KCl", "ZnO"], a: 1 },
+  { q: "The number of valence electrons in a Pentavalent impurity is:", o: ["3", "4", "5", "6"], a: 2 },
+  { q: "Zinc Oxide (ZnO) turns yellow on heating due to:", o: ["Frenkel defect", "Metal deficiency defect", "Metal excess defect", "Schottky defect"], a: 2 },
+  { q: "A hole in p-type semiconductor behaves like a:", o: ["Negative charge", "Positive charge", "Neutral particle", "Photon"], a: 1 },
+  { q: "Electrical conductivity of semiconductors is in the range of (in $ohm^{-1} m^{-1}$):", o: ["$10^{-20}$ to $10^{-10}$", "$10^4$ to $10^7$", "$10^{-6}$ to $10^4$", "$10^{10}$ to $10^{15}$"], a: 2 },
+  { q: "Which of the following is a paramagnetic solid?", o: ["$H_2O$", "$C_6H_6$", "$O_2$", "$NaCl$"], a: 2 },
+  { q: "Doping is the process of:", o: ["Purifying a metal", "Adding a small amount of impurity", "Heating a crystal", "Cooling a crystal"], a: 1 },
+  { q: "When $SrCl_2$ is added to $NaCl$ crystal, it creates:", o: ["Electron vacancies", "Cation vacancies", "Anion vacancies", "F-centres"], a: 1 },
+  { q: "Gallium Arsenide is used in making:", o: ["Glass", "Fertilizers", "Photovoltaic cells", "Paints"], a: 2 },
+  { q: "The band theory explains conductivity based on:", o: ["Nuclear size", "Molecular weight", "Overlapping of atomic orbitals", "Dipole moment"], a: 2 },
+  { q: "Which of the following transition metal oxides shows electrical properties like metals?", o: ["$TiO$", "$CrO_2$", "$ReO_3$", "All of these"], a: 3 },
+  { q: "In a semiconductor, the conduction band is:", o: ["Completely filled", "Empty or partially filled", "Below the valence band", "None of these"], a: 1 },
+  { q: "Germanium doped with Aluminium is:", o: ["n-type", "p-type", "Intrinsic", "Insulator"], a: 1 },
+  { q: "Which property is characteristic of Ferrimagnetic substances?", o: ["Parallel domains", "Anti-parallel domains", "Unequal parallel/anti-parallel domains", "No domains"], a: 2 },
+  { q: "Which of the following is a Non-stoichiometric defect?", o: ["Schottky", "Frenkel", "Metal excess", "Interstitial"], a: 2 },
+  { q: "Conductivity of Ge is increased by adding:", o: ["Cu", "Al", "As", "Both B and C"], a: 3 },
+  { q: "Silicon is a:", o: ["Conductor", "Semiconductor", "Insulator", "None of these"], a: 1 },
+  { q: "Which of the following are called 'holes'?", o: ["Negative vacancies", "Protons", "Electron vacancies", "Neutrons"], a: 2 },
+  { q: "Semiconductors are used in:", o: ["Transistors", "Rectifiers", "Both A and B", "None"], a: 2 },
+  { q: "What is the effect of doping on the resistance of a semiconductor?", o: ["Increases", "Decreases", "Remains same", "None"], a: 1 }
 ];
-
 
 
 
@@ -334,7 +358,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -405,8 +429,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_1")
 
   document.querySelector(".test-box").innerHTML = `
@@ -417,7 +441,7 @@ localStorage.getItem("chemistry_chapter_1")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
