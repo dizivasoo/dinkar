@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Solution is a",o:["Heterogeneous mixture","Homogeneous mixture","Colloid","Suspension"],a:1},
-{q:"Solvent is present in",o:["Smaller amount","Larger amount","Equal amount","None"],a:1},
-{q:"Molarity depends on",o:["Mass","Temperature","Volume","Pressure"],a:1},
-{q:"Molality is independent of",o:["Volume","Temperature","Mass","Moles"],a:1},
-{q:"Henry’s law relates to",o:["Gas solubility","Liquid pressure","Solid solubility","Osmosis"],a:0},
-{q:"Raoult’s law applies to",o:["Ideal solutions","Non-ideal solutions","Colloids","Suspensions"],a:0},
-{q:"Colligative properties depend on",o:["Nature","Number of particles","Size","Shape"],a:1},
-{q:"Elevation in boiling point is",o:["Direct","Inverse","No relation","Random"],a:0},
-{q:"Osmosis occurs through",o:["Semi-permeable membrane","Paper","Glass","Metal"],a:0},
-{q:"Van’t Hoff factor indicates",o:["Association","Dissociation","Both","None"],a:2}
+  { q: "Which of the following units is independent of temperature?", o: ["Molarity", "Normality", "Formality", "Molality"], a: 3 },
+  { q: "The sum of mole fractions of all components in a solution is always:", o: ["0", "1", "100", "Variable"], a: 1 },
+  { q: "An example of a solid-in-solid solution is:", o: ["Amalgam", "Brass", "Gemstones", "Both B and C"], a: 3 },
+  { q: "Henry's law constant (KH) depends on:", o: ["Nature of gas", "Nature of solvent", "Temperature", "All of these"], a: 3 },
+  { q: "Which gas is more soluble in water at a given pressure?", o: ["He", "O2", "N2", "NH3"], a: 3 },
+  { q: "For an ideal solution, the enthalpy of mixing (ΔH_mix) is:", o: ["Positive", "Negative", "Zero", "Infinity"], a: 2 },
+  { q: "Azeotropic mixtures are:", o: ["Constant boiling mixtures", "Binary mixtures", "Separable by distillation", "Both A and B"], a: 3 },
+  { q: "Relative lowering of vapour pressure is equal to:", o: ["Mole fraction of solvent", "Mole fraction of solute", "Molarity", "Molality"], a: 1 },
+  { q: "The osmotic pressure of a solution can be increased by:", o: ["Increasing temperature", "Decreasing temperature", "Decreasing concentration", "None"], a: 0 },
+  { q: "Isotonic solutions have the same:", o: ["Density", "Molar concentration", "Normality", "None of these"], a: 1 },
+  { q: "The Van't Hoff factor (i) for a dilute solution of NaCl is approximately:", o: ["1", "2", "3", "0.5"], a: 1 },
+  { q: "Which colligative property is best used for determining the molar mass of polymers?", o: ["BP elevation", "FP depression", "Osmotic pressure", "RLVP"], a: 2 },
+  { q: "When a non-volatile solute is added to a solvent, the vapour pressure:", o: ["Increases", "Decreases", "Remains same", "Fluctuates"], a: 1 },
+  { q: "The value of Van't Hoff factor (i) for dissociation is always:", o: ["i < 1", "i = 1", "i > 1", "i = 0"], a: 2 },
+  { q: "Which of the following shows a positive deviation from Raoult's law?", o: ["Acetone + Chloroform", "Water + HCl", "Ethanol + Acetone", "Phenol + Aniline"], a: 2 },
+  { q: "At high altitudes, the boiling point of water decreases because:", o: ["Atmospheric pressure is low", "Atmospheric pressure is high", "Temperature is low", "None"], a: 0 },
+  { q: "The unit of ebullioscopic constant (Kb) is:", o: ["K kg mol^-1", "mol kg^-1", "K mol kg^-1", "Unitless"], a: 0 },
+  { q: "A solution of NaCl in water behaves as:", o: ["Ideal solution", "Non-ideal solution", "Azeotrope", "None"], a: 1 },
+  { q: "Reverse osmosis is used in:", o: ["Water softening", "Water purification", "Concentrating juices", "Both B and C"], a: 3 },
+  { q: "If i = 1, it means the solute undergoes:", o: ["Association", "Dissociation", "Neither association nor dissociation", "Both"], a: 2 },
+  { q: "Camphor in Nitrogen gas is an example of:", o: ["Solid in gas solution", "Gas in solid solution", "Liquid in gas solution", "Gas in gas solution"], a: 0 },
+  { q: "The plant cell will shrink when placed in:", o: ["Hypotonic solution", "Hypertonic solution", "Isotonic solution", "Pure water"], a: 1 },
+  { q: "Which has the highest boiling point at 1 atm?", o: ["0.1 M Glucose", "0.1 M NaCl", "0.1 M BaCl2", "0.1 M Urea"], a: 2 },
+  { q: "The solubility of gases in liquids generally ______ with increase in temperature.", o: ["Increases", "Decreases", "Remains constant", "None"], a: 1 },
+  { q: "The law which relates the solubility of a gas to its pressure is:", o: ["Raoult's Law", "Henry's Law", "Hess's Law", "Ostwald's Law"], a: 1 },
+  { q: "Cryoscopic constant depends on:", o: ["Nature of solute", "Nature of solvent", "Concentration", "Pressure"], a: 1 },
+  { q: "Maximum boiling azeotropes are formed by solutions showing:", o: ["Positive deviation", "Negative deviation", "No deviation", "None"], a: 1 },
+  { q: "Pressure applied to stop the flow of solvent through a semi-permeable membrane is:", o: ["Atmospheric pressure", "Vapour pressure", "Osmotic pressure", "Hydrostatic pressure"], a: 2 },
+  { q: "Blood cells are isotonic with:", o: ["0.9% NaCl solution", "5% NaCl solution", "10% NaCl solution", "0.1% NaCl solution"], a: 0 },
+  { q: "Binary liquid mixtures having the same composition in liquid and vapour phase are:", o: ["Ideal solutions", "Azeotropes", "Saturated solutions", "None"], a: 1 },
+  { q: "Mole fraction of benzene in a solution containing 30% by mass in carbon tetrachloride is:", o: ["0.459", "0.501", "0.231", "0.320"], a: 3 },
+  { q: "Which relationship is correct for an ideal solution?", o: ["ΔV_mix = 0", "ΔH_mix = 0", "Raoult's law is obeyed", "All of the above"], a: 3 },
+  { q: "Colligative properties depend on:", o: ["Nature of solute", "Number of solute particles", "Physical properties of solute", "Nature of solvent"], a: 1 },
+  { q: "The osmotic pressure (π) is given by the equation:", o: ["π = MRT", "π = nRT", "π = CRT", "Both A and C"], a: 3 },
+  { q: "If molality of a solution is doubled, the value of Kf will be:", o: ["Doubled", "Halved", "Unchanged", "Tripled"], a: 2 }
 ];
-
 
 
 
@@ -334,7 +358,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -405,8 +429,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_2")
 
   document.querySelector(".test-box").innerHTML = `
@@ -417,7 +441,7 @@ localStorage.getItem("chemistry_chapter_2")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
