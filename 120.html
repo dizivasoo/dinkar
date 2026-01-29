@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Wave optics explains",o:["Interference","Diffraction","Polarisation","All"],a:3},
-{q:"Young’s experiment proves",o:["Wave nature","Particle nature","Dual","None"],a:0},
-{q:"Fringe width depends on",o:["Wavelength","Distance","Slit separation","All"],a:3},
-{q:"Coherent sources have",o:["Same phase","Different phase","No phase","None"],a:0},
-{q:"Diffraction is significant when",o:["Aperture small","Large","None","Random"],a:0},
-{q:"Polarisation occurs in",o:["Transverse waves","Longitudinal","Sound","None"],a:0},
-{q:"Malus law relates",o:["Intensity","Wavelength","Speed","None"],a:0},
-{q:"Light is polarised by",o:["Reflection","Refraction","Scattering","All"],a:3},
-{q:"Central maximum is",o:["Bright","Dark","Colorless","None"],a:0},
-{q:"Path difference zero gives",o:["Maxima","Minima","Both","None"],a:0}
+  {q:"Which of the following phenomena proves the transverse nature of light waves?",o:["Polarisation","Interference","Diffraction","Refraction"],a:0},
+  {q:"The wavefront due to a point source at a very large distance is",o:["Plane","Spherical","Cylindrical","Circular"],a:0},
+  {q:"Two coherent sources of light have a intensity ratio of 81:1. The ratio of their amplitudes is",o:["9:1","81:1","3:1","27:1"],a:0},
+  {q:"In Young's Double Slit Experiment, if the distance between the slits is halved, the fringe width becomes",o:["Double","Half","Four times","Unchanged"],a:0},
+  {q:"The idea of secondary wavelets was first given by",o:["Huygens","Newton","Maxwell","Fresnel"],a:0},
+  {q:"Colors in thin films are due to the phenomenon of",o:["Interference","Scattering","Dispersion","Absorption"],a:0},
+  {q:"The phase difference between two points on the same wavefront is",o:["0","π/2","π","2π"],a:0},
+  {q:"Light propagates in a rectilinear path because of its",o:["Small wavelength","Large wavelength","Frequency","Transverse nature"],a:0},
+  {q:"In the context of Doppler effect in light, 'Red Shift' signifies",o:["Increase in wavelength","Decrease in wavelength","Increase in frequency","No change in speed"],a:0},
+  {q:"A Brewster's angle $i_p$ for a glass slab of refractive index $\mu$ is given by",o:["$\tan i_p = \mu$","$\sin i_p = \mu$","$\cos i_p = \mu$","$\cot i_p = \mu$"],a:0},
+  {q:"The locus of all particles vibrating in the same phase is called",o:["Wavefront","Wavelength","Frequency","Ray"],a:0},
+  {q:"If a thin transparent sheet is placed in front of one of the slits in YDSE, the fringe width",o:["Remains same","Increases","Decreases","Disappears"],a:0},
+  {q:"Diffraction is most pronounced when the size of the obstacle is",o:["Infinite","Comparable to wavelength","Much larger than wavelength","Zero"],a:1},
+  {q:"Two sources are said to be coherent if they produce waves of",o:["Constant phase difference","Different frequencies","Variable speed","Different amplitudes"],a:1},
+  {q:"The resolving power of a telescope can be increased by",o:["Decreasing wavelength","Increasing wavelength","Decreasing aperture","Increasing focal length"],a:1},
+  {q:"When a wave undergoes reflection at a denser medium, the phase change is",o:["0","π","π/2","2π"],a:1},
+  {q:"Polaroid glass is used in sunglasses because it",o:["Reduces intensity to half","Reduces glare via polarisation","Is cheaper than glass","Blocks UV rays only"],a:1},
+  {q:"Central fringe in interference pattern is usually",o:["Dark","Bright","Colored","Invisible"],a:2},
+  {q:"The path difference for constructive interference is ($n$ is an integer)",o:["$(2n+1)\lambda/2$","$n\lambda/2$","$n\lambda$","$(n+1)\lambda$"],a:2},
+  {q:"Unpolarised light can be converted into partially or fully polarised light by",o:["Reflection","Scattering","Both A and B","None of these"],a:2},
+  {q:"Malus Law is given by the expression",o:["$I = I_0 \sin^2 \theta$","$I = I_0 \tan \theta$","$I = I_0 \cos^2 \theta$","$I = I_0 / 2$"],a:2},
+  {q:"In Fresnel's biprism experiment, the coherent sources are obtained by",o:["Division of amplitude","Division of frequency","Division of wavefront","Reflection only"],a:2},
+  {q:"The ratio of maximum to minimum intensity in interference is ($a_1, a_2$ are amplitudes)",o:["$(a_1+a_2)/(a_1-a_2)$","$(a_1^2+a_2^2)/(a_1^2-a_2^2)$","$(a_1+a_2)^2/(a_1-a_2)^2$","$(a_1-a_2)^2/(a_1+a_2)^2$"],a:2},
+  {q:"The wavefront originating from a slit is",o:["Spherical","Plane","Cylindrical","Elliptical"],a:2},
+  {q:"Huygens principle is used to explain",o:["Photoelectric effect","Origin of spectra","Polarisation","Propagation of wavefronts"],a:3},
+  {q:"Which of the following does not show interference?",o:["Soap bubble","Oil film on water","Wedge shaped glass","Independent light bulbs"],a:3},
+  {q:"Fringe width ($\beta$) in YDSE is given by",o:["$dD/\lambda$","$d\lambda/D$","$D/\lambda d$","$\lambda D/d$"],a:3},
+  {q:"The direction of vibration of the electric field vector in a polarised light wave is",o:["Random","In all directions","Circular","In one fixed direction"],a:3},
+  {q:"The central point in a Newton's ring pattern seen by reflection is",o:["Bright","Colored","Diffused","Dark"],a:3},
+  {q:"The limit of resolution of a microscope is proportional to",o:["$\mu \sin \theta$","$1/\lambda$","Aperture","$\lambda$"],a:3},
+  {q:"Airy's disc is related to",o:["Interference","Polarisation","Refraction","Diffraction"],a:3},
+  {q:"If white light is used in YDSE, the central fringe is",o:["Red","Blue","Black","White"],a:3},
+  {q:"To observe diffraction, the size of the slit should be of the order of",o:["1 cm","1 m","10 cm","Wavelength of light"],a:3},
+  {q:"The energy in an interference pattern is",o:["Created at maxima","Destroyed at minima","Lost as heat","Redistributed"],a:3},
+  {q:"A wave is reflected from a rarer medium. The phase change is",o:["π","π/2","2π","Zero"],a:3}
 ];
-
 
 let index = 0;
 let score = 0;
@@ -332,7 +356,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +427,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_10")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +438,7 @@ localStorage.getItem("physics_chapter_10")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
