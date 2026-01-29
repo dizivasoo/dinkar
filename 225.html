@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Chemical kinetics deals with",o:["Rate","Energy","Equilibrium","Structure"],a:0},
-{q:"Rate of reaction depends on",o:["Temperature","Concentration","Catalyst","All"],a:3},
-{q:"Order of reaction is",o:["Experimental","Theoretical","Constant","Variable"],a:0},
-{q:"Zero order reaction rate is",o:["Constant","Variable","Infinite","Zero"],a:0},
-{q:"Half-life of first order reaction is",o:["Independent of concentration","Dependent","Infinite","Zero"],a:0},
-{q:"Rate constant depends on",o:["Temperature","Concentration","Pressure","Volume"],a:0},
-{q:"Activation energy is minimum energy to",o:["Start reaction","Stop reaction","Slow reaction","Reverse reaction"],a:0},
-{q:"Catalyst increases",o:["Rate","Energy","Yield","Equilibrium"],a:0},
-{q:"Unit of rate constant depends on",o:["Order","Temperature","Pressure","Catalyst"],a:0},
-{q:"Arrhenius equation relates k with",o:["Temperature","Pressure","Volume","Mass"],a:0}
+  { q: "The rate of a chemical reaction tells us about:", o: ["The energy of the reaction", "The speed of the reaction", "The direction of the reaction", "The heat evolved"], a: 1 },
+  { q: "The unit of rate of reaction is:", o: ["mol L^-1", "mol L^-1 s^-1", "L mol^-1 s^-1", "s^-1"], a: 1 },
+  { q: "For a zero-order reaction, the unit of rate constant is:", o: ["s^-1", "L mol^-1 s^-1", "mol L^-1 s^-1", "mol L s^-1"], a: 2 },
+  { q: "The overall order of a reaction for which rate = k[A]^(1/2) [B]^(3/2) is:", o: ["1", "1.5", "2", "3"], a: 2 },
+  { q: "A catalyst increases the rate of reaction by:", o: ["Increasing activation energy", "Increasing enthalpy", "Decreasing activation energy", "Decreasing enthalpy"], a: 2 },
+  { q: "The half-life of a first-order reaction is:", o: ["Dependent on initial concentration", "0.693/k", "k/0.693", "2k/0.693"], a: 1 },
+  { q: "In a pseudo-first-order reaction, one of the reactants is present in:", o: ["Small amount", "Catalytic amount", "Excess amount", "Equal amount"], a: 2 },
+  { q: "The temperature coefficient of most reactions lies between:", o: ["1 and 2", "2 and 3", "3 and 4", "1 and 4"], a: 1 },
+  { q: "Which of the following does not affect the rate of reaction?", o: ["Concentration", "Temperature", "Enthalpy of reaction", "Catalyst"], a: 2 },
+  { q: "The minimum energy required by a molecule to react is called:", o: ["Kinetic energy", "Potential energy", "Threshold energy", "Activation energy"], a: 2 },
+  { q: "For a first-order reaction, the plot of ln[A] vs t is a straight line with slope:", o: ["k", "-k", "0.693", "log k"], a: 1 },
+  { q: "The rate constant of a reaction depends on:", o: ["Concentration", "Time", "Temperature", "Pressure"], a: 2 },
+  { q: "The order of a reaction can be:", o: ["Zero", "Fractional", "Integer", "All of these"], a: 3 },
+  { q: "A photochemical reaction is usually of order:", o: ["First", "Second", "Zero", "Third"], a: 2 },
+  { q: "The number of reacting species taking part in an elementary reaction is called:", o: ["Order", "Half-life", "Molecularity", "Rate"], a: 2 },
+  { q: "Arrhenius equation is represented as:", o: ["k = Ae^(Ea/RT)", "k = Ae^(-Ea/RT)", "k = Ae^(RT/Ea)", "k = ln A - Ea/RT"], a: 1 },
+  { q: "If the concentration of reactant is doubled and rate remains same, the order is:", o: ["1", "2", "0", "0.5"], a: 2 },
+  { q: "Which of the following is correct for a first-order reaction?", o: ["t1/2 ∝ a", "t1/2 ∝ 1/a", "t1/2 is independent of a", "t1/2 ∝ a^2"], a: 2 },
+  { q: "The value of rate constant for a zero-order reaction is k. The time for completion is:", o: ["k/a", "a/2k", "a/k", "0.693/k"], a: 2 },
+  { q: "Activation energy is calculated using:", o: ["Nernst equation", "Van't Hoff equation", "Arrhenius equation", "Raoult's Law"], a: 2 },
+  { q: "The rate of a gaseous reaction depends on:", o: ["Volume", "Nature of container", "Partial pressure", "Humidity"], a: 2 },
+  { q: "Collision theory is applicable to:", o: ["Unimolecular reactions", "Bimolecular reactions", "Zero-order reactions", "All reactions"], a: 1 },
+  { q: "The slope of a graph between log k and 1/T is:", o: ["Ea/2.303R", "-Ea/R", "-Ea/2.303R", "2.303R/Ea"], a: 2 },
+  { q: "Decomposition of NH3 on platinum surface is a:", o: ["First-order reaction", "Second-order reaction", "Zero-order reaction", "Third-order reaction"], a: 2 },
+  { q: "For a reaction A + B → C, if [A] is doubled, rate doubles. If [B] is doubled, rate quadruples. Rate law is:", o: ["k[A][B]", "k[A]^2[B]", "k[A][B]^2", "k[A]^2[B]^2"], a: 2 },
+  { q: "Molecularity of a reaction can never be:", o: ["1", "2", "0", "3"], a: 2 },
+  { q: "Hydrolysis of ethyl acetate in acidic medium is:", o: ["First-order", "Second-order", "Pseudo-first-order", "Zero-order"], a: 2 },
+  { q: "Effective collisions are those in which molecules have:", o: ["Threshold energy", "Proper orientation", "High velocity", "Both A and B"], a: 3 },
+  { q: "The time taken for 75% completion of a first-order reaction is:", o: ["t1/2", "3 * t1/2", "2 * t1/2", "1.5 * t1/2"], a: 2 },
+  { q: "Specific reaction rate is another name for:", o: ["Rate of reaction", "Average rate", "Rate constant", "Molecularity"], a: 2 },
+  { q: "Unit of rate constant for a second-order reaction is:", o: ["s^-1", "mol L^-1 s^-1", "L mol^-1 s^-1", "L^2 mol^-2 s^-1"], a: 2 },
+  { q: "For a reaction A → B, the rate law is rate = k[A]. If 50% reacts in 10 min, 75% reacts in:", o: ["15 min", "25 min", "20 min", "40 min"], a: 2 },
+  { q: "The energy of activation is zero. The rate constant k is equal to:", o: ["Zero", "Frequency factor (A)", "Infinity", "ln A"], a: 1 },
+  { q: "Which of the following is an endothermic reaction?", o: ["Combustion", "Neutralization", "Photosynthesis", "Respiration"], a: 2 },
+  { q: "In the expression Rate = k[A]^n, if n is negative, the rate _________ as [A] increases.", o: ["Increases", "Remains same", "Decreases", "Becomes zero"], a: 2 }
 ];
-
 
 
 let index = 0;
@@ -333,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_4")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -415,7 +439,7 @@ localStorage.getItem("chemistry_chapter_4")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
