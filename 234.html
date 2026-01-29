@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35 </div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,19 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Amines contain",o:["–NH₂","–OH","–COOH","–CHO"],a:0},
-{q:"Amines are",o:["Basic","Acidic","Neutral","Salt"],a:0},
-{q:"Primary amine has",o:["One alkyl","Two alkyl","Three alkyl","None"],a:0},
-{q:"Hinsberg test identifies",o:["Amines","Alcohols","Acids","Ethers"],a:0},
-{q:"Aniline is",o:["Aromatic amine","Aliphatic","Secondary","Tertiary"],a:0},
-{q:"Diazonium salts are prepared from",o:["Aromatic amines","Alkanes","Alcohols","Ketones"],a:0},
-{q:"Gabriel synthesis gives",o:["Primary amines","Secondary","Tertiary","All"],a:0},
-{q:"Aniline reacts with",o:["Bromine water","NaCl","HCl","NaOH"],a:0},
-{q:"Amines form salts with",o:["Acids","Bases","Water","Alcohol"],a:0},
-{q:"Basicity of amines depends on",o:["Electron density","Mass","Volume","Color"],a:0}
+  {q:"Which of the following is the strongest base in aqueous solution?",o:["Diethylamine","Ethylamine","Triethylamine","Ammonia"],a:0},
+  {q:"Hinsberg's reagent is:",o:["Benzene sulphonyl chloride","Benzene sulphonic acid","Phenyl isocyanide","Benzene amide"],a:0},
+  {q:"The reduction of nitrobenzene with Sn/HCl gives:",o:["Aniline","Azobenzene","Hydrazobenzene","Nitrosobenzene"],a:0},
+  {q:"The IUPAC name of C6H5NH2 is:",o:["Aniline","Benzeneamine","Amino benzene","All of these"],a:0},
+  {q:"Which of the following will give Carbylamine test?",o:["Primary amines","Secondary amines","Tertiary amines","All of these"],a:0},
+  {q:"The correct order of basic strength of methyl substituted amines in gaseous phase is:",o:["3° > 2° > 1° > NH3","NH3 > 1° > 2° > 3°","2° > 1° > 3° > NH3","2° > 3° > 1° > NH3"],a:0},
+  {q:"Mendius reaction involves the reduction of alkyl cyanides with:",o:["Na / C2H5OH","LiAlH4","Sn / HCl","Zn / HCl"],a:0},
+  {q:"Aniline on treatment with bromine water gives a white precipitate of:",o:["2,4,6-Tribromoaniline","o-Bromoaniline","p-Bromoaniline","m-Bromoaniline"],a:0},
+  {q:"Which of the following reacts with Hinsberg reagent to give a product insoluble in alkali?",o:["Secondary amine","Primary amine","Tertiary amine","Quaternary salt"],a:0},
+  {q:"The hybridisation of nitrogen in amines is:",o:["sp3","sp2","sp","dsp2"],a:0},
+  {q:"Hoffmann Bromamide degradation reaction is used to prepare:",o:["Primary amines","Secondary amines","Tertiary amines","Amides"],a:0},
+  {q:"The foul-smelling substance produced in the carbylamine test is:",o:["Alkyl isocyanide","Alkyl cyanide","Alkyl nitrite","Nitroalkane"],a:0},
+  {q:"Gabriel Phthalimide synthesis is used for the preparation of:",o:["Pure primary aliphatic amines","Secondary amines","Aromatic amines","Tertiary amines"],a:0},
+  {q:"Electrophilic substitution of aniline usually occurs at:",o:["Ortho and Para","Meta","Only Para","Only Meta"],a:1},
+  {q:"Which of the following is most basic?",o:["Benzylamine","Aniline","p-Nitroaniline","m-Nitroaniline"],a:1},
+  {q:"Aniline reacts with conc. HNO3 and conc. H2SO4 to give a significant amount of:",o:["m-Nitroaniline","p-Nitroaniline","o-Nitroaniline","Nitrobenzene"],a:1},
+  {q:"The test used to distinguish between primary, secondary and tertiary amines is:",o:["Hinsberg's test","Fehling's test","Iodoform test","Tollen's test"],a:1},
+  {q:"Benzene diazunium chloride reacts with phenol in basic medium to give:",o:["p-Hydroxyazobenzene","Aniline","Chlorobenzene","Benzene"],a:1},
+  {q:"Acetylation of aniline with acetic anhydride gives:",o:["Acetanilide","N-Methylaniline","Nitrobenzene","Benzamide"],a:1},
+  {q:"Coupling reaction of diazonium salts is an example of:",o:["Electrophilic substitution","Nucleophilic substitution","Addition","Elimination"],a:1},
+  {q:"Nitrous acid (NaNO2 + HCl) reacts with primary aliphatic amines to give:",o:["Alcohols","Nitroalkanes","Nitrites","Cyanides"],a:1},
+  {q:"Which of the following cannot be prepared by Gabriel Phthalimide synthesis?",o:["Aniline","Methylamine","Ethylamine","Isopropylamine"],a:2},
+  {q:"Direct nitration of aniline is difficult because:",o:["The amino group is oxidized","Aniline is highly stable","The NH2 group gets protonated to meta-directing group","It reacts with water"],a:2},
+  {q:"In the reaction C6H5NH2 + CHCl3 + KOH, the product is:",o:["C6H5NC","C6H5CN","C6H5Cl","C6H5OH"],a:2},
+  {q:"Sandmeyer reaction is used to prepare:",o:["Chlorobenzene","Bromobenzene","Both A and B","Iodobenzene"],a:2},
+  {q:"Which of the following amines does not react with nitrous acid to form nitrogen gas?",o:["Trimethylamine","Ethylamine","Aniline","Isopropylamine"],a:3},
+  {q:"The starting material for the preparation of p-aminoazobenzene is:",o:["Aniline","Nitrobenzene","Phenol","Benzene diazonium chloride"],a:3},
+  {q:"Reduction of alkyl isocyanides with sodium and ethanol gives:",o:["Secondary amines","Primary amines","Tertiary amines","Amides"],a:0},
+  {q:"Aniline is less basic than ammonia because of:",o:["Resonance effect","Inductive effect","Electromeric effect","None of these"],a:3},
+  {q:"The boiling point of amines follows the order:",o:["1° > 2° > 3°","3° > 2° > 1°","2° > 1° > 3°","1° > 3° > 2°"],a:3},
+  {q:"Which reagent converts an amide into an amine with the same number of carbons?",o:["LiAlH4","Br2 / KOH","PCl5","SOCl2"],a:3},
+  {q:"Aromatic diazonium salts are stable at:",o:["0-5 °C","Room temperature","100 °C","50 °C"],a:3},
+  {q:"Aniline on heating with fuming sulphuric acid gives:",o:["Sulphanilic acid","Benzene sulphonic acid","o-Nitroaniline","m-Nitroaniline"],a:3},
+  {q:"The nitrogen atom in amines is:",o:["Trivalent","Tetravalent","Divalent","Monovalent"],a:3},
+  {q:"Which of the following will not undergo coupling with diazonium salt?",o:["Nitrobenzene","Phenol","Aniline","N,N-Dimethylaniline"],a:3}
 ];
-
-
 let index = 0;
 let score = 0;
 let answered = false;
@@ -332,7 +355,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +426,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_33")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +437,7 @@ localStorage.getItem("chemistry_chapter_33")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
