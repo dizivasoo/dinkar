@@ -300,19 +300,39 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Magnetic dipole moment points from",o:["S to N","N to S","Center","None"],a:1},
-{q:"Earth behaves like",o:["Bar magnet","Solenoid","Coil","Wire"],a:0},
-{q:"Diamagnetic materials are",o:["Weakly repelled","Strongly attracted","Magnetic","None"],a:0},
-{q:"Paramagnetic materials are",o:["Weakly attracted","Repelled","Neutral","None"],a:0},
-{q:"Ferromagnetic materials show",o:["Strong attraction","Weak attraction","Repulsion","None"],a:0},
-{q:"Magnetic susceptibility of diamagnetic is",o:["Negative","Positive","Zero","Infinity"],a:0},
-{q:"SI unit of magnetic moment is",o:["Am²","T","Wb","A"],a:0},
-{q:"Magnetic field lines form",o:["Closed loops","Open loops","Straight lines","None"],a:0},
-{q:"Curie temperature relates to",o:["Ferromagnetism","Diamagnetism","Paramagnetism","None"],a:0},
-{q:"Soft iron is used as",o:["Core","Magnet","Insulator","Wire"],a:0}
+  {q:"The relation between relative permeability (μr) and susceptibility (χ) is", o:["μr = 1 - χ","μr = 1 + χ","μr = χ - 1","μr = 1/χ"], a:1}, // B
+  {q:"At the magnetic equator, the angle of dip is", o:["0°","90°","45°","180°"], a:0}, // A
+  {q:"Which of the following materials has the highest permeability?", o:["Diamagnetic","Paramagnetic","Ferromagnetic","Non-magnetic"], a:2}, // C
+  {q:"The Curie temperature is the temperature above which", o:["A paramagnetic material becomes diamagnetic","A ferromagnetic material becomes paramagnetic","A ferromagnetic material becomes diamagnetic","A paramagnetic material becomes ferromagnetic"], a:1}, // B
+  {q:"Soft iron is used to make electromagnets because it has", o:["Low retentivity and high coercivity","High retentivity and high coercivity","High retentivity and low coercivity","Low retentivity and low coercivity"], a:2}, // C
+  {q:"The magnetic lines of force inside a bar magnet run from", o:["North to South","South to North","Side to Side","Center to Poles"], a:1}, // B
+  {q:"The horizontal component of Earth's magnetic field is zero at", o:["Magnetic Equator","Geographic Equator","Magnetic Poles","45 degree latitude"], a:2}, // C
+  {q:"Magnetic meridian is a", o:["Point","Line","Vertical plane","Horizontal plane"], a:2}, // C
+  {q:"Which of the following is NOT an element of Earth's magnetic field?", o:["Magnetic Declination","Magnetic Inclination","Magnetic Flux","Horizontal Component"], a:2}, // C
+  {q:"The SI unit of magnetic flux is", o:["Tesla","Weber","Gauss","Oersted"], a:1}, // B
+  {q:"Permanent magnets are usually made of", o:["Soft iron","Copper","Steel (Alnico)","Aluminum"], a:2}, // C
+  {q:"The sensitivity of a moving coil galvanometer can be increased by", o:["Decreasing the number of turns","Increasing the magnetic field","Decreasing the area of the coil","Increasing the spring constant"], a:1}, // B
+  {q:"The work done in rotating a magnet of magnetic moment M in field B through 180° from the field direction is", o:["MB","Zero","2MB","1/2 MB"], a:2}, // C
+  {q:"If a bar magnet is cut into two equal halves along its length, the pole strength", o:["Is doubled","Is halved","Remains same","Becomes zero"], a:1}, // B
+  {q:"A circular loop of area A carries a current I. Its magnetic dipole moment is", o:["I/A","I²A","IA","I/A²"], a:2}, // C
+  {q:"According to Gauss’s law in magnetism, the net magnetic flux through any closed surface is", o:["Positive","Negative","Zero","Infinite"], a:2}, // C
+  {q:"Materials which are weakly repelled by magnets are called", o:["Ferromagnetic","Paramagnetic","Diamagnetic","Superconductors"], a:2}, // C
+  {q:"The magnetic susceptibility of a vacuum is", o:["1","Infinity","Zero","-1"], a:2}, // C
+  {q:"The SI unit of Magnetization (M) is", o:["Am²","A/m","Tesla","Weber/m"], a:1}, // B
+  {q:"Which of the following is a diamagnetic substance?", o:["Iron","Aluminum","Water","Cobalt"], a:2}, // C
+  {q:"The vertical component of Earth's magnetic field is maximum at", o:["Equator","Poles","45 degree latitude","None of these"], a:1}, // B
+  {q:"Liquid oxygen is", o:["Diamagnetic","Paramagnetic","Ferromagnetic","Non-magnetic"], a:1}, // B
+  {q:"The tendency of a magnetic material to retain its magnetism even after the removal of the external field is", o:["Coercivity","Retentivity","Permeability","Susceptibility"], a:1}, // B
+  {q:"In a Hysteresis loop, the area represents", o:["Magnetic field","Magnetic flux","Energy loss per unit volume","Permeability"], a:2}, // C
+  {q:"A superconductor exhibits perfect", o:["Paramagnetism","Diamagnetism","Ferromagnetism","Electromagnetism"], a:1}, // B
+  {q:"Magnetic susceptibility of a paramagnetic material varies with temperature (T) as", o:["1/T²","1/T","T","T²"], a:1}, // B
+  {q:"The force between two magnetic poles separated by a distance r follows", o:["Inverse square law","Inverse cube law","Direct square law","Linear law"], a:0}, // A
+  {q:"The magnetic field lines form", o:["Closed loops","Open loops","Straight lines","Discontinuous curves"], a:0}, // A
+  {q:"The neutral point is a point where the net magnetic field is", o:["Maximum","Minimum","Zero","Infinite"], a:2}, // C
+  {q:"Steel is preferred for making permanent magnets over soft iron because it has", o:["High retentivity","High coercivity","Low coercivity","Low retentivity"], a:1}, // B
+  {q:"The direction of magnetic moment is from", o:["South to North pole","North to South pole","East to West","West to East"], a:0}  // A
 ];
-
-
+  
 
 let index = 0;
 let score = 0;
@@ -333,7 +353,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +424,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_5")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -415,7 +435,7 @@ localStorage.getItem("physics_chapter_5")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
