@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"p-block elements lie in groups",o:["1–2","13–18","3–12","1–18"],a:1},
-{q:"Most electronegative element is",o:["O","N","F","Cl"],a:2},
-{q:"Noble gases are",o:["Reactive","Inert","Metallic","Ionic"],a:1},
-{q:"Ammonia is",o:["Acidic","Basic","Neutral","Salt"],a:1},
-{q:"Ozone is",o:["O₂","O₃","O₄","O"],a:1},
-{q:"Sulphur belongs to group",o:["14","15","16","17"],a:2},
-{q:"Halogens form",o:["+1 ions","−1 ions","Neutral atoms","+2 ions"],a:1},
-{q:"Nitrogen shows maximum catenation",o:["True","False","Sometimes","Never"],a:1},
-{q:"Allotropy is shown by",o:["Carbon","Hydrogen","Oxygen","Nitrogen"],a:0},
-{q:"Inert gases have",o:["Complete octet","Incomplete octet","No electrons","No shell"],a:0}
+  {q:"Which of the following noble gases is used in weather balloons?",o:["Helium","Neon","Argon","Krypton"],a:0},
+  {q:"The geometry of XeF4 is:",o:["Square planar","Tetrahedral","Octahedral","Pyramidal"],a:0},
+  {q:"Which element has the highest electron gain enthalpy in Group 17?",o:["Chlorine","Fluorine","Bromine","Iodine"],a:0},
+  {q:"In the Haber's process for ammonia, the catalyst used is:",o:["Iron","Copper","Nickel","Platinum"],a:0},
+  {q:"The most abundant noble gas in the atmosphere is:",o:["Argon","Helium","Neon","Radon"],a:0},
+  {q:"Which acid is known as the 'Oil of Vitriol'?",o:["Sulphuric acid","Nitric acid","Hydrochloric acid","Phosphoric acid"],a:0},
+  {q:"The basicity of Orthophosphoric acid (H3PO4) is:",o:["3","1","2","4"],a:0},
+  {q:"White phosphorus is stored in:",o:["Water","Kerosene","Alcohol","Ether"],a:0},
+  {q:"Which of the following is the strongest oxidizing agent?",o:["Fluorine","Chlorine","Bromine","Iodine"],a:1},
+  {q:"Brown ring test is used for the detection of:",o:["Nitrates","Nitrites","Chlorides","Sulphates"],a:1},
+  {q:"The shape of ClF3 molecule is:",o:["T-shaped","Trigonal planar","Square pyramidal","Bent"],a:1},
+  {q:"Which phosphorus allotrope is thermodynamically most stable?",o:["Black phosphorus","White phosphorus","Red phosphorus","Yellow phosphorus"],a:1},
+  {q:"The oxidation state of Oxygen in OF2 is:",o:["+2","+1","-1","-2"],a:1},
+  {q:"Which catalyst is used in the Contact Process for H2SO4?",o:["V2O5","Fe2O3","MnO2","Pt"],a:1},
+  {q:"The hybridisation of Xenon in XeF2 is:",o:["sp3d","sp3","sp3d2","sp2"],a:1},
+  {q:"Which of the following does not form hydrogen bonds?",o:["HCl","HF","NH3","H2O"],a:1},
+  {q:"The mixture of conc. HCl and conc. HNO3 in 3:1 ratio is:",o:["Aqua regia","Vinegar","Oleum","Bleaching liquor"],a:1},
+  {q:"Which p-block element shows the maximum number of oxidation states?",o:["Chlorine","Nitrogen","Phosphorus","Sulphur"],a:2},
+  {q:"Hexametaphosphate is commonly known as:",o:["Calgon","Hypo","Bakelite","Borax"],a:2},
+  {q:"The oxidation state of Phosphorus in H3PO3 is:",o:["+3","+1","+5","-3"],a:2},
+  {q:"Which gas is released when Copper reacts with dilute HNO3?",o:["Nitric oxide (NO)","Nitrogen dioxide (NO2)","Nitrous oxide (N2O)","Hydrogen"],a:2},
+  {q:"The bleaching action of Chlorine is due to:",o:["Oxidation","Reduction","Hydrogenation","Hydrolysis"],a:2},
+  {q:"Which halogen is liquid at room temperature?",o:["Bromine","Fluorine","Chlorine","Iodine"],a:2},
+  {q:"The anhydride of Nitric acid is:",o:["N2O5","NO2","N2O3","N2O"],a:2},
+  {q:"What is the bond angle in PH3?",o:["Close to 90°","109.5°","120°","180°"],a:2},
+  {q:"Which of the following is a neutral oxide?",o:["Nitrous oxide (N2O)","Nitrogen dioxide (NO2)","Phosphorus pentoxide","Sulphur dioxide"],a:2},
+  {q:"The correct order of boiling points for Group 16 hydrides is:",o:["H2O > H2Te > H2Se > H2S","H2S > H2Se > H2Te > H2O","H2O > H2S > H2Se > H2Te","H2Te > H2Se > H2S > H2O"],a:2},
+  {q:"Which element does not show allotropy?",o:["Nitrogen","Phosphorus","Sulphur","Arsenic"],a:3},
+  {q:"The formula of Oleum is:",o:["H2S2O7","H2SO4","H2S2O8","H2SO5"],a:3},
+  {q:"Which noble gas has the lowest boiling point?",o:["Helium","Neon","Argon","Xenon"],a:3},
+  {q:"PCL5 exists in the solid state as:",o:["[PCl4]+ [PCl6]-","PCl5 molecules","[PCl3]+ [PCl7]-","None of these"],a:3},
+  {q:"The bond dissociation enthalpy is lowest for:",o:["I2","F2","Cl2","Br2"],a:3},
+  {q:"Deacon’s process is used for the manufacture of:",o:["Chlorine","Ammonia","Sulphuric acid","Nitric acid"],a:3},
+  {q:"The tailing of mercury is due to the formation of:",o:["Hg2O","HgO","HgS","Hg(OH)2"],a:3},
+  {q:"Which is the strongest acid among the following?",o:["HClO4","HClO3","HClO2","HClO"],a:3}
 ];
 
 
@@ -334,7 +359,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -405,8 +430,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_7")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -416,7 +441,7 @@ localStorage.getItem("chemistry_chapter_7")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
