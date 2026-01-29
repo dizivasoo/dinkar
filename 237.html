@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,19 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Drugs are used for",o:["Diagnosis","Prevention","Treatment","All"],a:3},
-{q:"Analgesics relieve",o:["Pain","Fever","Infection","Sleep"],a:0},
-{q:"Antibiotics kill",o:["Bacteria","Viruses","Fungi","All"],a:0},
-{q:"Antiseptics are applied on",o:["Living tissues","Instruments","Machines","Water"],a:0},
-{q:"Disinfectants are used on",o:["Non-living objects","Body","Food","Blood"],a:0},
-{q:"Aspirin is a",o:["Pain killer","Antibiotic","Antacid","Antiseptic"],a:0},
-{q:"Tranquilizers reduce",o:["Stress","Pain","Fever","Infection"],a:0},
-{q:"Detergents are",o:["Cleansing agents","Drugs","Polymers","Fertilizers"],a:0},
-{q:"Soaps are sodium salts of",o:["Fatty acids","Amino acids","Sugars","Proteins"],a:0},
-{q:"Antacids reduce",o:["Acidity","Pain","Fever","Infection"],a:0}
+  {q:"Which of the following is an analgesic?",o:["Aspirin","Penicillin","Chloramphenicol","Quinine"],a:0},
+  {q:"Drugs that bind to the receptor site and inhibit its natural function are called:",o:["Antagonists","Agonists","Target molecules","Enzymes"],a:0},
+  {q:"Aspirin is chemically:",o:["Acetylsalicylic acid","Methyl salicylate","Ethyl salicylate","Salicylic acid"],a:0},
+  {q:"Which of the following is a narrow spectrum antibiotic?",o:["Penicillin G","Ampicillin","Amoxicillin","Chloramphenicol"],a:0},
+  {q:"The drug used to reduce fever is called:",o:["Antipyretic","Analgesic","Antibiotic","Tranquilizer"],a:0},
+  {q:"Which of the following is used as a morning-after pill?",o:["Mifepristone","Ethinylestradiol","Norethindrone","Bithionol"],a:0},
+  {q:"Salvarsan was first used for the treatment of:",o:["Syphilis","Typhoid","Malaria","Cholera"],a:0},
+  {q:"Which of the following is a tranquilizer?",o:["Equanil","Paracetamol","Morphine","Bithionol"],a:0},
+  {q:"The chemical used to kill or prevent the growth of microorganisms on living tissues is:",o:["Antiseptic","Disinfectant","Antibiotic","Analgesic"],a:0},
+  {q:"Tincture of iodine is:",o:["2-3% solution of iodine in alcohol-water","Solution of iodoform","Solution of iodine in KI","Liquid iodine"],a:0},
+  {q:"Which of the following is a cationic detergent?",o:["Cetyltrimethylammonium bromide","Sodium dodecylbenzene sulphonate","Sodium lauryl sulphate","Glyceryl oleate"],a:0},
+  {q:"Artificial sweetener that is stable only under cold conditions is:",o:["Aspartame","Alitame","Saccharin","Sucralose"],a:0},
+  {q:"Which of the following is used as an antioxidant in food?",o:["BHA (Butylated Hydroxy Anisole)","Saccharin","Sucralose","Soap"],a:0},
+  {q:"Bithionol is added to soap to impart:",o:["Antiseptic properties","Color","Fragrance","Softness"],a:1},
+  {q:"Which of the following is a non-narcotic analgesic?",o:["Paracetamol","Morphine","Heroin","Codeine"],a:1},
+  {q:"The sweetener that has the highest sweetness value is:",o:["Alitame","Saccharin","Aspartame","Sucralose"],a:1},
+  {q:"A 0.2 percent solution of phenol acts as a/an:",o:["Antiseptic","Disinfectant","Anesthetic","Antibiotic"],a:1},
+  {q:"Which part of the soap molecule is 'hydrophilic'?",o:["The ionic head","The hydrocarbon tail","The whole molecule","None of these"],a:1},
+  {q:"Saponification involves the hydrolysis of fats/oils by:",o:["NaOH","HCl","Water","Alcohol"],a:1},
+  {q:"Which of the following is a broad spectrum antibiotic?",o:["Chloramphenicol","Penicillin G","Phenelzine","Terpineol"],a:0},
+  {q:"Polyethylene glycols are used in the preparation of which type of detergents?",o:["Non-ionic","Cationic","Anionic","Soaps"],a:0},
+  {q:"A medicine which promotes the secretion of urine is called:",o:["Diuretic","Antipyretic","Analgesic","Sedative"],a:2},
+  {q:"Which of the following is an example of an antacid?",o:["Ranitidine","Brompheniramine","Seldane","Codeine"],a:2},
+  {q:"Which gas is responsible for the 'puffed-up' appearance of dough in baking?",o:["CO2","O2","SO2","NO2"],a:2},
+  {q:"Iodoform is used as a/an:",o:["Antiseptic","Antipyretic","Tranquilizer","Anaesthetic"],a:0},
+  {q:"Dettol is a mixture of:",o:["Chloroxylenol and Terpineol","Phenol and Iodine","Alcohol and Water","Bithionol and Soap"],a:3},
+  {q:"Which of the following is a neutral detergent?",o:["Liquid dishwashers","Toothpaste","Hair conditioners","Laundry soap"],a:3},
+  {q:"Which of the following substances is used as a food preservative?",o:["Sodium benzoate","Sodium chloride","Sugar","All of these"],a:3},
+  {q:"The function of glycerol in shaving soap is:",o:["To prevent rapid drying","To increase lather","To impart scent","To kill germs"],a:3},
+  {q:"Synthetic detergents are better than soaps because:",o:["They work in hard water","They are biodegradable","They are cheaper","They are natural"],a:3},
+  {q:"The site where the substrate binds to the enzyme is called:",o:["Active site","Allosteric site","Inhibitor site","Passive site"],a:3},
+  {q:"Which of the following is used to treat acidity by blocking histamine receptors?",o:["Cimetidine","Aspirin","Valium","Veronal"],a:3},
+  {q:"Which of the following is a narcotic analgesic?",o:["Morphine","Naproxen","Ibuprofen","Diclofenac"],a:3},
+  {q:"Non-biodegradable detergents contain:",o:["Highly branched hydrocarbon chains","Straight hydrocarbon chains","Aromatic rings only","No hydrocarbon chains"],a:3},
+  {q:"Hard water does not form lather with soap due to the presence of:",o:["Calcium and Magnesium ions","Sodium and Potassium ions","Iron and Copper ions","Chloride and Nitrate ions"],a:3}
 ];
-
-
 let index = 0;
 let score = 0;
 let answered = false;
@@ -332,7 +355,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +426,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_14")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +437,7 @@ localStorage.getItem("chemistry_chapter_14")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
