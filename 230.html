@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,19 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Coordination compounds contain",o:["Central metal","Ligand","Both","None"],a:2},
-{q:"Ligands donate",o:["Protons","Electrons","Neutrons","Energy"],a:1},
-{q:"Coordination number is",o:["Number of ligands","Charge","Oxidation state","Mass"],a:0},
-{q:"Chelating ligands form",o:["Ring","Chain","Crystal","Ion"],a:0},
-{q:"IUPAC naming uses",o:["Latin names","Greek names","English names","None"],a:0},
-{q:"Complex ion is",o:["Neutral","Charged","Metal","Ligand"],a:1},
-{q:"Isomerism is shown by",o:["Coordination compounds","Salts","Oxides","Acids"],a:0},
-{q:"Werner proposed",o:["Coordination theory","Valence theory","Bond theory","Acid-base"],a:0},
-{q:"Linkage isomerism occurs due to",o:["Ambidentate ligand","Bidentate","Monodentate","Polydentate"],a:0},
-{q:"Coordination compounds are used in",o:["Medicine","Industry","Biology","All"],a:3}
+  {q:"The central atom in a coordination compound acts as a:",o:["Lewis Acid","Lewis Base","Neutral atom","Ligand"],a:0},
+  {q:"The oxidation state of Ni in [Ni(CO)4] is:",o:["0","+2","+4","-2"],a:0},
+  {q:"Which of the following is an example of a bidentate ligand?",o:["Oxalate ion","Ammonia","Water","Cyanide ion"],a:0},
+  {q:"The coordination number of Cr in [Cr(en)3]Cl3 is:",o:["6","3","4","2"],a:0},
+  {q:"According to Werner's theory, secondary valency corresponds to:",o:["Coordination number","Oxidation state","Ionizable valency","Number of anions"],a:0},
+  {q:"EDTA is a:",o:["Hexadentate ligand","Bidentate ligand","Tridentate ligand","Tetradentate ligand"],a:0},
+  {q:"Ambidentate ligands like NO2- can coordinate through:",o:["Two different atoms","One atom only","Oxygen only","Nitrogen only"],a:0},
+  {q:"Which ligand is known as a 'pi-acid' ligand?",o:["Carbon monoxide (CO)","Ammonia","Water","Ethylenediamine"],a:0},
+  {q:"The complex [Co(NH3)5SO4]Br and [Co(NH3)5Br]SO4 are:",o:["Ionization isomers","Linkage isomers","Coordination isomers","Geometrical isomers"],a:0},
+  {q:"Which of the following is a homoleptic complex?",o:["[Co(NH3)6]3+","[Co(NH3)4Cl2]+","[Ni(NH3)4Cl2]","[Fe(H2O)5(NO)]2+"],a:0},
+  {q:"The IUPAC name of K3[Fe(CN)6] is:",o:["Potassium hexacyanoferrate(III)","Potassium hexacyanoferrate(II)","Potassium ferricyanide","Potassium cyanoiron(III)"],a:1},
+  {q:"The number of ions produced from [Co(NH3)6]Cl3 in solution is:",o:["4","3","2","6"],a:1},
+  {q:"The IUPAC name of [Pt(NH3)2Cl2] is:",o:["Diamminedichloridoplatinum(II)","Diamminedichloridoplatinum(IV)","Dichloridodiammineplatinum(II)","Platinumdiamminechloride"],a:1},
+  {q:"Which geometry is associated with sp3d2 hybridization?",o:["Octahedral","Tetrahedral","Square planar","Trigonal bipyramidal"],a:1},
+  {q:"The primary valency of iron in K4[Fe(CN)6] is:",o:["2","6","4","0"],a:1},
+  {q:"Which of the following is a chelating ligand?",o:["Oxalate","Chloride","Cyanide","Ammonia"],a:1},
+  {q:"A complex with 3 unpaired electrons will have a magnetic moment of:",o:["3.87 BM","1.73 BM","2.82 BM","4.90 BM"],a:1},
+  {q:"In the complex [Fe(CN)6]4-, the iron atom is:",o:["d2sp3 hybridized","sp3d2 hybridized","sp3 hybridized","dsp2 hybridized"],a:2},
+  {q:"The color of coordination compounds is usually due to:",o:["d-d transitions","p-p transitions","s-d transitions","Charge transfer only"],a:2},
+  {q:"Which of the following is an inner orbital complex?",o:["[Co(NH3)6]3+","[Ni(NH3)6]2+","[Fe(CN)6]3-","[MnCl6]3-"],a:2},
+  {q:"Optical isomerism is most commonly shown by:",o:["Octahedral complexes","Square planar complexes","Linear complexes","Tetrahedral complexes"],a:2},
+  {q:"The splitting of d-orbital energies in a crystal field is called:",o:["Crystal Field Splitting","Jahn-Teller Effect","Zeeman Effect","Synergic Bonding"],a:2},
+  {q:"The most stable complex among the following is:",o:["[Fe(C2O4)3]3-","[Fe(H2O)6]3+","[Fe(Cl)6]3-","[Fe(NH3)6]3+"],a:2},
+  {q:"Which of the following ligands is at the top of the spectrochemical series?",o:["CN-","Cl-","F-","OH-"],a:2},
+  {q:"In an octahedral field, the d-orbitals split into:",o:["t2g and eg levels","e and t2 levels","sp3 and d2 levels","None of these"],a:2},
+  {q:"The Effective Atomic Number (EAN) of Ni in [Ni(CO)4] is:",o:["36","34","35","28"],a:2},
+  {q:"[Fe(H2O)6]3+ is strongly paramagnetic whereas [Fe(CN)6]3- is weakly paramagnetic because:",o:["CN- is a strong field ligand","H2O is a strong field ligand","Fe is in different oxidation states","H2O causes pairing"],a:2},
+  {q:"Fac-mer isomerism is associated with complexes of the type:",o:["[Ma3b3]","[Ma4b2]","[Ma2b4]","[Ma5b]"],a:3},
+  {q:"Which of the following will not show geometrical isomerism?",o:["[Ma3b]","[Ma2b2]","[Ma4b2]","[Mabcd]"],a:3},
+  {q:"The IUPAC name of [NiCl4]2- is:",o:["Tetrachloridonickelate(II) ion","Tetrachloronickel(II)","Nickel tetrachloride","Tetrachloronickelate(0)"],a:3},
+  {q:"Which of the following is a neutral ligand?",o:["Carbon monoxide","Chloride","Oxalate","Nitrito"],a:3},
+  {q:"In the Brown Ring complex [Fe(H2O)5(NO)]SO4, the oxidation state of Fe is:",o:["+1","+2","+3","0"],a:3},
+  {q:"Synergic bonding involves:",o:["Both sigma and pi bonding","Only sigma bonding","Only pi bonding","Ionic bonding"],a:3},
+  {q:"The number of geometrical isomers for [Pt(NH3)2Cl2] is:",o:["2","3","4","1"],a:3},
+  {q:"Wilkinson's catalyst is a coordination compound of:",o:["Rhodium","Iron","Cobalt","Platinum"],a:3}
 ];
-
-
 
 
 let index = 0;
@@ -334,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -405,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_9")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -416,7 +439,7 @@ localStorage.getItem("chemistry_chapter_9")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
