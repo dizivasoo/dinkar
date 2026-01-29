@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"AC changes direction",o:["Periodically","Never","Once","Randomly"],a:0},
-{q:"AC frequency in India is",o:["50 Hz","60 Hz","100 Hz","25 Hz"],a:0},
-{q:"RMS value of AC is",o:["Peak/√2","Peak","2Peak","Zero"],a:0},
-{q:"Inductor opposes",o:["DC","AC","Both","None"],a:1},
-{q:"Capacitor blocks",o:["DC","AC","Both","None"],a:0},
-{q:"Power factor lies between",o:["0 and 1","1 and 2","-1 and 1","None"],a:0},
-{q:"Pure inductor consumes power",o:["Yes","No","Sometimes","Always"],a:1},
-{q:"Reactance unit is",o:["Ohm","Henry","Farad","Tesla"],a:0},
-{q:"Resonance occurs when",o:["XL=XC","XL>XC","XL<XC","None"],a:0},
-{q:"Transformer increases voltage using",o:["AC","DC","Battery","Cell"],a:0}
+  {q:"The peak value of AC voltage is 440V. Its RMS value is",o:["311V","440V","220V","622V"],a:0},
+  {q:"In a purely inductive circuit, the phase difference between current and voltage is",o:["0","π","π/4","π/2"],a:3},
+  {q:"The power factor of a purely resistive AC circuit is",o:["1","0","0.5","Infinity"],a:0},
+  {q:"The unit of inductive reactance is",o:["Henry","Weber","Ohm","Tesla"],a:2},
+  {q:"A capacitor blocks",o:["AC","Both AC and DC","Neither AC nor DC","DC"],a:3},
+  {q:"In an LCR series circuit, resonance occurs when",o:["XL = XC","XL > XC","XL < XC","R = 0"],a:0},
+  {q:"The average power dissipated in a pure inductor is",o:["VI","Zero","1/2 LI²","V²/R"],a:1},
+  {q:"The ratio of RMS current to peak current is",o:["1/√2","√2","2","1/2"],a:0},
+  {q:"A transformer is used to change the values of",o:["Voltage","Frequency","Power Factor","Resistance"],a:0},
+  {q:"The frequency of AC mains in India is",o:["50 Hz","60 Hz","100 Hz","220 Hz"],a:0},
+  {q:"To reduce eddy current loss, the core of a transformer is",o:["Solid","Laminated","Made of copper","None of these"],a:1},
+  {q:"The impedance of an AC circuit containing only a resistor is",o:["R","√(R²+XL²)","XL","Zero"],a:0},
+  {q:"In a series LCR circuit at resonance, the current is",o:["Maximum","Minimum","Zero","Infinite"],a:0},
+  {q:"Which of the following has the unit 'second'?",o:["RC","R/L","1/LC","C/L"],a:0},
+  {q:"The power factor of an LCR circuit at resonance is",o:["0","0.5","1","√3/2"],a:2},
+  {q:"Wattless current flows in a circuit containing",o:["Pure resistor","Pure inductor","Both R and L","Both R and C"],a:1},
+  {q:"The Q-factor of an LCR circuit is given by",o:["(1/R)√(L/C)","(1/L)√(R/C)","R√(L/C)","L√(R/C)"],a:0},
+  {q:"A step-up transformer increases",o:["Current","Voltage","Power","Frequency"],a:1},
+  {q:"The instantaneous value of AC is given by I = I₀ sin(ωt). The RMS value is",o:["I₀/√2","I₀/2","2I₀/π","I₀"],a:0},
+  {q:"In a capacitive circuit, the current",o:["Lags voltage by π/2","Leads voltage by π/2","Is in phase","Lags voltage by π"],a:1},
+  {q:"The core of a transformer is made of",o:["Steel","Alnico","Soft Iron","Copper"],a:2},
+  {q:"The heat produced in a resistor by AC is independent of",o:["Current direction","Resistance","Time","Magnitude of current"],a:0},
+  {q:"A choke coil is used to control",o:["DC","AC","Both","Neither"],a:1},
+  {q:"If the frequency of AC increases, the capacitive reactance",o:["Increases","Decreases","Remains same","Becomes zero"],a:1},
+  {q:"The physical quantity measured in Volt-Ampere is",o:["Resistance","Inductance","Apparent Power","Capacitance"],a:2},
+  {q:"Which of the following does not use electromagnetic induction?",o:["Transformer","AC Generator","Room Heater","Choke Coil"],a:2},
+  {q:"The phase difference between V and I in a purely resistive circuit is",o:["π/2","π","Zero","π/4"],a:2},
+  {q:"At high frequencies, a capacitor acts as a",o:["Open circuit","Insulator","Conductor","Resistor"],a:2},
+  {q:"The resonance frequency of LCR circuit is f. If L is doubled and C is halved, f will",o:["Be doubled","Be halved","Remain same","Increase 4 times"],a:2},
+  {q:"The average value of AC over a complete cycle is",o:["I₀","I₀/√2","2I₀/π","Zero"],a:3},
+  {q:"The sharpness of resonance depends on",o:["Resistance","Inductance","Capacitance","All of these"],a:0},
+  {q:"In an AC circuit, the work done per cycle is",o:["Zero in pure L","Zero in pure C","Maximum in pure R","All of these"],a:3},
+  {q:"Magnetic flux leakage in a transformer is reduced by",o:["Laminating core","Winding coils over each other","Using thick wires","Using soft iron"],a:1},
+  {q:"The power factor varies between",o:["-1 to 1","0 to 1","0 to π","0 to Infinity"],a:1},
+  {q:"Which is used to step down DC voltage?",o:["Transformer","Choke coil","Inductor","None of these"],a:3}
 ];
 
 let index = 0;
@@ -331,7 +356,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -402,8 +427,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_6")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -413,7 +438,7 @@ localStorage.getItem("physics_chapter_6")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
