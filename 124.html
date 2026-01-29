@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Semiconductors have",o:["Small gap","Large gap","No gap","None"],a:0},
-{q:"Doping increases",o:["Conductivity","Resistance","Gap","None"],a:0},
-{q:"n-type uses",o:["Pentavalent","Trivalent","Both","None"],a:0},
-{q:"p-type uses",o:["Trivalent","Pentavalent","Both","None"],a:0},
-{q:"Diode allows current in",o:["One direction","Both","None","AC"],a:0},
-{q:"Zener diode used as",o:["Voltage regulator","Amplifier","Switch","None"],a:0},
-{q:"LED emits",o:["Light","Heat","Sound","None"],a:0},
-{q:"Transistor has",o:["Emitter,Base,Collector","Anode,Cathode","Gate","None"],a:0},
-{q:"Logic gate OR outputs 1 when",o:["Any input 1","All 1","All 0","None"],a:0},
-{q:"IC stands for",o:["Integrated circuit","Internal circuit","Input circuit","None"],a:0}
+  { q: "The energy gap is maximum in which of the following?", o: ["Superconductors", "Metals", "Insulators", "Semiconductors"], a: 2 },
+  { q: "In an n-type semiconductor, the majority charge carriers are:", o: ["Holes", "Electrons", "Protons", "Neutrons"], a: 1 },
+  { q: "The forbidden energy gap in Germanium is approximately:", o: ["1.1 eV", "0.72 eV", "0.3 eV", "5 eV"], a: 1 },
+  { q: "Which of the following is a universal gate?", o: ["AND", "OR", "NAND", "NOT"], a: 2 },
+  { q: "At absolute zero temperature, an intrinsic semiconductor acts as a:", o: ["Superconductor", "Perfect insulator", "Good conductor", "Variable resistor"], a: 1 },
+  { q: "The addition of pentavalent impurity to a semiconductor creates:", o: ["Free electrons", "Holes", "Valence electrons", "Bound electrons"], a: 0 },
+  { q: "A p-type semiconductor is:", o: ["Positively charged", "Negatively charged", "Uncharged (Neutral)", "None of these"], a: 2 },
+  { q: "In a forward-biased p-n junction, the depletion layer:", o: ["Increases", "Decreases", "Remains same", "Becomes zero"], a: 1 },
+  { q: "The process of adding impurities to a pure semiconductor is called:", o: ["Ionization", "Diffusing", "Doping", "Mixing"], a: 2 },
+  { q: "The conductivity of a semiconductor increases with:", o: ["Decrease in temp", "Increase in temp", "Constant temp", "None"], a: 1 },
+  { q: "Which diode is used for voltage regulation?", o: ["LED", "Varactor diode", "Zener diode", "Photo diode"], a: 2 },
+  { q: "The majority carriers in p-type semiconductors are:", o: ["Electrons", "Holes", "Ions", "Photons"], a: 1 },
+  { q: "When a p-n junction is reverse biased, the current is due to:", o: ["Majority carriers", "Minority carriers", "Both", "Diffusion"], a: 1 },
+  { q: "The output of an OR gate is Low (0) only when:", o: ["Both inputs are High", "One input is High", "Both inputs are Low", "Any input is Low"], a: 2 },
+  { q: "The energy gap in Silicon is:", o: ["0.7 eV", "1.1 eV", "1.5 eV", "2.0 eV"], a: 1 },
+  { q: "A transistor acts as a switch in which region?", o: ["Active region", "Saturation region", "Cut-off and Saturation", "Linear region"], a: 2 },
+  { q: "The current gain (beta) of a transistor is the ratio of:", o: ["IC / IB", "IC / IE", "IB / IC", "IE / IC"], a: 0 },
+  { q: "Logic gate which provides high output for low input is:", o: ["AND", "OR", "NOT", "EX-OR"], a: 2 },
+  { q: "In a p-n junction, the barrier potential depends on:", o: ["Temperature", "Doping density", "Semiconductor material", "All of the above"], a: 3 },
+  { q: "Which of the following is a trivalent impurity?", o: ["Phosphorus", "Antimony", "Indium", "Arsenic"], a: 2 },
+  { q: "LEDs are made from:", o: ["Silicon", "Germanium", "Gallium Arsenide", "Carbon"], a: 2 },
+  { q: "The ripple factor of a full wave rectifier is:", o: ["1.21", "0.48", "0.81", "0.50"], a: 1 },
+  { q: "A hole in a semiconductor is defined as:", o: ["A free electron", "An incomplete bond", "A proton", "A free neutron"], a: 1 },
+  { q: "Full wave rectifier uses how many diodes?", o: ["One", "Two", "Three", "None"], a: 1 },
+  { q: "Rectification is the process of converting:", o: ["DC to AC", "Low V to High V", "AC to DC", "High V to Low V"], a: 2 },
+  { q: "For a transistor, the relation between alpha and beta is:", o: ["beta = alpha/(1-alpha)", "alpha = beta/(1-beta)", "beta = alpha/(1+alpha)", "alpha = beta+1"], a: 0 },
+  { q: "The decimal equivalent of binary 1011 is:", o: ["9", "10", "11", "12"], a: 2 },
+  { q: "The width of depletion layer is of the order of:", o: ["10^-3 m", "10^-6 m", "10^-9 m", "10^-12 m"], a: 1 },
+  { q: "A solar cell works on the principle of:", o: ["Thermionic emission", "Photoelectric effect", "Photovoltaic effect", "Field emission"], a: 2 },
+  { q: "The boiling point of liquid Nitrogen used in cooling is:", o: ["77 K", "-196 K", "Both A and B", "273 K"], a: 2 },
+  { q: "In Common Emitter configuration, the phase difference is:", o: ["0 degrees", "90 degrees", "180 degrees", "270 degrees"], a: 2 },
+  { q: "Boolean expression for AND gate is:", o: ["Y = A + B", "Y = A . B", "Y = A'", "Y = (A.B)'"], a: 1 },
+  { q: "Which of the following is an elemental semiconductor?", o: ["CdS", "GaAs", "Si", "InP"], a: 2 },
+  { q: "Identify the donor impurity:", o: ["Boron", "Aluminium", "Phosphorus", "Gallium"], a: 2 },
+  { q: "The knee voltage for Silicon is:", o: ["0.3 V", "0.7 V", "1.1 V", "0.1 V"], a: 1 }
 ];
-
 let index = 0;
 let score = 0;
 let answered = false;
@@ -331,7 +355,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -402,8 +426,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("physics_chapter_14")
 
   document.querySelector(".test-box").innerHTML = `
@@ -414,7 +438,7 @@ localStorage.getItem("physics_chapter_14")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
