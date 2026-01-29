@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Alcohols contain",o:["–OH","–COOH","–NH₂","–CHO"],a:0},
-{q:"Phenol is",o:["Acidic","Basic","Neutral","Salt"],a:0},
-{q:"Ethers have",o:["R–O–R","R–OH","R–CO–R","R–NH–R"],a:0},
-{q:"Lucas test distinguishes",o:["Alcohols","Amines","Acids","Ethers"],a:0},
-{q:"Phenol reacts with",o:["NaOH","NaCl","HCl","NH₃"],a:0},
-{q:"Ethers are prepared by",o:["Williamson synthesis","Wurtz reaction","Kolbe reaction","Cannizzaro"],a:0},
-{q:"Primary alcohol oxidizes to",o:["Aldehyde","Ketone","Acid","Alcohol"],a:2},
-{q:"Secondary alcohol gives",o:["Ketone","Aldehyde","Acid","Ether"],a:0},
-{q:"Phenol gives violet color with",o:["FeCl₃","NaOH","HCl","CuSO₄"],a:0},
-{q:"Ether is used as",o:["Solvent","Fuel","Oxidant","Acid"],a:0}
+  {q:"Which of the following is a trihydric alcohol?",o:["Glycerol","Ethylene glycol","Ethanol","Methanol"],a:0},
+  {q:"The process of converting sugar into ethanol using yeast is called:",o:["Fermentation","Distillation","Oxidation","Hydrogenation"],a:0},
+  {q:"Which of the following has the highest boiling point?",o:["Propan-1-ol","Propan-2-ol","Ethane","Dimethyl ether"],a:0},
+  {q:"The dehydration of ethanol with concentrated H2SO4 at 443K yields:",o:["Ethene","Diethyl ether","Ethane","Ethyne"],a:0},
+  {q:"Which alcohol is known as Wood Spirit?",o:["Methanol","Ethanol","Benzyl alcohol","Propanol"],a:0},
+  {q:"Lucas reagent is a mixture of:",o:["Anhydrous ZnCl2 and conc. HCl","Anhydrous CaCl2 and conc. HCl","Anhydrous ZnCl2 and conc. HNO3","None of these"],a:0},
+  {q:"Phenol is also known as:",o:["Carbolic acid","Carbonic acid","Salicylic acid","Picric acid"],a:0},
+  {q:"Which of the following will react most easily with Lucas reagent?",o:["2-Methylpropan-2-ol","Butan-1-ol","Butan-2-ol","Ethanol"],a:0},
+  {q:"Aspirin is prepared by the acetylation of:",o:["Salicylic acid","Phenol","Benzaldehyde","Benzoic acid"],a:0},
+  {q:"The conversion of Phenol to Salicylaldehyde is known as:",o:["Reimer-Tiemann reaction","Kolbe's reaction","Friedel-Crafts reaction","Wurtz reaction"],a:0},
+  {q:"Denatured alcohol contains small amounts of:",o:["Copper sulphate and Pyridine","Methanol only","Water only","Acetone only"],a:1},
+  {q:"Phenol reacts with Zn dust to give:",o:["Benzene","Phenoxide","Cyclohexane","Zinc phenate"],a:1},
+  {q:"The major product obtained when phenol reacts with Br2 in CS2 is:",o:["p-Bromophenol","2,4,6-Tribromophenol","m-Bromophenol","o-Bromophenol"],a:1},
+  {q:"Ethers are isomeric with:",o:["Alcohols","Aldehydes","Ketones","Acids"],a:1},
+  {q:"Diethyl ether can be prepared by heating ethyl bromide with:",o:["Dry silver oxide","Aqueous KOH","Moist silver oxide","Sodium metal"],a:1},
+  {q:"Williamson synthesis is used to prepare:",o:["Ethers","Alcohols","Phenols","Aldehydes"],a:1},
+  {q:"Which of the following is the most acidic?",o:["p-Nitrophenol","Phenol","p-Cresol","o-Cresol"],a:1},
+  {q:"The boiling point of alcohols are higher than ethers due to:",o:["Intermolecular H-bonding","Intramolecular H-bonding","Van der Waals forces","Ion-dipole interaction"],a:0},
+  {q:"The acid catalyzed dehydration of secondary alcohols follows:",o:["E1 mechanism","E2 mechanism","SN1 mechanism","SN2 mechanism"],a:1},
+  {q:"Which reagent converts an alcohol directly into an alkyl chloride?",o:["SOCl2","HCl","NaCl","Cl2"],a:0},
+  {q:"Primary alcohols on oxidation with PCC (Pyridinium chlorochromate) give:",o:["Aldehydes","Ketones","Carboxylic acids","Esters"],a:2},
+  {q:"Heating phenol with sodium hydroxide and CO2 followed by acidification gives:",o:["Salicylic acid","Salicylaldehyde","Benzoic acid","Phthalic acid"],a:2},
+  {q:"Cresol is a:",o:["Methyl phenol","Hydroxy benzaldehyde","Dihydroxy benzene","Ethyl phenol"],a:2},
+  {q:"Which of the following will not form a blue color with FeCl3?",o:["Ethanol","Phenol","o-Cresol","Resorcinol"],a:2},
+  {q:"Hydroboration-oxidation of propene gives:",o:["Propan-1-ol","Propan-2-ol","Propane","Propanone"],a:2},
+  {q:"The bond angle C-O-H in alcohols is slightly:",o:["Less than tetrahedral angle","More than tetrahedral angle","Exactly 109.5°","180°"],a:2},
+  {q:"Ethers are generally:",o:["Inert toward bases","Highly reactive toward acids","Low boiling liquids","Highly polar"],a:2},
+  {q:"Which of the following is used as an antifreeze in automobile radiators?",o:["Ethylene glycol","Ethanol","Methanol","Nitroglycerine"],a:3},
+  {q:"The C-O-C bond angle in ethers is approximately:",o:["110°","109.5°","180°","120°"],a:3},
+  {q:"Phenol is less acidic than:",o:["o-Nitrophenol","Ethanol","Methanol","p-Methoxyphenol"],a:3},
+  {q:"Identification of 1°, 2°, and 3° alcohols can be done by:",o:["Victor Meyer's test","Lucas test","Oxidation method","All of these"],a:3},
+  {q:"Which of the following is Picric acid?",o:["2,4,6-Trinitrophenol","Trinitrotoluene","m-Nitrophenol","p-Nitrophenol"],a:3},
+  {q:"The ether used as an anesthetic is:",o:["Diethyl ether","Dimethyl ether","Methyl ethyl ether","Dipropyl ether"],a:3},
+  {q:"Cleavage of ethers by HI follows SN2 mechanism when:",o:["Alkyl groups are primary","Alkyl groups are secondary","Reaction is at high temp","One alkyl group is tertiary"],a:3},
+  {q:"Reaction of Grignard reagent with Formaldehyde gives:",o:["Primary alcohol","Secondary alcohol","Tertiary alcohol","Ketone"],a:3}
 ];
 
 
@@ -332,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("chemistry_chapter_11")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +439,7 @@ localStorage.getItem("chemistry_chapter_11")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
