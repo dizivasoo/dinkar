@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Domain of sin⁻¹x is",o:["[-1,1]","[0,π]","R","[0,1]"],a:0},
-{q:"Range of cos⁻¹x is",o:["[0,π]","[-π,π]","[0,2π]","R"],a:0},
-{q:"tan⁻¹x is defined for",o:["All real x","x>0","x<0","None"],a:0},
-{q:"sin(sin⁻¹x) =",o:["x","sinx","1","0"],a:0},
-{q:"cos(cos⁻¹x) =",o:["x","1","0","cosx"],a:0},
-{q:"tan(tan⁻¹x) =",o:["x","1","0","tanx"],a:0},
-{q:"sin⁻¹(-x) =",o:["-sin⁻¹x","sin⁻¹x","0","π"],a:0},
-{q:"cos⁻¹(-x) =",o:["π−cos⁻¹x","cos⁻¹x","0","π"],a:0},
-{q:"tan⁻¹(-x) =",o:["-tan⁻¹x","tan⁻¹x","0","π"],a:0},
-{q:"Inverse trig functions are",o:["One-one","Many-one","Onto","None"],a:0}
+  {q: "The principal value branch of sin⁻¹x is", o: ["[-π/2, π/2] (23%)", "[0, π] (43%)", "(-π/2, π/2) (21%)", "(0, π) (13%)"], a: 0},
+  {q: "The value of cos⁻¹(cos 13π/6) is", o: ["13π/6 (23%)", "π/6 (43%)", "7π/6 (21%)", "5π/6 (13%)"], a: 1},
+  {q: "The domain of the function f(x) = sin⁻¹x is", o: ["(0, 1) (23%)", "[-1, 1] (43%)", "R (21%)", "[-π, π] (13%)"], a: 1},
+  {q: "The value of tan⁻¹(√3) - sec⁻¹(-2) is", o: ["π/3 (23%)", "-π/3 (43%)", "π (21%)", "2π/3 (13%)"], a: 1},
+  {q: "The value of sin(π/3 - sin⁻¹(-1/2)) is", o: ["1/2 (23%)", "1 (43%)", "-1 (21%)", "0 (13%)"], a: 1},
+  {q: "The principal value of cos⁻¹(-1/√2) is", o: ["π/4 (23%)", "3π/4 (43%)", "5π/4 (21%)", "-π/4 (13%)"], a: 1},
+  {q: "Domain of cos⁻¹(2x - 1) is", o: ["[0, 1] (23%)", "[0, 1] (43%)", "[-1, 1] (21%)", "R (13%)"], a: 1},
+  {q: "The value of sin⁻¹(sin 2π/3) is", o: ["2π/3 (23%)", "π/3 (43%)", "-π/3 (21%)", "4π/3 (13%)"], a: 1},
+  {q: "The range of principal value branch of cot⁻¹x is", o: ["(0, π) (23%)", "(0, π) (43%)", "[0, π] (21%)", "(-π/2, π/2) (13%)"], a: 1},
+  {q: "If sin⁻¹x = y, then", o: ["0 ≤ y ≤ π (23%)", "-π/2 ≤ y ≤ π/2 (43%)", "0 < y < π (21%)", "-π/2 < y < π/2 (13%)"], a: 1},
+  {q: "The value of tan⁻¹(1) + cos⁻¹(-1/2) + sin⁻¹(-1/2) is", o: ["π/4 (23%)", "3π/4 (43%)", "π/2 (21%)", "3π/2 (13%)"], a: 1},
+  {q: "The value of tan⁻¹√3 - cot⁻¹(-√3) is", o: ["π (23%)", "-π/2 (43%)", "0 (21%)", "2√3 (13%)"], a: 1},
+  {q: "sin(tan⁻¹x), |x| < 1 is equal to", o: ["x/√(1-x²) (23%)", "x/√(1+x²) (43%)", "1/√(1-x²) (21%)", "1/√(1+x²) (13%)"], a: 1},
+  {q: "The principal value of cosec⁻¹(2) is", o: ["π/3 (23%)", "π/6 (43%)", "π/4 (21%)", "π/2 (13%)"], a: 1},
+  {q: "The value of cos⁻¹(cos 7π/6) is", o: ["7π/6 (23%)", "5π/6 (43%)", "π/6 (21%)", "π/3 (13%)"], a: 1},
+  {q: "The range of sec⁻¹x is", o: ["[0, π] (23%)", "[0, π] - {π/2} (43%)", "(-π/2, π/2) (21%)", "[-π/2, π/2] - {0} (13%)"], a: 1},
+  {q: "If 3 sin⁻¹x = sin⁻¹(3x - 4x³), then x belongs to", o: ["[-1, 1] (23%)", "[1/2, 1] (43%)", "[-1/2, 1/2] (21%)", "[0, 1] (13%)"], a: 2},
+  {q: "The value of tan(cos⁻¹ 4/5 + tan⁻¹ 2/3) is", o: ["6/17 (23%)", "17/6 (43%)", "7/16 (21%)", "16/7 (13%)"], a: 1},
+  {q: "Which of the following is the principal value branch of cosec⁻¹x?", o: ["(-π/2, π/2) (23%)", "[-π/2, π/2] - {0} (43%)", "[0, π] - {π/2} (21%)", "[-π/2, π/2] (13%)"], a: 1},
+  {q: "The value of cos(sin⁻¹ 1/2 + cos⁻¹ 1/2) is", o: ["1 (23%)", "0 (43%)", "-1 (21%)", "1/2 (13%)"], a: 1},
+  {q: "Principal value of sin⁻¹(-1/2) is", o: ["π/6 (23%)", "-π/6 (43%)", "5π/6 (21%)", "7π/6 (13%)"], a: 1},
+  {q: "The value of tan⁻¹(tan 3π/4) is", o: ["3π/4 (23%)", "-π/4 (43%)", "π/4 (21%)", "7π/4 (13%)"], a: 1},
+  {q: "The domain of sec⁻¹x is", o: ["R (23%)", "R - (-1, 1) (43%)", "[-1, 1] (21%)", "(-∞, ∞) (13%)"], a: 1},
+  {q: "The value of cot(tan⁻¹a + cot⁻¹a) is", o: ["1 (23%)", "0 (43%)", "a (21%)", "None (13%)"], a: 1},
+  {q: "The value of sin⁻¹(1/2) + cos⁻¹(1/2) is", o: ["π (23%)", "π/2 (43%)", "π/4 (21%)", "0 (13%)"], a: 1},
+  {q: "Principal value of cos⁻¹(√3/2) is", o: ["π/3 (23%)", "π/6 (43%)", "π/4 (21%)", "π/2 (13%)"], a: 1},
+  {q: "If tan⁻¹x = y, then", o: ["-π/2 ≤ y ≤ π/2 (23%)", "-π/2 < y < π/2 (43%)", "0 < y < π (21%)", "0 ≤ y ≤ π (13%)"], a: 1},
+  {q: "The value of sin⁻¹(sin 5) is", o: ["5 (23%)", "5 - 2π (43%)", "2π - 5 (21%)", "None (13%)"], a: 1},
+  {q: "Domain of tan⁻¹x is", o: ["[-1, 1] (23%)", "R (43%)", "(-π/2, π/2) (21%)", "R - {0} (13%)"], a: 1},
+  {q: "Principal value of sec⁻¹(2/√3) is", o: ["π/3 (23%)", "π/6 (43%)", "π/4 (21%)", "2π/3 (13%)"], a: 1},
+  {q: "If cos⁻¹x = y, then the range of y is", o: ["(-π/2, π/2) (23%)", "[0, π] (43%)", "[-π/2, π/2] (21%)", "(0, π) (13%)"], a: 1},
+  {q: "The value of cos⁻¹(1/2) + 2sin⁻¹(1/2) is", o: ["π/3 (23%)", "2π/3 (43%)", "π (21%)", "π/2 (13%)"], a: 1},
+  {q: "The value of tan⁻¹(√3) - sec⁻¹(-2) is", o: ["π/3 (23%)", "-π/3 (43%)", "π (21%)", "2π/3 (13%)"], a: 1},
+  {q: "If sin⁻¹(1-x) - 2sin⁻¹x = π/2, then x is", o: ["0, 1/2 (23%)", "0 (43%)", "1/2 (21%)", "None (13%)"], a: 1},
+  {q: "The value of sin(2 sin⁻¹ 0.6) is", o: ["1.2 (23%)", "0.96 (43%)", "0.48 (21%)", "0.36 (13%)"], a: 1}
 ];
 
 
@@ -332,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_2")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +439,7 @@ localStorage.getItem("maths_chapter_2")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
