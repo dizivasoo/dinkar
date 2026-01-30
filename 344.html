@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Probability lies between",o:["0 and 1","−1 and 1","1 and 2","None"],a:0},
-{q:"Probability of sure event is",o:["1","0","0.5","None"],a:0},
-{q:"Probability of impossible event is",o:["0","1","−1","None"],a:0},
-{q:"P(A∪B) =",o:["P(A)+P(B)−P(A∩B)","P(A)+P(B)","P(A∩B)","None"],a:0},
-{q:"Events are mutually exclusive if",o:["A∩B=∅","A=B","A⊂B","None"],a:0},
-{q:"Independent events satisfy",o:["P(A∩B)=P(A)P(B)","P(A)+P(B)","0","None"],a:0},
-{q:"Conditional probability formula is",o:["P(A|B)=P(A∩B)/P(B)","P(A)/P(B)","P(B)/P(A)","None"],a:0},
-{q:"Total probability theorem deals with",o:["Partitions","Single event","None","Random"],a:0},
-{q:"Bayes theorem relates",o:["Conditional probability","Limits","Vectors","None"],a:0},
-{q:"Random experiment has",o:["Uncertain outcome","Fixed","No outcome","None"],a:0}
+  {q: "If P(A) = 0.8, P(B) = 0.5 and P(B|A) = 0.4, then P(A ∩ B) is", o: ["0.32 (25%)", "0.25 (25%)", "0.40 (25%)", "0.50 (25%)"], a: 0},
+  {q: "Two events A and B are independent if", o: ["P(A ∩ B) = 0 (25%)", "P(A ∩ B) = P(A)P(B) (25%)", "P(A) = P(B) (25%)", "P(A) + P(B) = 1 (25%)"], a: 1},
+  {q: "If P(A) = 1/2, P(B) = 0, then P(A|B) is", o: ["0 (25%)", "1/2 (25%)", "Not defined (25%)", "1 (25%)"], a: 2},
+  {q: "The probability of obtaining an even prime number on each die when a pair of dice is rolled is", o: ["1/6 (25%)", "1/4 (25%)", "1/12 (25%)", "1/36 (25%)"], a: 3},
+  {q: "If A and B are two events such that P(A|B) = P(B|A), then", o: ["A ⊂ B (25%)", "A = B (25%)", "P(A) = P(B) (25%)", "A ∩ B = Φ (25%)"], a: 2},
+  {q: "The mean of the numbers obtained on throwing a die having written 1 on three faces, 2 on two faces and 5 on one face is", o: ["1 (25%)", "2 (25%)", "5 (25%)", "8/3 (25%)"], a: 1},
+  {q: "If A and B are independent events such that P(A) = 0.3 and P(B) = 0.4, then P(A ∩ B) is", o: ["0.7 (25%)", "0.12 (25%)", "0.1 (25%)", "0.5 (25%)"], a: 1},
+  {q: "In a Bayes' Theorem problem, if E1 and E2 are partitions of sample space, then P(E1) + P(E2) is", o: ["0.5 (25%)", "0 (25%)", "1 (25%)", "2 (25%)"], a: 2},
+  {q: "Probability of a leap year having 53 Tuesdays is", o: ["1/7 (25%)", "2/7 (25%)", "3/7 (25%)", "0 (25%)"], a: 1},
+  {q: "If P(A) = 4/5 and P(A ∩ B) = 7/10, then P(B|A) is", o: ["1/10 (25%)", "1/8 (25%)", "7/8 (25%)", "17/20 (25%)"], a: 2},
+  {q: "Let X represent the difference between the number of heads and tails when a coin is tossed 6 times. The possible values of X are", o: ["{0, 2, 4, 6} (25%)", "{1, 2, 3, 4, 5, 6} (25%)", "{0, 1, 2, 3, 4, 5, 6} (25%)", "{-6, -4, -2, 0, 2, 4, 6} (25%)"], a: 3},
+  {q: "A card is picked at random from a pack of 52 playing cards. Given that the picked card is a queen, the probability of it being a spade is", o: ["1/3 (25%)", "4/13 (25%)", "1/4 (25%)", "1/2 (25%)"], a: 2},
+  {q: "If P(A) = 1/2, P(B) = 1/3 and P(A ∩ B) = 1/4, then P(A' | B') is", o: ["1/4 (25%)", "3/4 (25%)", "5/8 (25%)", "1/2 (25%)"], a: 2},
+  {q: "A die is thrown twice and the sum of the numbers appearing is observed to be 6. The conditional probability that the number 4 has appeared at least once is", o: ["1/3 (25%)", "2/5 (25%)", "1/5 (25%)", "5/36 (25%)"], a: 1},
+  {q: "If P(A) = 0.4, P(B) = 0.8 and P(B|A) = 0.6, then P(A ∪ B) is", o: ["0.24 (25%)", "0.96 (25%)", "0.48 (25%)", "0.60 (25%)"], a: 1},
+  {q: "The probability distribution of a random variable X is given. The sum of all probabilities P(X) must be", o: ["Infinity (25%)", "0 (25%)", "1 (25%)", "0.5 (25%)"], a: 2},
+  {q: "Two events A and B are said to be mutually exclusive if", o: ["P(A ∩ B) = 1 (25%)", "P(A ∪ B) = 1 (25%)", "P(A ∩ B) = 0 (25%)", "P(A) = P(B) (25%)"], a: 2},
+  {q: "If A and B are two events such that P(A) ≠ 0 and P(B|A) = 1, then", o: ["A ⊂ B (25%)", "B ⊂ A (25%)", "B = Φ (25%)", "A = Φ (25%)"], a: 0},
+  {q: "The variance of a random variable X is given by", o: ["E(X²) + [E(X)]² (25%)", "E(X²) - [E(X)]² (25%)", "E(X) - E(X²) (25%)", "[E(X)]² (25%)"], a: 1},
+  {q: "Probability that a number selected from 1 to 30 is prime is", o: ["1/3 (25%)", "1/5 (25%)", "1/6 (25%)", "3/10 (25%)"], a: 3},
+  {q: "If P(A) = 3/8, P(B) = 1/2 and P(A ∩ B) = 1/4, then P(A|B) is", o: ["1/4 (25%)", "1/2 (25%)", "2/3 (25%)", "3/4 (25%)"], a: 1},
+  {q: "Bayes' Theorem is used to find", o: ["Conditional probability (25%)", "Posterior probability (25%)", "Prior probability (25%)", "Both A and B (25%)"], a: 3},
+  {q: "For a random variable X, E(X) is also known as", o: ["Variance (25%)", "Standard Deviation (25%)", "Mean (25%)", "Mode (25%)"], a: 2},
+  {q: "A pair of coins is tossed. The probability of getting at least one head is", o: ["1/4 (25%)", "1/2 (25%)", "3/4 (25%)", "1 (25%)"], a: 2},
+  {q: "If A and B are independent, then P(A' ∩ B') is", o: ["P(A')P(B') (25%)", "1 - P(A ∪ B) (25%)", "Both A and B (25%)", "Neither A nor B (25%)"], a: 2},
+  {q: "The probability of an impossible event is", o: ["1 (25%)", "0.5 (25%)", "0 (25%)", "-1 (25%)"], a: 2},
+  {q: "If E and F are independent events, then P(E|F) is", o: ["P(E) (25%)", "P(F) (25%)", "P(E ∩ F) (25%)", "0 (25%)"], a: 0},
+  {q: "The number of ways to partition a sample space for Bayes' Theorem is", o: ["Always 2 (25%)", "At least 2 (25%)", "Infinite (25%)", "1 (25%)"], a: 1},
+  {q: "If P(A) = 0.6, P(B) = 0.3 and P(A ∩ B) = 0.2, then P(A' ∩ B) is", o: ["0.1 (25%)", "0.4 (25%)", "0.3 (25%)", "0.2 (25%)"], a: 0},
+  {q: "A bag contains 5 red and 3 blue balls. If 3 balls are drawn at random without replacement, the probability they are all red is", o: ["5/28 (25%)", "1/56 (25%)", "15/56 (25%)", "5/8 (25%)"], a: 0},
+  {q: "The conditional probability P(A|A) is always", o: ["0 (25%)", "0.5 (25%)", "1 (25%)", "P(A) (25%)"], a: 2},
+  {q: "If P(A) = 0.4, P(B) = p, and P(A ∪ B) = 0.6, for independent events, p is", o: ["1/2 (25%)", "1/3 (25%)", "1/4 (25%)", "1/5 (25%)"], a: 1},
+  {q: "A random variable X has a mean 3 and variance 4. Then E(X²) is", o: ["7 (25%)", "12 (25%)", "13 (25%)", "25 (25%)"], a: 2},
+  {q: "In 10 tosses of a fair coin, the probability of exactly 5 heads is", o: ["1/2 (25%)", "252/1024 (25%)", "1/10 (25%)", "5/10 (25%)"], a: 1},
+  {q: "If A and B are mutually exclusive, P(A|B) is", o: ["1 (25%)", "P(A) (25%)", "0 (25%)", "0.5 (25%)"], a: 2}
 ];
 
 
@@ -332,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_12")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +439,7 @@ localStorage.getItem("maths_chapter_12")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
