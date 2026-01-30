@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Determinant of identity matrix is",o:["1","0","2","-1"],a:0},
-{q:"If two rows are same, determinant is",o:["0","1","-1","2"],a:0},
-{q:"Determinant changes sign if",o:["Rows interchanged","Rows multiplied","Added","None"],a:0},
-{q:"Value of |Aᵀ| =",o:["|A|","0","1","-1"],a:0},
-{q:"Determinant of triangular matrix is",o:["Product of diagonal","0","1","None"],a:0},
-{q:"If one row is zero then det is",o:["0","1","-1","None"],a:0},
-{q:"Area of triangle can be found using",o:["Determinant","Matrix","Vector","None"],a:0},
-{q:"Cramer’s rule applies when det ≠",o:["0","1","-1","None"],a:0},
-{q:"Minor of element is determinant after",o:["Deleting row & column","Transpose","Inverse","None"],a:0},
-{q:"Cofactor equals",o:["± minor","Minor","0","None"],a:0}
+  {q: "If A is a square matrix of order 3 and |A| = 5, then |adj A| is", o: ["25 (29%)", "5 (21%)", "125 (22%)", "625 (28%)"], a: 0},
+  {q: "The value of a determinant is zero if any two rows or columns are", o: ["Multiplied (29%)", "Identical (21%)", "Added (22%)", "Subtracted (28%)"], a: 1},
+  {q: "If A is an invertible matrix of order 2, then det(A⁻¹) is equal to", o: ["det(A) (29%)", "1/det(A) (21%)", "1 (22%)", "0 (28%)"], a: 1},
+  {q: "If the area of a triangle with vertices (2,-6), (5,4) and (k,4) is 35 sq units, k is", o: ["12, -2 (29%)", "-12, -2 (21%)", "12, 2 (22%)", "8, -2 (28%)"], a: 0},
+  {q: "The cofactor of the element a21 in the determinant |1 2 3; 4 5 6; 7 8 9| is", o: ["6 (29%)", "3 (21%)", "6 (22%)", "-6 (28%)"], a: 2},
+  {q: "If A is a square matrix of order n, then |kA| is equal to", o: ["k|A| (29%)", "k²|A| (21%)", "kⁿ|A| (22%)", "nk|A| (28%)"], a: 2},
+  {q: "A square matrix A is singular if |A| is", o: ["1 (29%)", "Infinity (21%)", "Positive (22%)", "0 (28%)"], a: 3},
+  {q: "If A is a non-singular matrix, then A⁻¹ is given by", o: ["adj A / |A| (29%)", "|A| adj A (21%)", "adj A (22%)", "1/adj A (28%)"], a: 0},
+  {q: "The sum of products of elements of any row with their corresponding cofactors is", o: ["|A| (29%)", "0 (21%)", "1 (22%)", "adj A (28%)"], a: 0},
+  {q: "The sum of products of elements of any row with cofactors of another row is", o: ["|A| (29%)", "0 (21%)", "1 (22%)", "-|A| (28%)"], a: 1},
+  {q: "For a square matrix A, A(adj A) is equal to", o: ["|A|I (29%)", "I (21%)", "adj A (22%)", "|A| (28%)"], a: 0},
+  {q: "If A is a square matrix of order 3, then |A . adj A| is", o: ["|A|² (29%)", "|A| (21%)", "|A|³ (22%)", "|A|⁴ (28%)"], a: 2},
+  {q: "Minor of an element aij is the determinant obtained by deleting", o: ["i-th row (29%)", "j-th column (21%)", "i-th row and j-th column (22%)", "All rows (28%)"], a: 2},
+  {q: "If A = [2 3; 1 4], then its determinant is", o: ["5 (29%)", "11 (21%)", "5 (22%)", "10 (28%)"], a: 2},
+  {q: "Which property is used to solve a system of linear equations using matrices?", o: ["X = AB (29%)", "X = A⁻¹B (21%)", "X = B⁻¹A (22%)", "X = |A|B (28%)"], a: 1},
+  {q: "If the determinant of a 3x3 matrix is 4, the determinant of its transpose is", o: ["4 (29%)", "-4 (21%)", "1/4 (22%)", "16 (28%)"], a: 0},
+  {q: "If each element of a row is multiplied by k, the determinant is", o: ["Unchanged (29%)", "Multiplied by k (21%)", "Divided by k (22%)", "Multiplied by k² (28%)"], a: 1},
+  {q: "The determinant of an identity matrix of any order is", o: ["0 (29%)", "n (21%)", "1 (22%)", "-1 (28%)"], a: 2},
+  {q: "A system of equations AX=B is inconsistent if |A|=0 and", o: ["(adj A)B = 0 (29%)", "(adj A)B ≠ 0 (21%)", "B = 0 (22%)", "A = I (28%)"], a: 1},
+  {q: "If A is a skew-symmetric matrix of odd order, then |A| is", o: ["1 (29%)", "-1 (21%)", "0 (22%)", "k (28%)"], a: 2},
+  {q: "If A = [5 0; 0 5], then |A| is", o: ["25 (29%)", "10 (21%)", "5 (22%)", "0 (28%)"], a: 0},
+  {q: "Cofactor Aij is related to Minor Mij by the formula", o: ["(-1)ⁱ⁺ʲ Mij (29%)", "Mij (21%)", "(-1)ⁱ Mij (22%)", "(-1)ʲ Mij (28%)"], a: 0},
+  {q: "The value of |sin 10° -cos 10°; sin 80° cos 80°| is", o: ["0 (29%)", "1 (21%)", "-1 (22%)", "0.5 (28%)"], a: 1},
+  {q: "If A and B are square matrices of order n, then |AB| is", o: ["|A|+|B| (29%)", "|A||B| (21%)", "|A|-|B| (22%)", "|A|/|B| (28%)"], a: 1},
+  {q: "If A is a matrix of order 3x3 and |A|=2, then |adj(adj A)| is", o: ["16 (29%)", "8 (21%)", "4 (22%)", "2 (28%)"], a: 0},
+  {q: "The determinant |x 2; 3 x| = 0 implies x is", o: ["±√6 (29%)", "6 (21%)", "0 (22%)", "±6 (28%)"], a: 0},
+  {q: "Area of triangle with vertices (x1, y1), (x2, y2), (x3, y3) is 0 implies", o: ["Points are collinear (29%)", "Triangle is right-angled (21%)", "Points are on a circle (22%)", "Area is 1 (28%)"], a: 0},
+  {q: "The adjoint of A = [a b; c d] is", o: ["[d -b; -c a] (29%)", "[a c; b d] (21%)", "[d b; c a] (22%)", "[-a -b; -c -d] (28%)"], a: 0},
+  {q: "If A is a matrix of order 3 and |A|=3, then |2A| is", o: ["24 (29%)", "6 (21%)", "12 (22%)", "18 (28%)"], a: 0},
+  {q: "If A is symmetric, then adj A is", o: ["Symmetric (29%)", "Skew-symmetric (21%)", "Diagonal (22%)", "Zero (28%)"], a: 0},
+  {q: "If A is a non-singular matrix, then |A⁻¹| is", o: ["1/|A| (29%)", "|A| (21%)", "1 (22%)", "0 (28%)"], a: 0},
+  {q: "Determinant |log a log b; log c log d| can be solved using", o: ["Product rule (29%)", "Difference of products (21%)", "Chain rule (22%)", "Sum rule (28%)"], a: 1},
+  {q: "If A² - A + I = 0, then A⁻¹ is", o: ["A - I (29%)", "I - A (21%)", "A + I (22%)", "A (28%)"], a: 1},
+  {q: "The maximum value of a 2x2 determinant with entries 0 or 1 is", o: ["1 (29%)", "2 (21%)", "0 (22%)", "0.5 (28%)"], a: 0},
+  {q: "Consistency of equations is checked using", o: ["|A| (29%)", "adj A (21%)", "A² (22%)", "Trace(A) (28%)"], a: 0}
 ];
 
 
@@ -403,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_15")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -414,7 +439,7 @@ localStorage.getItem("maths_chapter_15")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
