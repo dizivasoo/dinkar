@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,18 +300,44 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Function is continuous if",o:["LHL=RHL=f(a)","LHL=RHL","Defined","None"],a:0},
-{q:"Derivative represents",o:["Rate of change","Area","Volume","None"],a:0},
-{q:"Differentiability implies",o:["Continuity","Discontinuity","None","Zero"],a:0},
-{q:"Derivative of sinx is",o:["cosx","−sinx","tanx","secx"],a:0},
-{q:"Derivative of cosx is",o:["−sinx","sinx","tanx","secx"],a:0},
-{q:"Derivative of eˣ is",o:["eˣ","xeˣ","1","0"],a:0},
-{q:"Chain rule is used for",o:["Composite functions","Simple","Constant","None"],a:0},
-{q:"If derivative is zero, function is",o:["Constant","Increasing","Decreasing","None"],a:0},
-{q:"Logarithmic differentiation used for",o:["Complex products","Sums","Constants","None"],a:0},
-{q:"Non differentiable at",o:["Sharp point","Smooth","Flat","None"],a:0}
+  {q: "The function f(x) = |x| is", o: ["Continuous but not differentiable at x=0 (11%)", "Discontinuous at x=0 (32%)", "Differentiable at x=0 (32%)", "None of these (25%)"], a: 0},
+  {q: "If f(x) = sin(x²), then f'(x) is", o: ["cos(x²) (11%)", "2x cos(x²) (32%)", "2x sin(x²) (32%)", "-2x cos(x²) (25%)"], a: 1},
+  {q: "A function f is continuous at x = c if lim (x→c) f(x) is equal to", o: ["f(0) (11%)", "f(c) (32%)", "1 (32%)", "0 (25%)"], a: 1},
+  {q: "The derivative of cos⁻¹(x) with respect to x is", o: ["1/√(1-x²) (11%)", "1/(1+x²) (32%)", "-1/√(1-x²) (32%)", "-1/(1+x²) (25%)"], a: 2},
+  {q: "If y = log(sin x), then dy/dx is", o: ["tan x (11%)", "sec x (32%)", "cot x (32%)", "cosec x (25%)"], a: 2},
+  {q: "The function f(x) = [x] (greatest integer function) is discontinuous at", o: ["x = 0.5 (11%)", "All real numbers (32%)", "All integers (32%)", "Only x = 0 (25%)"], a: 2},
+  {q: "If f(x) = eˣ, then f'''(x) is", o: ["eˣ (11%)", "3eˣ (32%)", "e³ˣ (32%)", "x³eˣ (25%)"], a: 0},
+  {q: "Derivative of log(log x) with respect to x is", o: ["1/x (11%)", "1/(x log x) (32%)", "1/log x (32%)", "(log x)/x (25%)"], a: 1},
+  {q: "If x = a cos θ, y = a sin θ, then dy/dx is", o: ["tan θ (11%)", "-cot θ (32%)", "cot θ (32%)", "-tan θ (25%)"], a: 1},
+  {q: "If y = tan⁻¹x, then d²y/dx² is", o: ["1/(1+x²) (11%)", "-2x/(1+x²) (32%)", "-2x/(1+x²)² (32%)", "2x/(1+x²)² (25%)"], a: 2},
+  {q: "The derivative of e^(sin x) is", o: ["e^(sin x) (11%)", "cos x · e^(sin x) (32%)", "sin x · e^(cos x) (32%)", "e^(cos x) (25%)"], a: 1},
+  {q: "If f(x) = kx + 1 is continuous at x=5, and f(5) = 21, then k is", o: ["3 (11%)", "5 (32%)", "4 (32%)", "2 (25%)"], a: 2},
+  {q: "The derivative of √x is", o: ["1/x (11%)", "1/(2√x) (32%)", "2√x (32%)", "x/2 (25%)"], a: 1},
+  {q: "If y = xˣ, then dy/dx is", o: ["x·xˣ⁻¹ (11%)", "xˣ(1 + log x) (32%)", "xˣ log x (32%)", "1 + log x (25%)"], a: 1},
+  {q: "Every differentiable function is", o: ["Always continuous (11%)", "Sometimes continuous (32%)", "Always discontinuous (32%)", "None of these (25%)"], a: 0},
+  {q: "The derivative of sin⁻¹(2x√(1-x²)) is", o: ["2/√(1-x²) (11%)", "1/√(1-x²) (32%)", "2/√(1-x²) (32%)", "None (25%)"], a: 2},
+  {q: "If f(x) = |x - 1|, then f'(1) is", o: ["1 (11%)", "-1 (32%)", "Does not exist (32%)", "0 (25%)"], a: 2},
+  {q: "If y = sin⁻¹x + cos⁻¹x, then dy/dx is", o: ["π/2 (11%)", "1 (32%)", "0 (32%)", "-1 (25%)"], a: 2},
+  {q: "The derivative of a constant function is", o: ["The constant itself (11%)", "0 (32%)", "1 (32%)", "Not defined (25%)"], a: 1},
+  {q: "If y = 2^x, then dy/dx is", o: ["x · 2ˣ⁻¹ (11%)", "2ˣ log 2 (32%)", "2ˣ (32%)", "log 2 (25%)"], a: 1},
+  {q: "The derivative of tan x is", o: ["sec x (11%)", "sec² x (32%)", "cot x (32%)", "-sec² x (25%)"], a: 1},
+  {q: "Which of the following functions is not differentiable at x = 0?", o: ["x² (11%)", "eˣ (32%)", "sin x (32%)", "x^(1/3) (25%)"], a: 3},
+  {q: "If y = log(x²), then dy/dx is", o: ["1/x² (11%)", "2/x (32%)", "2/x (32%)", "x/2 (25%)"], a: 2},
+  {q: "If f(x) = 2x, then the derivative of f⁻¹(x) is", o: ["2 (11%)", "1/2 (32%)", "1/2 (32%)", "x (25%)"], a: 2},
+  {q: "The function f(x) = sin |x| is differentiable at", o: ["x = 0 (11%)", "x = π (32%)", "x = π (32%)", "All real x (25%)"], a: 2},
+  {q: "If y = cos(sin x), then dy/dx is", o: ["-sin(sin x) (11%)", "-sin(sin x) · cos x (32%)", "cos(cos x) (32%)", "sin(cos x) (25%)"], a: 1},
+  {q: "Rolle's Theorem is applicable for f(x) = x² in [-1, 1] because", o: ["f(-1) = f(1) (11%)", "f(x) is polynomial (32%)", "f(x) is polynomial (32%)", "All of these (25%)"], a: 3},
+  {q: "Mean Value Theorem states there exists 'c' such that f'(c) =", o: ["0 (11%)", "(f(b)-f(a))/(b-a) (32%)", "(f(b)-f(a))/(b-a) (32%)", "f(b)-f(a) (25%)"], a: 2},
+  {q: "Derivative of log₁₀ x is", o: ["1/x (11%)", "1/(x log₁₀ e) (32%)", "1/(x logₑ 10) (32%)", "log₁₀ x (25%)"], a: 2},
+  {q: "If y = aˣ, then d²y/dx² is", o: ["aˣ (11%)", "aˣ (log a)² (32%)", "aˣ log a (32%)", "x aˣ⁻¹ (25%)"], a: 1},
+  {q: "Derivative of e^x³ is", o: ["e^x³ (11%)", "3x² e^x³ (32%)", "x³ e^x² (32%)", "3x e^x³ (25%)"], a: 1},
+  {q: "If y = √(sin x), then dy/dx is", o: ["cos x / √(sin x) (11%)", "cos x / (2√(sin x)) (32%)", "1 / (2√(sin x)) (32%)", "-cos x / (2√(sin x)) (25%)"], a: 1},
+  {q: "The derivative of |x|³ at x = 0 is", o: ["3 (11%)", "0 (32%)", "0 (32%)", "Does not exist (25%)"], a: 2},
+  {q: "If f(x) = x|x|, then f'(0) is", o: ["0 (11%)", "1 (32%)", "1 (32%)", "Does not exist (25%)"], a: 3},
+  {q: "If y = 5 cos x - 3 sin x, then d²y/dx² is", o: ["-y (11%)", "y (32%)", "-y (32%)", "0 (25%)"], a: 2},
+  {q: "If f(x) = sin x, then f(x) is differentiable", o: ["Everywhere (11%)", "Only at 0 (32%)", "Everywhere (32%)", "Except at integers (25%)"], a: 2},
+  {q: "If f(x) = (x+1) tan⁻¹(e⁻²ˣ), then f'(0) is", o: ["-1 (11%)", "π/4 - 1 (32%)", "π/4 - 1 (32%)", "π/2 (25%)"], a: 2}
 ];
-
 
 let index = 0;
 let score = 0;
@@ -332,7 +358,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -403,8 +429,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_14")
 
   document.querySelector(".test-box").innerHTML = `
@@ -415,7 +441,7 @@ localStorage.getItem("maths_chapter_14")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
