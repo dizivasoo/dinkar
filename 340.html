@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,16 +300,41 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Differential equation involves",o:["Derivative","Integral","Matrix","None"],a:0},
-{q:"Order is highest power of",o:["Derivative","Variable","Constant","None"],a:0},
-{q:"Degree is power of highest derivative",o:["After simplification","Before","Never","None"],a:0},
-{q:"General solution contains",o:["Constant","Variable","Number","None"],a:0},
-{q:"Particular solution obtained using",o:["Initial conditions","Limits","Graph","None"],a:0},
-{q:"dy/dx = ky is",o:["Separable","Linear","Both","None"],a:2},
-{q:"Solution of dy/dx=0 is",o:["Constant","Variable","x","None"],a:0},
-{q:"Linear differential eq is of form",o:["dy/dx+Py=Q","y''=0","x=y","None"],a:0},
-{q:"Degree is defined only if equation is",o:["Polynomial","Linear","Separable","None"],a:0},
-{q:"Order of d²y/dx² is",o:["2","1","0","None"],a:0}
+  {q: "The order of the differential equation (d²y/dx²)³ + (dy/dx)² + sin(dy/dx) + 1 = 0 is", o: ["3 (15%)", "2 (23%)", "1 (34%)", "Not defined (28%)"], a: 1},
+  {q: "The degree of the differential equation [1 + (dy/dx)²]^(3/2) = d²y/dx² is", o: ["3 (15%)", "1 (23%)", "2 (34%)", "6 (28%)"], a: 2},
+  {q: "The number of arbitrary constants in the general solution of a differential equation of fourth order is", o: ["0 (15%)", "2 (23%)", "4 (34%)", "3 (28%)"], a: 2},
+  {q: "The number of arbitrary constants in the particular solution of a differential equation of third order is", o: ["3 (15%)", "0 (23%)", "1 (34%)", "2 (28%)"], a: 1},
+  {q: "The integrating factor of the differential equation x(dy/dx) - y = 2x² is", o: ["e^-x (15%)", "log x (23%)", "1/x (34%)", "x (28%)"], a: 2},
+  {q: "The solution of dy/dx = e^(x+y) is", o: ["e^x + e^y = C (15%)", "e^x - e^y = C (23%)", "e^x + e^-y = C (34%)", "e^-x + e^-y = C (28%)"], a: 2},
+  {q: "A homogeneous differential equation of the form dx/dy = h(x/y) can be solved by making the substitution", o: ["y = vx (15%)", "v = xy (23%)", "x = vy (34%)", "x = v (28%)"], a: 2},
+  {q: "The integrating factor of dy/dx + y sec x = tan x is", o: ["sec x + tan x (15%)", "sec x - tan x (23%)", "sec x (34%)", "tan x (28%)"], a: 0},
+  {q: "The general solution of the differential equation dy/dx = y/x is", o: ["y = kx (15%)", "x = ky (23%)", "xy = k (34%)", "y = x + k (28%)"], a: 0},
+  {q: "The degree of the differential equation d²y/dx² + (dy/dx)² + sin y = 0 is", o: ["2 (15%)", "3 (23%)", "1 (34%)", "Not defined (28%)"], a: 2},
+  {q: "The solution of dy/dx + y = e^-x is", o: ["y = e^-x(x+C) (15%)", "y = e^x(x+C) (23%)", "y = e^-x + C (34%)", "ye^x = x + C (28%)"], a: 3},
+  {q: "Which of the following is a homogeneous differential equation?", o: ["(4x+6y+5)dy - (3y+2x+4)dx = 0 (15%)", "xy dx - (x³+y³)dy = 0 (23%)", "(x³+2y²)dx + 2xy dy = 0 (34%)", "y² dx + (x²-xy-y²)dy = 0 (28%)"], a: 3},
+  {q: "The order and degree of the differential equation √(d²y/dx²) = dy/dx + c are", o: ["2, 1 (15%)", "1, 2 (23%)", "2, 2 (34%)", "2, Not defined (28%)"], a: 0},
+  {q: "The general solution of dy/dx = √(4-y²) is", o: ["sin^-1(y/2) = x + C (15%)", "cos^-1(y/2) = x + C (23%)", "y = 2 sin(x+C) (34%)", "y = sin(2x+C) (28%)"], a: 2},
+  {q: "Integrating factor of (1-x²)dy/dx - xy = 1 is", o: ["√(1-x²) (15%)", "1/√(1-x²) (23%)", "1/(1-x²) (34%)", "√(x²-1) (28%)"], a: 0},
+  {q: "Solution of dy/dx + y/x = x² is", o: ["4xy = x⁴ + C (15%)", "xy = x³/3 + C (23%)", "y = x³/4 + C/x (34%)", "y = x²/3 + C (28%)"], a: 2},
+  {q: "Order of the differential equation of all circles of fixed radius 'r' is", o: ["1 (15%)", "2 (23%)", "3 (34%)", "4 (28%)"], a: 1},
+  {q: "The differential equation y(dy/dx) + x = C represents", o: ["Family of hyperbolas (15%)", "Family of parabolas (23%)", "Family of circles (34%)", "Family of ellipses (28%)"], a: 2},
+  {q: "The general solution of log(dy/dx) = ax + by is", o: ["e^ax/a + e^-by/b = C (15%)", "e^ax/a - e^by/b = C (23%)", "e^ax/a + e^by/b = C (34%)", "None (28%)"], a: 0},
+  {q: "The order of the differential equation of all conics whose centre is at the origin is", o: ["2 (15%)", "3 (23%)", "4 (34%)", "5 (28%)"], a: 1},
+  {q: "Integrating factor of cos²x (dy/dx) + y = tan x is", o: ["e^tan x (15%)", "tan x (23%)", "e^sec²x (34%)", "e^x (28%)"], a: 0},
+  {q: "The solution of x dy - y dx = 0 represents", o: ["Parabola (15%)", "Circle (23%)", "Straight line through origin (34%)", "Rectangular hyperbola (28%)"], a: 2},
+  {q: "Which of the following is the general solution of d²y/dx² - y = 0?", o: ["y = Ae^x + Be^-x (15%)", "y = A cos x + B sin x (23%)", "y = Ax + B (34%)", "y = e^x + C (28%)"], a: 0},
+  {q: "Order of differential equation dy/dx + y = sin x is", o: ["0 (15%)", "1 (23%)", "2 (34%)", "Not defined (28%)"], a: 1},
+  {q: "The general solution of e^x dy + (ye^x + 2x) dx = 0 is", o: ["ye^x + x² = C (15%)", "ye^x - x² = C (23%)", "y + x²e^-x = C (34%)", "None (28%)"], a: 0},
+  {q: "The degree of (d³y/dx³) + 2(d²y/dx²)² - dy/dx + y = 0 is", o: ["3 (15%)", "2 (23%)", "1 (34%)", "4 (28%)"], a: 2},
+  {q: "General solution of dy/dx = x/y is", o: ["x² - y² = C (15%)", "x² + y² = C (23%)", "y² - x² = C (34%)", "xy = C (28%)"], a: 2},
+  {q: "Integrating factor of dy/dx + y/x log x = 1/x is", o: ["x (15%)", "log x (23%)", "log(log x) (34%)", "1/log x (28%)"], a: 1},
+  {q: "Differential equation of y = mx is", o: ["dy/dx = y/x (15%)", "dy/dx = x/y (23%)", "dy/dx = m (34%)", "y dy = x dx (28%)"], a: 0},
+  {q: "Degree of d²y/dx² + 3(dy/dx)² = x log(d²y/dx²) is", o: ["1 (15%)", "2 (23%)", "3 (34%)", "Not defined (28%)"], a: 3},
+  {q: "Integrating factor of dy/dx + (2x/(1+x²))y = 4x²/(1+x²) is", o: ["log(1+x²) (15%)", "e^x (23%)", "1 + x² (34%)", "1/(1+x²) (28%)"], a: 2},
+  {q: "The general solution of dy/dx = 1 + x + y + xy is", o: ["log|1+y| = x + x²/2 + C (15%)", "y = e^(x+x²/2) (23%)", "log|1+x| = y + y²/2 + C (34%)", "None (28%)"], a: 0},
+  {q: "Number of arbitrary constants in the equation of family of parabolas y² = 4ax is", o: ["0 (15%)", "1 (23%)", "2 (34%)", "3 (28%)"], a: 1},
+  {q: "The degree of (dy/dx)⁴ + 3y(d²y/dx²) = 0 is", o: ["4 (15%)", "3 (23%)", "1 (34%)", "2 (28%)"], a: 2},
+  {q: "Integrating factor of dy/dx - y = cos x is", o: ["e^x (15%)", "e^-x (23%)", "e^sin x (34%)", "-e^x (28%)"], a: 1}
 ];
 
 let index = 0;
@@ -331,7 +356,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -402,8 +427,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_8")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -413,7 +438,7 @@ localStorage.getItem("maths_chapter_8")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
