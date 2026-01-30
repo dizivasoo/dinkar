@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -299,18 +299,42 @@ body{
 
 <script>
 /* QUESTIONS */
-/* QUESTIONS */
 const questions = [
-{q:"Integration is inverse of",o:["Differentiation","Addition","Division","None"],a:0},
-{q:"∫xⁿ dx =",o:["xⁿ⁺¹/(n+1)","nx","1/x","None"],a:0},
-{q:"Constant of integration is",o:["C","0","1","None"],a:0},
-{q:"∫dx/x =",o:["ln|x|","x","1/x","None"],a:0},
-{q:"Integration by parts formula is",o:["∫udv=uv−∫vdu","∫uv","u+v","None"],a:0},
-{q:"Definite integral gives",o:["Number","Function","Variable","None"],a:0},
-{q:"Upper and lower limits same gives",o:["0","1","∞","None"],a:0},
-{q:"∫0 dx =",o:["C","0","1","None"],a:1},
-{q:"Substitution method used when",o:["Function inside function","Constant","Linear","None"],a:0},
-{q:"∫eˣ dx =",o:["eˣ","xeˣ","1","0"],a:0}
+  {q: "The value of ∫ [1 / (x log x)] dx is", o: ["log|log x| + C (23%)", "1/(log x)² + C (43%)", "log|x| + C (21%)", "e^x log x + C (13%)"], a: 0},
+  {q: "The value of the definite integral ∫ (from 0 to π/2) [sin x / (sin x + cos x)] dx is", o: ["π (23%)", "π/2 (43%)", "π/4 (21%)", "0 (13%)"], a: 2},
+  {q: "Evaluate ∫ e^x (sin x + cos x) dx", o: ["e^x cos x + C (23%)", "e^x sin x + C (43%)", "e^x (sin x - cos x) + C (21%)", "sin x + cos x + C (13%)"], a: 1},
+  {q: "The integral of tan x dx is equal to", o: ["sec² x + C (23%)", "log|sec x| + C (43%)", "log|sin x| + C (21%)", "-sec x + C (13%)"], a: 1},
+  {q: "The value of ∫ (from -1 to 1) |x| dx is", o: ["0 (23%)", "2 (43%)", "1 (21%)", "1/2 (13%)"], a: 2},
+  {q: "Find ∫ [dx / (x² + 16)]", o: ["1/4 tan⁻¹(x/4) + C (23%)", "tan⁻¹(x/4) + C (43%)", "1/16 tan⁻¹(x) + C (21%)", "log|x² + 16| + C (13%)"], a: 0},
+  {q: "Evaluate ∫ x e^x dx", o: ["x e^x + C (23%)", "e^x(x + 1) + C (43%)", "e^x(x - 1) + C (21%)", "x²/2 e^x + C (13%)"], a: 2},
+  {q: "The integral ∫ [dx / √(1 - x²)] is", o: ["cos⁻¹ x + C (23%)", "sin⁻¹ x + C (43%)", "tan⁻¹ x + C (21%)", "log|x + √(1-x²)| + C (13%)"], a: 1},
+  {q: "The value of ∫ (from 0 to 1) [1 / (1 + x²)] dx is", o: ["π/2 (23%)", "1 (43%)", "π/4 (21%)", "π (13%)"], a: 2},
+  {q: "Find ∫ cos² x dx", o: ["sin³ x / 3 + C (23%)", "x/2 + (sin 2x)/4 + C (43%)", "x/2 - (sin 2x)/4 + C (21%)", "sin 2x + C (13%)"], a: 1},
+  {q: "∫ (sec² x / cosec² x) dx is equal to", o: ["tan x - x + C (23%)", "tan x + x + C (43%)", "cot x - x + C (21%)", "sec x + C (13%)"], a: 0},
+  {q: "The value of ∫ (from 2 to 3) (1/x) dx is", o: ["log(3/2) (23%)", "log 5 (43%)", "log 1 (21%)", "log 6 (13%)"], a: 0},
+  {q: "∫ [dx / (x² - a²)] is equal to", o: ["1/a log|(x-a)/(x+a)| + C (23%)", "1/(2a) log|(x-a)/(x+a)| + C (43%)", "1/(2a) log|(x+a)/(x-a)| + C (21%)", "tan⁻¹(x/a) + C (13%)"], a: 1},
+  {q: "∫ [e^(6 log x) - e^(5 log x)] / [e^(4 log x) - e^(3 log x)] dx is", o: ["x³/3 + C (23%)", "x²/2 + C (43%)", "x + C (21%)", "log x + C (13%)"], a: 0},
+  {q: "The value of ∫ (from 0 to π) cos x dx is", o: ["1 (23%)", "2 (43%)", "0 (21%)", "-1 (13%)"], a: 2},
+  {q: "∫ cot x dx is", o: ["log|sin x| + C (23%)", "log|cos x| + C (43%)", "-cosec² x + C (21%)", "tan x + C (13%)"], a: 0},
+  {q: "∫ [dx / sin²x cos²x] is", o: ["tan x + cot x + C (23%)", "tan x - cot x + C (43%)", "cot x - tan x + C (21%)", "sin 2x + C (13%)"], a: 1},
+  {q: "The value of ∫ (from 0 to 2) √(4 - x²) dx is", o: ["π (23%)", "2π (43%)", "π/2 (21%)", "4π (13%)"], a: 0},
+  {q: "∫ [1 / (1 + cos x)] dx is", o: ["tan(x/2) + C (23%)", "cot(x/2) + C (43%)", "1/2 tan(x/2) + C (21%)", "sec x + C (13%)"], a: 0},
+  {q: "∫ x sin x dx is", o: ["x cos x + sin x + C (23%)", "sin x - x cos x + C (43%)", "x sin x + cos x + C (21%)", "cos x - x sin x + C (13%)"], a: 1},
+  {q: "The value of ∫ (from -π/2 to π/2) sin⁷ x dx is", o: ["1 (23%)", "π (43%)", "0 (21%)", "1/2 (13%)"], a: 2},
+  {q: "∫ [dx / (1 + 3x²)] is", o: ["1/√3 tan⁻¹(√3 x) + C (23%)", "tan⁻¹(√3 x) + C (43%)", "1/3 tan⁻¹(3x) + C (21%)", "√3 tan⁻¹(x) + C (13%)"], a: 0},
+  {q: "∫ [sin⁻¹ x + cos⁻¹ x] dx is", o: ["πx/2 + C (23%)", "π/2 + C (43%)", "x + C (21%)", "0 (13%)"], a: 0},
+  {q: "The value of ∫ (from 0 to π/4) tan x dx is", o: ["log 2 (23%)", "1/2 log 2 (43%)", "log √2 (21%)", "1 (13%)"], a: 1},
+  {q: "∫ e^x (1/x - 1/x²) dx is", o: ["e^x/x + C (23%)", "-e^x/x + C (43%)", "e^x log x + C (21%)", "e^x/x² + C (13%)"], a: 0},
+  {q: "∫ dx / (9 + x²) is", o: ["1/3 tan⁻¹(x/3) + C (23%)", "3 tan⁻¹(x/3) + C (43%)", "tan⁻¹(x/3) + C (21%)", "1/9 tan⁻¹(x) + C (13%)"], a: 0},
+  {q: "∫ [ (log x)² / x ] dx is", o: ["(log x)³/3 + C (23%)", "(log x)²/2 + C (43%)", "2 log x + C (21%)", "1/x + C (13%)"], a: 0},
+  {q: "The area bounded by the curve y = sin x between x = 0 and x = π is", o: ["1 (23%)", "2 (43%)", "π (21%)", "0 (13%)"], a: 1},
+  {q: "∫ dx / √(a² - x²) is", o: ["1/a sin⁻¹(x/a) + C (23%)", "sin⁻¹(x/a) + C (43%)", "cos⁻¹(x/a) + C (21%)", "1/a tan⁻¹(x/a) + C (13%)"], a: 1},
+  {q: "The value of ∫ (from 0 to 1) [e^x / (1 + e^x)] dx is", o: ["log(1+e) (23%)", "log[(1+e)/2] (43%)", "e - 1 (21%)", "log e (13%)"], a: 1},
+  {q: "∫ sec x dx is", o: ["log|sec x + tan x| + C (23%)", "log|sec x - tan x| + C (43%)", "sec x tan x + C (21%)", "tan x + C (13%)"], a: 0},
+  {q: "∫ [sin(log x) / x] dx is", o: ["-cos(log x) + C (23%)", "cos(log x) + C (43%)", "sin(log x) + C (21%)", "log(sin x) + C (13%)"], a: 0},
+  {q: "The value of ∫ (from 0 to a) [f(x) / (f(x) + f(a-x))] dx is", o: ["a (23%)", "a/2 (43%)", "0 (21%)", "2a (13%)"], a: 1},
+  {q: "∫ [2x / (1 + x²)] dx is", o: ["log|1 + x²| + C (23%)", "tan⁻¹ x + C (43%)", "2 log|x| + C (21%)", "x² + C (13%)"], a: 0},
+  {q: "∫ dx / (x² - 16) is", o: ["1/4 log|(x-4)/(x+4)| + C (23%)", "1/8 log|(x-4)/(x+4)| + C (43%)", "1/8 log|(x+4)/(x-4)| + C (21%)", "1/4 tan⁻¹(x/4) + C (13%)"], a: 1}
 ];
 
 
@@ -334,7 +358,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -405,8 +429,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_6")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -416,7 +440,7 @@ localStorage.getItem("maths_chapter_6")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
