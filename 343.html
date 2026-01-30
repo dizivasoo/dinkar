@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -300,18 +300,42 @@ body{
 <script>
 /* QUESTIONS */
 const questions = [
-{q:"Linear programming optimizes",o:["Linear function","Quadratic","Cubic","None"],a:0},
-{q:"Constraints are",o:["Linear inequalities","Equations","Non-linear","None"],a:0},
-{q:"Feasible region satisfies",o:["All constraints","One","None","Random"],a:0},
-{q:"Objective function is",o:["Maximized/minimized","Ignored","Constant","None"],a:0},
-{q:"Corner point theorem applies to",o:["Feasible region","Graph","Line","None"],a:0},
-{q:"Optimal solution lies at",o:["Corner point","Center","Random","None"],a:0},
-{q:"Graphical method works for",o:["Two variables","Three","One","None"],a:0},
-{q:"Infeasible region has",o:["No solution","One solution","Many","None"],a:0},
-{q:"Unbounded region may have",o:["No optimal","One","Many","None"],a:0},
-{q:"LPP uses",o:["Inequalities","Equalities","Derivatives","None"],a:0}
+  {q: "The feasible region for an LPP is always a", o: ["Convex polygon (32%)", "Concave polygon (12%)", "Circle (36%)", "Straight line (20%)"], a: 0},
+  {q: "The objective function of an LPP is", o: ["A constraint (32%)", "A function to be optimized (12%)", "A linear function to be optimized (36%)", "A quadratic function (20%)"], a: 2},
+  {q: "The optimal value of the objective function is attained at the", o: ["Origin (32%)", "Corner points of feasible region (12%)", "Corner points of feasible region (36%)", "Any point in the region (20%)"], a: 2},
+  {q: "In an LPP, the constraints are", o: ["Linear inequalities (32%)", "Quadratic equations (12%)", "Linear inequalities or equations (36%)", "None (20%)"], a: 2},
+  {q: "A linear programming problem can have", o: ["Only one optimal solution (32%)", "No solution (12%)", "Infinitely many optimal solutions (36%)", "All of the above (20%)"], a: 3},
+  {q: "The region represented by x ≥ 0, y ≥ 0 is", o: ["First quadrant (32%)", "Second quadrant (12%)", "Third quadrant (36%)", "Fourth quadrant (20%)"], a: 0},
+  {q: "The maximum value of Z = 3x + 4y subject to x + y ≤ 4, x ≥ 0, y ≥ 0 is", o: ["12 (32%)", "14 (12%)", "16 (36%)", "0 (20%)"], a: 2},
+  {q: "If the feasible region is unbounded, then a maximum value of the objective function", o: ["Always exists (32%)", "Never exists (12%)", "May or may not exist (36%)", "Is always zero (20%)"], a: 2},
+  {q: "Which of the following is not a convex set?", o: ["{(x, y) : x² + y² ≤ 1} (32%)", "{(x, y) : y = x²} (12%)", "{(x, y) : 3x + 4y ≤ 12} (36%)", "{(x, y) : x ≥ 2, y ≤ 3} (20%)"], a: 1},
+  {q: "The point which does not lie in the half plane 2x + 3y - 12 ≤ 0 is", o: ["(1, 2) (32%)", "(2, 1) (12%)", "(2, 3) (36%)", "(-3, 2) (20%)"], a: 2},
+  {q: "The common region determined by all the constraints including non-negative constraints is", o: ["Feasible region (32%)", "Infeasible region (12%)", "Optimal region (36%)", "Bounded region (20%)"], a: 0},
+  {q: "The corner points of the feasible region for an LPP are (0,2), (3,0), (6,0), (6,8) and (0,5). Let Z = 4x + 6y. The minimum value of Z occurs at", o: ["(0, 2) only (32%)", "(3, 0) only (12%)", "The midpoint of line segment (0,2)-(3,0) (36%)", "Any point on line segment (0,2)-(3,0) (20%)"], a: 3},
+  {q: "In LPP, the objective function is always", o: ["Linear (32%)", "Cubic (12%)", "Exponential (36%)", "Trigonometric (20%)"], a: 0},
+  {q: "The inequality x + y ≤ 2 and 2x + 2y ≥ 8 have", o: ["Common feasible region (32%)", "No common feasible region (12%)", "Infinite solutions (36%)", "Unique solution (20%)"], a: 1},
+  {q: "If the objective function Z = ax + by has the same maximum value on two corner points, then", o: ["Every point on the line segment joining them is optimal (32%)", "Only those two points are optimal (12%)", "The problem has no solution (36%)", "The maximum value is a+b (20%)"], a: 0},
+  {q: "Which of the following is a constraint for an LPP?", o: ["x ≥ 0 (32%)", "Z = 3x + 2y (12%)", "x + y ≤ 5 (36%)", "Both A and C (20%)"], a: 3},
+  {q: "The maximum value of Z = x + y subject to x - y ≤ -1, -x + y ≤ 0, x, y ≥ 0 is", o: ["1 (32%)", "2 (12%)", "No feasible region (36%)", "0 (20%)"], a: 2},
+  {q: "In the context of LPP, a 'Constraint' is a", o: ["Restriction on variables (32%)", "Function to maximize (12%)", "Result (36%)", "Graph (20%)"], a: 0},
+  {q: "A feasible solution of an LPP", o: ["Must satisfy all constraints (32%)", "Need not satisfy non-negative constraints (12%)", "Is always a corner point (36%)", "None of these (20%)"], a: 0},
+  {q: "The minimum value of Z = 3x + 5y subject to x + 3y ≥ 3, x + y ≥ 2, x, y ≥ 0 is", o: ["7 (32%)", "10 (12%)", "9 (36%)", "12 (20%)"], a: 0},
+  {q: "In an LPP, the set of all feasible solutions is a", o: ["Convex set (32%)", "Concave set (12%)", "Null set (36%)", "Infinite set (20%)"], a: 0},
+  {q: "The corner points of a feasible region are (0,0), (5,0), (3,4) and (0,5). Max value of Z = 2x + 3y is", o: ["10 (32%)", "15 (12%)", "18 (36%)", "20 (20%)"], a: 2},
+  {q: "Linear programming is a method for finding the", o: ["Roots of equations (32%)", "Best outcome in a mathematical model (12%)", "Area of a triangle (36%)", "Slope of a line (20%)"], a: 1},
+  {q: "The point (2, 2) is a feasible solution for x + y ≤ 5, x ≥ 0, y ≥ 0?", o: ["Yes (32%)", "No (12%)", "Depends on Z (36%)", "Only if x=y (20%)"], a: 0},
+  {q: "The Z-axis in a graphical LPP (2 variables) is", o: ["Represented by x (32%)", "Represented by y (12%)", "Not required (36%)", "Vertical only (20%)"], a: 2},
+  {q: "The number of corner points for x + y ≤ 10, x ≥ 0, y ≥ 0 is", o: ["2 (32%)", "4 (12%)", "3 (36%)", "1 (20%)"], a: 2},
+  {q: "In graphical method, if the objective function line is parallel to a boundary constraint", o: ["There is no solution (32%)", "There is a unique solution (12%)", "There are multiple optimal solutions (36%)", "Optimization is not possible (20%)"], a: 2},
+  {q: "Constraints x ≤ 4, y ≤ 3, x ≥ 0, y ≥ 0 form a", o: ["Triangle (32%)", "Rectangle (12%)", "Square (36%)", "Pentagon (20%)"], a: 1},
+  {q: "An LPP is linear because", o: ["Variables are of first degree (32%)", "It uses lines (12%)", "It has constraints (36%)", "It is solved on paper (20%)"], a: 0},
+  {q: "Which point satisfies 3x + 2y > 6?", o: ["(1, 1) (32%)", "(2, 0) (12%)", "(2, 2) (36%)", "(0, 3) (20%)"], a: 2},
+  {q: "The region x < 3 is", o: ["Closed half plane (32%)", "Open half plane (12%)", "A point (36%)", "A line (20%)"], a: 1},
+  {q: "Corner point method is used for", o: ["Indefinite integrals (32%)", "Finding optimal solution in LPP (12%)", "Finding optimal solution in LPP (36%)", "Solving vectors (20%)"], a: 2},
+  {q: "Optimal solution is a feasible solution that", o: ["Minimizes objective function (32%)", "Maximizes objective function (12%)", "Either A or B (36%)", "Neither A nor B (20%)"], a: 2},
+  {q: "Non-negativity constraints mean", o: ["Variables can be zero or positive (32%)", "Variables must be negative (12%)", "Variables can be any real number (36%)", "Z must be positive (20%)"], a: 0},
+  {q: "The condition x, y ≥ 0 is called", o: ["Primary constraint (32%)", "Secondary constraint (12%)", "Non-negative restriction (36%)", "Objective function (20%)"], a: 2}
 ];
-
 let index = 0;
 let score = 0;
 let answered = false;
@@ -331,7 +355,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -402,8 +426,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_11")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -413,7 +437,7 @@ localStorage.getItem("maths_chapter_11")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
