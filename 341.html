@@ -277,7 +277,7 @@ body{
 <div class="test-box">
   <div class="header">
     <h2>Dinkar Test</h2>
-    <div class="progress" id="progress">Question 1 / 10</div>
+    <div class="progress" id="progress">Question 1 / 35</div>
   </div>
 
   <div class="question" id="questionText"></div>
@@ -301,18 +301,42 @@ body{
 /* QUESTIONS */
 /* QUESTIONS */
 const questions = [
-{q:"Vector has",o:["Magnitude & direction","Only magnitude","Only direction","None"],a:0},
-{q:"Zero vector has magnitude",o:["0","1","∞","None"],a:0},
-{q:"Unit vector has magnitude",o:["1","0","∞","None"],a:0},
-{q:"Dot product gives",o:["Scalar","Vector","Both","None"],a:0},
-{q:"Cross product gives",o:["Vector","Scalar","Both","None"],a:0},
-{q:"Angle between perpendicular vectors is",o:["90°","0°","180°","None"],a:0},
-{q:"i·j =",o:["0","1","−1","None"],a:0},
-{q:"i×j =",o:["k","i","j","0"],a:0},
-{q:"Scalar triple product gives",o:["Volume","Area","Length","None"],a:0},
-{q:"Collinear vectors have angle",o:["0 or 180","90","45","None"],a:0}
+  {q: "The unit vector in the direction of vector a = i + j + 2k is", o: ["(i + j + 2k)/√6 (33%)", "(i + j + 2k)/6 (17%)", "(i + j + 2k)/√3 (33%)", "i + j + k (17%)"], a: 0},
+  {q: "If a and b are two collinear vectors, then which of the following are incorrect?", o: ["b = λa (33%)", "a = ±b (17%)", "Both are unit vectors (33%)", "Components are proportional (17%)"], a: 2},
+  {q: "The position vector of the midpoint of the line segment joining P(2, 3, 4) and Q(4, 1, -2) is", o: ["3i + 2j + k (33%)", "6i + 4j + 2k (17%)", "2i + 2j + 2k (33%)", "i + j + k (17%)"], a: 0},
+  {q: "The scalar product of 5i - j - 3k and i + 3j - 5k is", o: ["15 (33%)", "17 (17%)", "10 (33%)", "0 (17%)"], a: 1},
+  {q: "If |a| = √3, |b| = 2 and a·b = √6, then the angle between a and b is", o: ["π/6 (33%)", "π/3 (17%)", "π/4 (33%)", "π/2 (17%)"], a: 2},
+  {q: "The projection of vector i + 3j + 7k on the vector 7i - j + 8k is", o: ["√114 (33%)", "60/√114 (17%)", "60 (33%)", "114 (17%)"], a: 2},
+  {q: "If a is a unit vector and (x - a)·(x + a) = 8, then |x| is", o: ["3 (33%)", "√8 (17%)", "9 (33%)", "2 (17%)"], a: 0},
+  {q: "The value of λ for which the vectors 2i - j + k, i + 2j - 3k and 3i + λj + 5k are coplanar is", o: ["-4 (33%)", "4 (17%)", "-8 (33%)", "8 (17%)"], a: 2},
+  {q: "The magnitude of the vector product of a = i - 7j + 7k and b = 3i - 2j + 2k is", o: ["19√2 (33%)", "15√2 (17%)", "19 (33%)", "5 (17%)"], a: 0},
+  {q: "Area of a parallelogram whose adjacent sides are given by the vectors a and b is", o: ["a·b (33%)", "|a × b| (17%)", "|a| |b| (33%)", "1/2 |a × b| (17%)"], a: 1},
+  {q: "The angle between two vectors a and b with magnitudes √3 and 2 respectively, having a·b = 3 is", o: ["π/4 (33%)", "π/2 (17%)", "π/6 (33%)", "π/3 (17%)"], a: 2},
+  {q: "If θ is the angle between two vectors a and b, then |a·b| = |a × b| when θ is", o: ["π/2 (33%)", "π (17%)", "π/4 (33%)", "0 (17%)"], a: 2},
+  {q: "The value of i·(j × k) + j·(i × k) + k·(i × j) is", o: ["1 (33%)", "3 (17%)", "1 (33%)", "-1 (17%)"], a: 2},
+  {q: "If a = 2i + j + 3k and b = 3i + 5j - 2k, then |a × b| is", o: ["√507 (33%)", "√400 (17%)", "√300 (33%)", "507 (17%)"], a: 0},
+  {q: "The direction cosines of the vector i + 2j + 3k are", o: ["1/√14, 2/√14, 3/√14 (33%)", "1, 2, 3 (17%)", "1/6, 2/6, 3/6 (33%)", "None (17%)"], a: 0},
+  {q: "If |a + b| = |a - b|, then the angle between a and b is", o: ["π/2 (33%)", "π/3 (17%)", "0 (33%)", "π/4 (17%)"], a: 0},
+  {q: "The vectors 2i - 3j + 4k and -4i + 6j - 8k are", o: ["Perpendicular (33%)", "Collinear (17%)", "Equal (33%)", "Unit vectors (17%)"], a: 1},
+  {q: "The scalar triple product [a b c] represents the volume of a", o: ["Tetrahedron (33%)", "Sphere (17%)", "Parallelepiped (33%)", "Pyramid (17%)"], a: 2},
+  {q: "The area of a triangle with vertices (1, 1, 2), (2, 3, 5) and (1, 5, 5) is", o: ["√61/2 (33%)", "√61 (17%)", "61/2 (33%)", "√50/2 (17%)"], a: 0},
+  {q: "If a = i + j + k and b = j - k, a vector c such that a × c = b and a·c = 3 is", o: ["5/3i + 2/3j + 2/3k (33%)", "i + j + k (17%)", "1/3(5i + 2j + 2k) (33%)", "2i - j (17%)"], a: 2},
+  {q: "Vector projection of a on b is given by", o: ["(a·b)/|b|² * b (33%)", "a·b (17%)", "(a·b)/|b| (33%)", "|a| cos θ (17%)"], a: 0},
+  {q: "If the angle between a and b is π/3, then |a × b| is", o: ["1/2 |a||b| (33%)", "√3/2 |a||b| (17%)", "|a||b| (33%)", "0 (17%)"], a: 1},
+  {q: "The value of λ such that a = 2i + λj + k and b = i + 2j + 3k are perpendicular is", o: ["-5/2 (33%)", "5/2 (17%)", "-2 (33%)", "2 (17%)"], a: 0},
+  {q: "The unit vector perpendicular to both i + j and j + k is", o: ["(i - j + k)/√3 (33%)", "i + j + k (17%)", "k (33%)", "j (17%)"], a: 0},
+  {q: "Two vectors are equal if they have same", o: ["Magnitude (33%)", "Direction (17%)", "Magnitude and Direction (33%)", "Initial point (17%)"], a: 2},
+  {q: "The sum of the vectors a = i - 2j + k, b = -2i + 4j + 5k and c = i - 6j - 7k is", o: ["-4j - k (33%)", "0 (17%)", "-4j + k (33%)", "i + j + k (17%)"], a: 0},
+  {q: "If a is any vector, then (a·i)i + (a·j)j + (a·k)k is equal to", o: ["a (33%)", "2a (17%)", "0 (33%)", "3a (17%)"], a: 0},
+  {q: "The projection of the vector i - j on the vector i + j is", o: ["0 (33%)", "1 (17%)", "2 (33%)", "-1 (17%)"], a: 0},
+  {q: "The angle between the vectors i - 2j + 3k and 3i - 2j + k is", o: ["cos⁻¹(5/7) (33%)", "π/2 (17%)", "cos⁻¹(1/3) (33%)", "π/3 (17%)"], a: 0},
+  {q: "If a, b, c are unit vectors such that a + b + c = 0, then a·b + b·c + c·a is", o: ["-3/2 (33%)", "3/2 (17%)", "0 (33%)", "1 (17%)"], a: 0},
+  {q: "The vector in the direction of vector 5i - j + 2k which has magnitude 8 units is", o: ["8/√30 (5i - j + 2k) (33%)", "5i - j + 2k (17%)", "8(5i - j + 2k) (33%)", "1/√30 (17%)"], a: 0},
+  {q: "If |a| = 10, |b| = 2 and a·b = 12, then |a × b| is", o: ["16 (33%)", "10 (17%)", "20 (33%)", "14 (17%)"], a: 0},
+  {q: "Find the component of a = 2i + 3j along b = i + j", o: ["5/√2 (33%)", "5 (17%)", "2 (33%)", "3 (17%)"], a: 3},
+  {q: "Direction ratios of the vector joining P(2, 3, 0) and Q(-1, -2, -4) are", o: ["-3, -5, -4 (33%)", "3, 5, 4 (17%)", "-3, -5, -4 (33%)", "1, 1, 4 (17%)"], a: 2},
+  {q: "The distance of the point (2, 3, 4) from the origin is", o: ["√29 (33%)", "9 (17%)", "√29 (33%)", "5 (17%)"], a: 2}
 ];
-
 
 let index = 0;
 let score = 0;
@@ -333,7 +357,7 @@ function loadQuestion(){
 
   const q = questions[index];
   qText.textContent = q.q;
-  progress.textContent = `Question ${index+1} / 10`;
+  progress.textContent = `Question ${index+1} / 35`;
 
   q.o.forEach((opt,i)=>{
     const div = document.createElement("div");
@@ -404,8 +428,8 @@ function retakeTest(){
 /* ===== RESULT FUNCTION (UPDATED ONLY) ===== */
 function showResult(){
   const correct = score;
-  const wrong = 10 - score;
-  const degree = (correct / 10) * 360;
+  const wrong = 35 - score;
+  const degree = (correct / 35) * 360;
 localStorage.getItem("maths_chapter_9")
   document.querySelector(".test-box").innerHTML = `
     <div class="result-card">
@@ -415,7 +439,7 @@ localStorage.getItem("maths_chapter_9")
 
 
       <div class="result-score">
-        Score: ${correct} / 10
+        Score: ${correct} / 35
       </div>
 
       <div class="result-stats">
